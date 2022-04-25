@@ -44,4 +44,4 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 
 ## Project
 
-- Real-time 3D Rectruction based on LiDAR Point Cloud [<a href="./assets/IROS18_0838_VI_i.mp4" download>Video</a>]<br>
+- Real-time 3D Reconstruction based on LiDAR Point Cloud [<a href="./assets/IROS18_0838_VI_i.mp4" download>Video</a>]<br>
