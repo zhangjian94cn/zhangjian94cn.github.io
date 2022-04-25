@@ -31,16 +31,16 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 ## Publications
 
 - Ray Priors through Reprojection: Improving Neural Radiance Fields for Novel View Extrapolation <br> **Accepted to CVPR, 2022** <br> 
-  <font color=gray size=3>Jian Zhang*, Yuanqing Zhang*, Huan Fu#, Xiaowei Zhou, Bowen Cai, Jinchi Huang, Rongfei Jia, Binqiang Zhao, and Xing Tang</font>
+  <font color=gray size=3><b>Jian Zhang*</b>, Yuanqing Zhang*, <a href="https://hufu6371.github.io/huanfu/">Huan Fu#</a>, Xiaowei Zhou, Bowen Cai, Jinchi Huang, Rongfei Jia, Binqiang Zhao, and Xing Tang</font>
 <font style="line-height:0%;"></font>
 
-- Reconstruction of High-Precision Semantic Map [<a href="./assets/sensors-20-06264.pdf" download>PDF</a>] <br>
-  <font color=gray size=3>Xinyuan Tu, Jian Zhang, Runhao Luo, Kai Wang, Qingji Zeng, Yu Zhou *, Yao Yu and Sidan Du</font>
+- Reconstruction of High-Precision Semantic Map [<a href="./assets/sensors-20-06264.pdf" download>PDF</a>] <br>**Accepted to SENSOR, 2020** <br> 
+  <font color=gray size=3>Xinyuan Tu, <b>Jian Zhang</b>, Runhao Luo, Kai Wang, Qingji Zeng, Yu Zhou *, Yao Yu and Sidan Du</font>
 <font style="line-height:0%;"></font>
 
 - SDFMap: A Real-time 3D Semantic Mapping for LiDAR Point Cloud [<a href="./assets/iros2020.pdf" download>PDF</a>] 
   [<a href="./assets/ICRA19_0880_VI_i.mp4" download>Video</a>]<br>
-  <font color=gray size=3>Jian Zhang∗, Runhao Luo∗, Conghui Geng, Yu Zhou, Yao Yu, Sidan Du, Pei Li</font>
+  <font color=gray size=3><b>Jian Zhang*</b>, Runhao Luo∗, Conghui Geng, Yu Zhou, Yao Yu, Sidan Du, Pei Li</font>
 
 ## Project
 
