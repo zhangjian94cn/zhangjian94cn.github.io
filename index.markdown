@@ -11,7 +11,7 @@ layout: home
 
 </div >
 
-I'm **Zhang Jian（章坚）**, an algorithm engineer. Currently, I work in Alibaba and focus on photo-realistic 3d reconstruction. My interests involve deep learning, computer vision, computer graphics and robotics.
+I'm **Zhang Jian（章坚）**, an algorithm engineer. Currently, I work in Alibaba and focus on photo-realistic 3d reconstruction. My interests involve **deep learning, computer vision, computer graphics and robotics**.
 
 I graduated from Southeast University with a bachelor's degree, and got my master degree from Nanjing University. 
 
@@ -45,3 +45,13 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 ## Project
 
 - Real-time 3D Reconstruction based on LiDAR Point Cloud [<a href="./assets/IROS18_0838_VI_i.mp4" download>Video</a>]<br>
+
+
+## Experience
+
+
+- Alibaba Group, Tao Technology Department <font color=gray size=3><b>2020.6-Now</b></font>
+- <a href="https://www.d5render.com/">D5 Render</a>, Rendering Engine Group (Internship) <font color=gray size=3><b>2019.10-2020.4</b></font>
+- NetEase Games, Game Engine Group (Summer Internship) <font color=gray size=3><b>2019.6-2019.8</b></font>
+
+
