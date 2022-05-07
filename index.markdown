@@ -40,7 +40,7 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 
 - SDFMap: A Real-time 3D Semantic Mapping for LiDAR Point Cloud [<a href="./assets/iros2020.pdf" download>PDF</a>] 
   [<a href="./assets/ICRA19_0880_VI_i.mp4" download>Video</a>]<br>
-  <font color=gray size=3><b>Jian Zhang*</b>, Runhao Luo∗, Conghui Geng, Yu Zhou, Yao Yu, Sidan Du, Pei Li</font>
+  <font color=gray size=3><b>Jian Zhang*</b>, Runhao Luo∗, Conghui Geng, Pei Li, Yu Zhou, Yao Yu, Sidan Du</font>
 
 ## Project
 
