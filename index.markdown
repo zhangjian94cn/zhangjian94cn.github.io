@@ -30,7 +30,7 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 
 ## Publications
 
-- Ray Priors through Reprojection: Improving Neural Radiance Fields for Novel View Extrapolation <br> **Accepted to CVPR, 2022** <br> 
+- Ray Priors through Reprojection: Improving Neural Radiance Fields for Novel View Extrapolation <br> **Accepted to CVPR, 2022** [<a href="https://arxiv.org/abs/2205.05922">PDF</a>]<br> 
   <font color=gray size=3><b>Jian Zhang*</b>, Yuanqing Zhang*, <a href="https://hufu6371.github.io/huanfu/">Huan Fu#</a>, Xiaowei Zhou, Bowen Cai, Jinchi Huang, Rongfei Jia, Binqiang Zhao, and Xing Tang</font>
 <font style="line-height:0%;"></font>
 
