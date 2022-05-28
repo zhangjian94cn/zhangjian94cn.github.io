@@ -30,7 +30,7 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 
 ## Publications
 
-- Ray Priors through Reprojection: Improving Neural Radiance Fields for Novel View Extrapolation <br> **Accepted to CVPR, 2022** [<a href="https://tech.taobao.org/objectdrawer">link</a>]<br> 
+- Ray Priors through Reprojection: Improving Neural Radiance Fields for Novel View Extrapolation <br> **Accepted to CVPR, 2022** <br> 
   <font color=gray size=3><b>Jian Zhang*</b>, Yuanqing Zhang*, <a href="https://hufu6371.github.io/huanfu/">Huan Fu#</a>, Xiaowei Zhou, Bowen Cai, Jinchi Huang, Rongfei Jia, Binqiang Zhao, and Xing Tang</font>
 <font style="line-height:0%;"></font>
 
@@ -44,8 +44,9 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 
 ## Project
 
-- Real-time 3D Reconstruction based on LiDAR Point Cloud [<a href="./assets/IROS18_0838_VI_i.mp4" download>Video</a>]<br>
+- Real-time 3D Reconstruction based on LiDAR Point Cloud [<a href="./assets/IROS18_0838_VI_i.mp4" download>Video</a>]<br> **Nanjing University, ViSG Lab**
 
+- Object Drawer, a high-performing end-to-end 3D object reconstruction system. [<a href="https://tech.taobao.org/objectdrawer">link</a>] <br> **Alibaba Group, Tao Technology Department**
 
 ## Experience
 
