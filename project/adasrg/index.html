@@ -238,7 +238,7 @@
                     We find that space A contains most of the high-frequency texture details while other spaces contribute slightly to the base color in the rendering process. This observation motives us to utilize higher voxel resolution for space A, and lower voxel resolution for spaces B, C, and D. 
                     For the purpose, we introduce the merging and splitting operations leveraging the octree data structure.
                 </p>
-                <!-- <p class="text-justify">
+                <p class="text-justify">
                     <b>Merging.</b> By converting the $N^3$ voxle grid to a tree structure with maximum depth $L$, we have a transmittance value for each node and leaf. 
                     For each node that is with depth $L_i$ and has eight leaves, if the maximum transmittance value among itself and its leaves is below $\tau$, we delete the eight leaves. 
                     We recursively consider depth $L_1$, $L_2$, and $L_3$ with thresholds $\tau_3$, $\tau_2$, and $\tau_1$, respectively. 
@@ -249,7 +249,7 @@
                     <b>Splitting.</b> After the merging operation, if a leaf is with depth $L$, we take it as a parent of eight new leaves. 
                     A newly created leaf has the same voxel values (i.e., $(\text{c},\sigma,\text{v})$) as its parent. 
                     With this splitting operation, the space A would have a voxel resolution of $(2N)^3$.
-                </p> -->
+                </p>
             </div>
         </div>
             
@@ -278,7 +278,7 @@
                     Acknowledgements
                 </h3>
                 <p class="text-justify">
-                    We are very grateful for the support provided by the Technology Department, Alibaba Group.
+                    We are very grateful for the support provided by the Tao Technology Department, Alibaba Group.
                 </p>
 
                 <p class="text-justify">
