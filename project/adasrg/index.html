@@ -194,7 +194,7 @@
                 A recent method SNeRG demonstrates that baking a trained NeRF as a Sparse Neural Radiance Grid enables real-time view synthesis with slight scarification of rendering quality. 
                 In this paper, we dig into the Radiance Grid representation and present a set of improvements, which together result in significantly boosted performance in terms of both speed and quality. 
                 First, we propose an HieRarchical Sparse Radiance Grid (HrSRG) representation that has higher voxel resolution for informative spaces and fewer voxels for other spaces. 
-                HrSRG leverages a hierarchical voxel grid building process inspired by \cite{mescheder2019occupancy}, and can describe a scene at high resolution without excessive memory footprint. 
+                HrSRG leverages a hierarchical voxel grid building process, and can describe a scene at high resolution without excessive memory footprint. 
                 Furthermore, we show that directly optimizing the voxel grid leads to surprisingly good texture details in rendered images. 
                 This direct optimization is memory-friendly and requires multiple orders of magnitude less time than conventional NeRFs as it only involves a tiny MLP. 
                 Finally, we find that a critical factor that prevents fine details restoration is the misaligned 2D pixels among images caused by camera pose errors. 
@@ -238,7 +238,7 @@
                     We find that space A contains most of the high-frequency texture details while other spaces contribute slightly to the base color in the rendering process. This observation motives us to utilize higher voxel resolution for space A, and lower voxel resolution for spaces B, C, and D. 
                     For the purpose, we introduce the merging and splitting operations leveraging the octree data structure.
                 </p>
-                <p class="text-justify">
+                <!-- <p class="text-justify">
                     <b>Merging.</b> By converting the $N^3$ voxle grid to a tree structure with maximum depth $L$, we have a transmittance value for each node and leaf. 
                     For each node that is with depth $L_i$ and has eight leaves, if the maximum transmittance value among itself and its leaves is below $\tau$, we delete the eight leaves. 
                     We recursively consider depth $L_1$, $L_2$, and $L_3$ with thresholds $\tau_3$, $\tau_2$, and $\tau_1$, respectively. 
@@ -249,7 +249,7 @@
                     <b>Splitting.</b> After the merging operation, if a leaf is with depth $L$, we take it as a parent of eight new leaves. 
                     A newly created leaf has the same voxel values (i.e., $(\text{c},\sigma,\text{v})$) as its parent. 
                     With this splitting operation, the space A would have a voxel resolution of $(2N)^3$.
-                </p>
+                </p> -->
             </div>
         </div>
             
