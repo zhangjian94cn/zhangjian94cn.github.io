@@ -30,6 +30,11 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 
 ## Publications
 
+- Digging into Radiance Grid for Real-Time View Synthesis with Detail Preservation <br> **Accepted to ECCV, 2022** [<a href="https://zhangjian94cn.github.io/project/hrsrg/index.html">project</a>]<br> 
+  <font color=gray size=3><b>Jian Zhang*</b>, Jinchi Huang*, Bowen Cai*, Mingming Gong, Chaohui Wang, Jiaming Wang, Hongchen Luo, Rongfei Jia, Binqiang Zhao, Xing Tang, Huan Fu#</font>
+<font style="line-height:0%;"></font>
+
+
 - Ray Priors through Reprojection: Improving Neural Radiance Fields for Novel View Extrapolation <br> **Accepted to CVPR, 2022** [<a href="https://arxiv.org/abs/2205.05922">PDF</a>]<br> 
   <font color=gray size=3><b>Jian Zhang*</b>, Yuanqing Zhang*, <a href="https://hufu6371.github.io/huanfu/">Huan Fu#</a>, Xiaowei Zhou, Bowen Cai, Jinchi Huang, Rongfei Jia, Binqiang Zhao, and Xing Tang</font>
 <font style="line-height:0%;"></font>
@@ -50,9 +55,17 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
 
 ## Experience
 
-
-- Alibaba Group, Tao Technology Department <font color=gray size=3><b>2020.6-Now</b></font>
-- <a href="https://www.d5render.com/">D5 Render</a>, Rendering Engine Group (Internship) <font color=gray size=3><b>2019.10-2020.4</b></font>
-- NetEase Games, Game Engine Group (Summer Internship) <font color=gray size=3><b>2019.6-2019.8</b></font>
-
-
+<ul>
+    <li>
+        <div style="float:left; text-align:left">Alibaba Group, Tao Technology Department</div> 
+        <div style="float:right; text-align:right"><font color=gray size=3><b>2020.06-2022.07</b></font></div>
+    </li>
+    <li>
+        <div style="float:left; text-align:left"><a href="https://www.d5render.com/">D5 Render</a>, Rendering Engine Group (Internship)</div> 
+        <div style="float:right; text-align:right"><font color=gray size=3><b>2019.10-2020.04</b></font></div>
+    </li>
+    <li>
+        <div style="float:left; text-align:left">NetEase Games, Game Engine Group (Summer Internship)</div> 
+        <div style="float:right; text-align:right"><font color=gray size=3><b>2019.06-2019.08</b></font></div>
+    </li>
+</ul>
