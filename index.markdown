@@ -11,7 +11,7 @@ layout: home
 
 </div >
 
-I'm **Zhang Jian（章坚）**, an algorithm engineer. Currently, I work in Alibaba and focus on photo-realistic 3d reconstruction. My interests involve **deep learning, computer vision, computer graphics and robotics**.
+I'm **Zhang Jian（章坚）**, an algorithm engineer. Previously, I worked in Alibaba and focused on photo-realistic 3d reconstruction. My interests involve **deep learning, computer vision, computer graphics and robotics**.
 
 I graduated from Southeast University with a bachelor's degree, and got my master degree from Nanjing University. 
 
