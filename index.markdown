@@ -43,11 +43,13 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
   <font color=gray size=3>Xinyuan Tu, <b>Jian Zhang</b>, Runhao Luo, Kai Wang, Qingji Zeng, Yu Zhou *, Yao Yu and Sidan Du</font>
 <font style="line-height:0%;"></font>
 
-- SDFMap: A Real-time 3D Semantic Mapping for LiDAR Point Cloud [<a href="./assets/iros2020.pdf" download>PDF</a>] 
-  [<a href="./assets/ICRA19_0880_VI_i.mp4" download>Video</a>]<br>
-  <font color=gray size=3><b>Jian Zhang*</b>, Runhao Luo∗, Conghui Geng, Pei Li, Yu Zhou, Yao Yu, Sidan Du</font>
+
 
 ## Project
+
+- SDFMap: A Real-time 3D Semantic Mapping for LiDAR Point Cloud 
+  [<a href="./assets/iros2020.pdf" download>PDF</a>] [<a href="./assets/ICRA19_0880_VI_i.mp4" download>Video</a>]<br>
+  <font color=gray size=3><b>Jian Zhang*</b>, Runhao Luo∗, Conghui Geng, Pei Li, Yu Zhou, Yao Yu, Sidan Du</font> **Nanjing University, ViSG Lab**
 
 - Real-time 3D Reconstruction based on LiDAR Point Cloud [<a href="./assets/IROS18_0838_VI_i.mp4" download>Video</a>]<br> **Nanjing University, ViSG Lab**
 
