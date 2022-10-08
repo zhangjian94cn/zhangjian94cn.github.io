@@ -39,7 +39,7 @@ I graduated from Southeast University with a bachelor's degree, and got my maste
   <font color=gray size=3><b>Jian Zhang*</b>, Yuanqing Zhang*, <a href="https://hufu6371.github.io/huanfu/">Huan Fu#</a>, Xiaowei Zhou, Bowen Cai, Jinchi Huang, Rongfei Jia, Binqiang Zhao, and Xing Tang</font>
 <font style="line-height:0%;"></font>
 
-- Reconstruction of High-Precision Semantic Map [<a href="./assets/sensors-20-06264.pdf" download>PDF</a>] <br>**Accepted to SENSOR, 2020** <br> 
+- Reconstruction of High-Precision Semantic Map [<a href="https://txycircle.github.io/files/projects/index_sensors.html">project</a>] <br>**Accepted to SENSOR, 2020** <br> 
   <font color=gray size=3>Xinyuan Tu, <b>Jian Zhang</b>, Runhao Luo, Kai Wang, Qingji Zeng, Yu Zhou *, Yao Yu and Sidan Du</font>
 <font style="line-height:0%;"></font>
 
