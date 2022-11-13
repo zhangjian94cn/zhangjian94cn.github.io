@@ -2,9 +2,9 @@
 
 
 
-I’m **Zhang Jian（章坚）**, a senior algorithm engineer in alibaba. I graduated from Southeast University with a bachelor’s degree, and got my master degree from Nanjing University.
+I’m **Zhang Jian（章坚）**, I graduated from Southeast University with a bachelor’s degree, and got my master degree from Nanjing University.
 
-Previously, I worked in Alibaba and focus on photo-realistic 3d reconstruction based on neural rendering. I was a member of object drawer project, which provides high-quality, low-cost 3d models for Taobao. 
+Previously, I was a senior algorithm engineer in Alibaba and focused on photo-realistic 3d reconstruction based on neural rendering. I was a member of object drawer project, which provides high-quality, low-cost 3d models for Taobao. 
 
 In addition, I was an intern at NetEase Games, responsible for editing and rendering of voxelized scenes. I also interned at D5 Render as a rendering engine engineer. During my bachelor degree, I mainly studied lidar-based pose estimation, scene reconstruction and understanding. My research interests include **deep learning, computer vision, computer graphics and robotics**. I always maintain a passion for technology, keep learning and catch up with latest technology.
 
