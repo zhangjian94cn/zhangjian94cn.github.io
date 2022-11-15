@@ -1,7 +1,7 @@
 <!--
  * @Date: 2022-06-22 21:44:37
  * @LastEditors: zhang jian
- * @LastEditTime: 2022-11-11 21:31:35
+ * @LastEditTime: 2022-11-13 22:53:10
  * @FilePath: /zhangjian94cn.github.io/_includes/about/zh.md
 -->
 
@@ -32,7 +32,11 @@ Hi，我是章坚，之前就职于阿里巴巴，担任高级算法工程师，
   [<a href="./assets/iros2020.pdf" download>PDF</a>] [<a href="./assets/ICRA19_0880_VI_i.mp4" download>Video</a>]<br>
   <font color=gray size=3><b>Jian Zhang*</b>, Runhao Luo∗, Conghui Geng, Pei Li, Yu Zhou, Yao Yu, Sidan Du</font> **Nanjing University, ViSG Lab**
 
+<font style="line-height:0%;"></font>
+
 - Real-time 3D Reconstruction based on LiDAR Point Cloud [<a href="./assets/IROS18_0838_VI_i.mp4" download>Video</a>]<br> **Nanjing University, ViSG Lab**
+
+<font style="line-height:0%;"></font>
 
 - Object Drawer, a high-performing end-to-end 3D object reconstruction system. [<a href="https://tech.taobao.org/objectdrawer">link</a>] <br> **Alibaba Group, Tao Technology Department**
 
