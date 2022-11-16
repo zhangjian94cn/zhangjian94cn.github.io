@@ -85,6 +85,39 @@ tags:
 
     so, you just need transform leaf value using $1/(1+e^{-x})$ 
 
+
+## code structure
+
+```bash
+booster[0]:
+0:[f28<-9.53674316e-07] yes=1,no=2,missing=1
+	1:[f55<-9.53674316e-07] yes=3,no=4,missing=3
+		3:[f59<-9.53674316e-07] yes=7,no=8,missing=7
+			7:leaf=1.89899647
+			8:leaf=-1.94736838
+		4:[f20<-9.53674316e-07] yes=9,no=10,missing=9
+			9:leaf=1.78378379
+			10:leaf=-1.98135197
+	2:[f108<-9.53674316e-07] yes=5,no=6,missing=5
+		5:[f66<-9.53674316e-07] yes=11,no=12,missing=11
+			11:leaf=-1.9854598
+			12:leaf=0.938775539
+		6:leaf=1.87096775
+booster[1]:
+0:[f28<-9.53674316e-07] yes=1,no=2,missing=1
+	1:[f20<-9.53674316e-07] yes=3,no=4,missing=3
+		3:leaf=1.14607906
+		4:[f35<-9.53674316e-07] yes=7,no=8,missing=7
+			7:leaf=-6.87994671
+			8:leaf=-0.10659159
+	2:[f108<-9.53674316e-07] yes=5,no=6,missing=5
+		5:[f38<-9.53674316e-07] yes=9,no=10,missing=9
+			9:leaf=-0.0930657759
+			10:leaf=-1.15261209
+		6:leaf=1.00423074
+```
+
+
 ## Reference
 
 
