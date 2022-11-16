@@ -5,7 +5,6 @@ author: "Zhang Jian"
 header-style: text
 mathjax: true
 tags:
-  - note
   - xgboost
 ---
 

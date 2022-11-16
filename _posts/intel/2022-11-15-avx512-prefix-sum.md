@@ -1,12 +1,12 @@
 ---
-title: "AVX512 Prefix Sumr"
+title: "AVX512 Prefix Sum"
 layout: post
 author: "Liang Yuliang"
 header-style: text
 mathjax: true
 tags:
-  - note
   - avx
+  - hpc
 ---
 
 ## 方案
@@ -105,6 +105,7 @@ void vectorization(float* base_addr, float* result, int LEN, int N) {
 ## 结果
 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz @Tigerlake @g++-11.2.0
 g++ --std=c++11 -mavx512f -mavx512bw -O3
+
 ||InPlace|Order|Random|
 |-|-|-|-|
 |roll|199.388|412.46|668.671|
@@ -113,15 +114,18 @@ g++ --std=c++11 -mavx512f -mavx512bw -O3
 
 11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz @Tigerlake @icc-2021.7.0
 icc -diag-disable=10441 -std=c++11 -mavx512f -mavx512bw -O3
+
 ||InPlace|Order|Random|
 |-|-|-|-|
 |roll|198.274|410.039|661.097|
 |AVX256|158.463|353.865|566.074|
 |AVX512|154.611|378.388|648.054|
+
 AVX512指令icc的优化是不如gcc的，不知道是不是icc对最新指令集的支持有些问题，oneapi basic环境中的默认编译器是icx。
 
 Intel(R) Xeon(R) Platinum 8360Y CPU @ 2.40GHz @Icelake @g++-9.4.0
 g++ --std=c++11 -mavx512f -mavx512bw -O3
+
 ||InPlace|Order|Random|
 |-|-|-|-|
 |roll|399.627|580.871|816.332|
