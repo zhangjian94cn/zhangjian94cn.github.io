@@ -8,7 +8,7 @@ tags:
   - xgboost
 ---
 
-## Introduction
+## 1. Introduction
 
 
 **Use simple tree as an example**
@@ -118,9 +118,9 @@ tags:
 
 
 
-## Realization
+## 2. Realization
 
-### code structure
+### 2.1 code structure
 
 <!-- ![](/img/20221116171547.png)   -->
 
@@ -149,7 +149,7 @@ tags:
 <div style="float:None; clear: both;" align="left">
 </div >
 
-### load model to memory
+### 2.2 load model to memory
 
 extract tree info
 
@@ -193,7 +193,7 @@ According to feature value and index, we push regression tree to GBT model.
 
 
 
-### convert to group tree
+### 2.3 convert to group tree
 
 ```cpp
 RegTree(int depthN, 
@@ -241,8 +241,76 @@ RegTree(int depthN,
 ```
 
 
-## Test
+### 2.4 programmatic generation of lookup table
 
+
+```cpp
+// in common.cpp
+const uint8_t Common::lookup[256] = 
+    {0, 0, 4, 4, 2, 2, 4, 4, 0, 0, 6, 6, 2, 2, 6, 6, 
+     1, 1, 4, 4, 2, 2, 4, 4, 1, 1, 6, 6, 2, 2, 6, 6, 
+     0, 0, 4, 4, 3, 3, 4, 4, 0, 0, 6, 6, 3, 3, 6, 6, 
+     1, 1, 4, 4, 3, 3, 4, 4, 1, 1, 6, 6, 3, 3, 6, 6, 
+     0, 0, 5, 5, 2, 2, 5, 5, 0, 0, 6, 6, 2, 2, 6, 6, 
+     1, 1, 5, 5, 2, 2, 5, 5, 1, 1, 6, 6, 2, 2, 6, 6, 
+     0, 0, 5, 5, 3, 3, 5, 5, 0, 0, 6, 6, 3, 3, 6, 6, 
+     1, 1, 5, 5, 3, 3, 5, 5, 1, 1, 6, 6, 3, 3, 6, 6, 
+     0, 0, 4, 4, 2, 2, 4, 4, 0, 0, 7, 7, 2, 2, 7, 7, 
+     1, 1, 4, 4, 2, 2, 4, 4, 1, 1, 7, 7, 2, 2, 7, 7, 
+     0, 0, 4, 4, 3, 3, 4, 4, 0, 0, 7, 7, 3, 3, 7, 7, 
+     1, 1, 4, 4, 3, 3, 4, 4, 1, 1, 7, 7, 3, 3, 7, 7, 
+     0, 0, 5, 5, 2, 2, 5, 5, 0, 0, 7, 7, 2, 2, 7, 7, 
+     1, 1, 5, 5, 2, 2, 5, 5, 1, 1, 7, 7, 2, 2, 7, 7, 
+     0, 0, 5, 5, 3, 3, 5, 5, 0, 0, 7, 7, 3, 3, 7, 7, 
+     1, 1, 5, 5, 3, 3, 5, 5, 1, 1, 7, 7, 3, 3, 7, 7};
+```
+
+
+### 2.5 dataloader
+
+use cnpy to load data
+
+```cpp
+cnpy::NpyArray arrX = cnpy::npy_load(dataPathX);
+cnpy::NpyArray arrY = cnpy::npy_load(dataPathY);
+float* loaded_dataX = arrX.data<float>();
+float* loaded_dataY = arrY.data<float>();
+
+int featDim = arrX.shape[1];
+std::vector<float> smpX(featDim), smpY(featDim);
+for (int i = 0; i < featDim; ++ i) {
+    smpX[i] = loaded_dataX[i];
+    smpY[i] = loaded_dataY[i];
+} 
+```
+
+
+## 3. Test
+
+<div  class="f0">
+
+<img src="/img/20221117140643.png" width = "250" alt="图片名称" align=left style="margin-right:50px"/>
+
+<img src="/img/20221117140600.png" width = "250" alt="图片名称" align=right style="margin-right:50px"/>
+</div >
+
+<div style="float:None; clear: both;">
+</div >
+
+if sample value > feature value, we assigned 1.
+compare result: 41206 $\rightarrow$ 1010,0000,1111,0110
+
+<div  class="f0">
+
+<img src="/img/20221117141816.png" width = "200" alt="图片名称" align=right style="margin-right:100px"/>
+</div >
+
+<br>
+
+mask result (little end):
+
+<div style="float:None; clear: both;">
+</div >
 
 
 ## Reference
