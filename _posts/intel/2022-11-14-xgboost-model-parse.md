@@ -8,34 +8,39 @@ tags:
   - xgboost
 ---
 
-## 1. Introduction
+## 1. Preparation
 
 
 **Use simple tree as an example**
 
-1. Its model json
+### 1.1 model json detail
 
-    ```json
-    {
-        "trees": [
-            {
-                "base_weights": [
-                    7.701197E-1,
-                    9.783609E-2,
-                    7.781233E-3
-                ],
-                "split_conditions": [
-                    1.1170274E0,
-                    9.783609E-2,
-                    7.781233E-3
-                ],
-            }
-        ]
-    }
+```json
+{
+    "trees": [
+        {
+            "base_weights": [
+                7.701197E-1,
+                9.783609E-2,
+                7.781233E-3
+            ],
+            "split_conditions": [
+                1.1170274E0,
+                9.783609E-2,
+                7.781233E-3
+            ],
+        }
+    ]
+}
 
-    ```
+```
 
-2. Visualize it and figure out nodes arrangement
+what is base weight?
+
+<img src="/img/20221118093230.png" width = "400" alt="图片名称"/>
+
+
+### 1.2 Visualize it and figure out nodes arrangement
     
     ![](/img/20221114164252.png) 
 
@@ -70,51 +75,51 @@ tags:
             6:leaf=1.00423074
     ```
 
-3. Print its predicted probability
+### 1.3 Print its predicted probability
 
-    ```txt
-    [0.50194526, 0.5244395, 0.5244395, 0.5244395, ...]
-    ```
+```txt
+[0.50194526, 0.5244395, 0.5244395, 0.5244395, ...]
+```
 
-4. How to convert leaf value to probability?
+### 1.4 How to convert leaf value to probability?
    
-    in `PredTransform` function, it defines transformation like logitic and so on.
+in `PredTransform` function, it defines transformation like logitic and so on.
 
-    ```cpp
-    // xgboost source code
-    void Predict(std::shared_ptr<DMatrix> data, bool output_margin,
-                HostDeviceVector<bst_float> *out_preds, unsigned layer_begin,
-                unsigned layer_end, bool training,
-                bool pred_leaf, bool pred_contribs, bool approx_contribs,
-                bool pred_interactions) override {
-        int multiple_predictions = static_cast<int>(pred_leaf) +
-                                    static_cast<int>(pred_interactions) +
-                                    static_cast<int>(pred_contribs);
-        this->Configure();
-        CHECK_LE(multiple_predictions, 1) << "Perform one kind of prediction at a time.";
-        if (pred_contribs) {
-            gbm_->PredictContribution(data.get(), out_preds, layer_begin, layer_end, approx_contribs);
-        } else if (pred_interactions) {
-            gbm_->PredictInteractionContributions(data.get(), out_preds, layer_begin, layer_end,
-                                                approx_contribs);
-        } else if (pred_leaf) {
-            gbm_->PredictLeaf(data.get(), out_preds, layer_begin, layer_end);
-        } else {
-            auto local_cache = this->GetPredictionCache();
-            auto& prediction = local_cache->Cache(data, generic_parameters_.gpu_id);
-            this->PredictRaw(data.get(), &prediction, training, layer_begin, layer_end);
-            // Copy the prediction cache to output prediction. out_preds comes from C API
-            out_preds->SetDevice(generic_parameters_.gpu_id);
-            out_preds->Resize(prediction.predictions.Size());
-            out_preds->Copy(prediction.predictions);
-            if (!output_margin) {
-            obj_->PredTransform(out_preds);
-            }
+```cpp
+// xgboost source code
+void Predict(std::shared_ptr<DMatrix> data, bool output_margin,
+            HostDeviceVector<bst_float> *out_preds, unsigned layer_begin,
+            unsigned layer_end, bool training,
+            bool pred_leaf, bool pred_contribs, bool approx_contribs,
+            bool pred_interactions) override {
+    int multiple_predictions = static_cast<int>(pred_leaf) +
+                                static_cast<int>(pred_interactions) +
+                                static_cast<int>(pred_contribs);
+    this->Configure();
+    CHECK_LE(multiple_predictions, 1) << "Perform one kind of prediction at a time.";
+    if (pred_contribs) {
+        gbm_->PredictContribution(data.get(), out_preds, layer_begin, layer_end, approx_contribs);
+    } else if (pred_interactions) {
+        gbm_->PredictInteractionContributions(data.get(), out_preds, layer_begin, layer_end,
+                                            approx_contribs);
+    } else if (pred_leaf) {
+        gbm_->PredictLeaf(data.get(), out_preds, layer_begin, layer_end);
+    } else {
+        auto local_cache = this->GetPredictionCache();
+        auto& prediction = local_cache->Cache(data, generic_parameters_.gpu_id);
+        this->PredictRaw(data.get(), &prediction, training, layer_begin, layer_end);
+        // Copy the prediction cache to output prediction. out_preds comes from C API
+        out_preds->SetDevice(generic_parameters_.gpu_id);
+        out_preds->Resize(prediction.predictions.Size());
+        out_preds->Copy(prediction.predictions);
+        if (!output_margin) {
+        obj_->PredTransform(out_preds);
         }
     }
-    ```
+}
+```
 
-    so, you just need transform leaf value using $1/(1+e^{-x})$ 
+so, you just need transform leaf value using $1/(1+e^{-x})$ 
 
 
 
@@ -243,6 +248,74 @@ RegTree(int depthN,
 
 ### 2.4 programmatic generation of lookup table
 
+I wrote a program to automatically generate lookup table.
+
+```cpp
+#include <iostream>
+#include <cstdio>
+
+int bit[8] = {
+    0b00000001,
+    0b00000010,
+    0b00000100,
+    0b00001000,
+    0b00010000,
+    0b00100000,
+    0b01000000,
+    0b10000000
+};
+
+
+
+int main() {
+    
+    int lookup[256] = {0, };
+    
+    std::cout << "lookup[256] = {";
+
+    for (int i = 0; i < 256; ++ i) {
+        
+        if ((i & bit[1]) == 0 && (i & bit[2]) == 0 && (i & bit[4]) == 0) {
+            lookup[i] = 0;
+        }
+
+        if ((i & bit[1]) == 0 && (i & bit[2]) == 0 && (i & bit[4]) == bit[4]) {
+            lookup[i] = 1;
+        }
+
+        if ((i & bit[1]) == 0 && (i & bit[2]) == bit[2] && (i & bit[5]) == 0) {
+            lookup[i] = 2;
+        }
+
+        if ((i & bit[1]) == 0 && (i & bit[2]) == bit[2] && (i & bit[5]) == bit[5]) {
+            lookup[i] = 3;
+        }
+
+        if ((i & bit[1]) == bit[1] && (i & bit[3]) == 0 && (i & bit[6]) == 0) {
+            lookup[i] = 4;
+        }
+
+        if ((i & bit[1]) == bit[1] && (i & bit[3]) == 0 && (i & bit[6]) == bit[6]) {
+            lookup[i] = 5;
+        }
+
+        if ((i & bit[1]) == bit[1] && (i & bit[3]) == bit[3] && (i & bit[7]) == 0) {
+            lookup[i] = 6;
+        }
+
+        if ((i & bit[1]) == bit[1] && (i & bit[3]) == bit[3] && (i & bit[7]) == bit[7]) {
+            lookup[i] = 7;
+        }
+
+        std::cout << lookup[i] << ", ";
+    }
+    
+    std::cout << "}";
+    return 0;
+}
+```
+
+lookup table result:
 
 ```cpp
 // in common.cpp
@@ -312,11 +385,27 @@ mask result (little end):
 <div style="float:None; clear: both;">
 </div >
 
+Visualize this tree. According to the previous binary code, we can find that right leaf value is ** and our program is also right.
 
-## Reference
+![](/img/20221117173210.png)  
+
+
+### Result
+
+the final result (prediction probability), compared group tree (c++) and xgboost (python).
+
+<div  class="f0">
+
+<img src="/img/20221118094842.png" width = "300" alt="图片名称" align=left style="margin-right:50px"/>
+
+<img src="/img/20221118094953.png" width = "300" alt="图片名称" align=right style="margin-right:50px"/>
+</div >
+
+
+<!-- ## Reference
 
 
 https://gabrieltseng.github.io/posts/2018-02-25-XGB/
 
 https://bailingnan.github.io/post/shen-ru-li-jie-xgboost/
-
+ -->
