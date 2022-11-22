@@ -1,13 +1,12 @@
 ---
-title: "SuperPoint"
-subtitle: "slam"
+title: "SuperPoint Outline"
 layout: post
 author: "Zhang Jian"
 header-style: text
 mathjax: true
 tags:
-  - note
   - slam
+  - dl
 ---
 
 
