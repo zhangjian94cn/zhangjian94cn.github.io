@@ -47,6 +47,7 @@ vtune -collect hotspots a.out
 
 ### Performance Snapshot
 
+
 IPC：代表了CPU每个时钟周期完成（retired）的指令数目。现代处理器的指令运行都是流水线（pipeline）的形式，每个（汇编）指令可分为取指、译码、执行等多条指令（uOPs），通过并行这些指令可以实现大于1的IPC。
 
 > Instructions Retired per Cycle, or IPC shows average number of retired instructions per cycle. Modern superscalar processors issue up to four instructions per cycle, suggesting a theoretical best IPC of 4. But various effects (long-latency memory, floating-point, or SIMD operations; non-retired instructions due to branch mispredictions; instruction starvation in the front-end) tend to pull the observed IPC down. A IPC > 1 is typical for instruction bound code, while a IPC < 1 may show up for a stall cycle bound application, also likely memory bound. IPC is an excellent metric for judging an overall potential for application performance tuning.
@@ -83,4 +84,6 @@ Vectorization：代表向量化指令的占比（vaddps, ...）。
 通过vtune我们可以很清晰的了解到每个函数，特定行的时间占比，通过top down的Performance Snapshote，可以帮助我们从较高维度理解程序性能，为之后的优化指明方向。
 
 
+## 参考
 
+[CPU Metrics Reference](https://www.intel.com/content/www/us/en/develop/documentation/vtune-help/top/reference/cpu-metrics-reference.html#cpu-metrics-reference_PIPELINE-SLOTS)
