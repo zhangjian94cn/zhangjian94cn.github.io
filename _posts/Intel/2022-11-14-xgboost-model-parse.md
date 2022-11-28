@@ -13,6 +13,8 @@ tags:
 
 **Use simple tree as an example**
 
+![](/img/20221114164252.png) 
+
 ### 1.1 model json detail
 
 ```json

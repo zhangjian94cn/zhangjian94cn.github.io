@@ -8,11 +8,28 @@ tags:
   - work
 ---
 
-## 
 
+## Anlysis
 
+### vtune itt
 
-## Multithreading
+1. config env according to tutorial
+2. insert some code
+
+```cpp
+__itt_domain* domain = __itt_domain_create("predict");
+__itt_string_handle* handle_main = __itt_string_handle_create("test.zhangjian");
+
+// ...
+__itt_task_begin(domain, __itt_null, __itt_null, handle_main);
+for (int k = 0; k < 100; ++ k) {
+    pred_core(gbt, smpX.data(), dataDim, featDim, res);
+}
+__itt_task_end(domain);
+```
+
+![](/img/20221125100249.png)  
+
 
 ### OpenMP
 
@@ -118,3 +135,47 @@ Microarchitecture Usage:	62.8% of Pipeline Slots
     Core Bound:	18.1%
 ```
 
+
+
+
+## Optimization
+
+
+### memory affinity
+
+```cpp
+static tbb::affinity_partitioner ap;
+
+tbb::parallel_for(0, n, 1, [&](int i) {
+    const int offset = i * iblock;
+    for (int j = 0 ;j < iblock; j++) {
+        res[offset + j] = gbt.predictGBT(data + offset * featDim );
+    }
+}, ap);
+```
+
+### set to physical number
+
+```cpp
+set to physical core number
+oneapi::tbb::task_arena arena(144);
+
+arena.execute([&]{
+    tbb::parallel_for(0, n, 1, [&](int i) {
+        const int offset = i * iblock;
+        for (int j = 0 ;j < iblock; j++) {
+            res[offset + j] = gbt.predictGBT(data + offset * featDim );
+        }
+    });
+});
+
+```
+
+### next
+
+currently, we have achieved 1.2x speedup and next I will
+1. refer to xgboost optimization methods
+2. look for some methods to increase IPC
+3. look for more efficient parallel methods
+
+besides, I will fix depth 8 loading bugs.
