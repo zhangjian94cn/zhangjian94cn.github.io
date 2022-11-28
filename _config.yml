@@ -1,6 +1,6 @@
 # Site settings
 title: Zhang Jian
-SEOTitle: 章坚的博客 | Zhang Jian Blog
+# SEOTitle: 章坚的博客 | Zhang Jian Blog
 header-img: img/home-bg.jpg
 email: jianzhang@smail.nju.edu.cn
 description: "I am an algorithm engineer. My personal interests involve computer vision, computer graphics and robotics. "
