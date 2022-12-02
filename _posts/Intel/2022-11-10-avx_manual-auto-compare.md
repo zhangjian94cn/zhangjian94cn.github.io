@@ -5,8 +5,10 @@ author: "Zhang Jian"
 header-style: text
 mathjax: true
 tags:
-  - note
   - avx
+  - hpc
+  - work
+  - weekly
 ---
 
 ## Introduction

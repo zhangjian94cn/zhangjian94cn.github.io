@@ -7,6 +7,7 @@ mathjax: true
 tags:
   - avx
   - hpc
+  - work
 ---
 
 ## 方案

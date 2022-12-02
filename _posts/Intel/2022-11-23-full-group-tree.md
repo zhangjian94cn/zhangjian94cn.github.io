@@ -6,6 +6,7 @@ header-style: text
 mathjax: true
 tags:
   - work
+  - weekly
 ---
 
 
