@@ -6,6 +6,8 @@ header-style: text
 mathjax: true
 tags:
   - xgboost
+  - work
+  - weekly
 ---
 
 ## 1. Preparation
