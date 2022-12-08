@@ -1,5 +1,5 @@
 ---
-title: "Complete Group Tree and its Performance Analysis"
+title: "Make Sure the Prediction Results is Correct and 2D Parallel"
 layout: post
 author: "Zhang Jian"
 header-style: text
