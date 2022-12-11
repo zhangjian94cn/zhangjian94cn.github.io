@@ -153,6 +153,10 @@ sudo apt-get install lxcfs
 # 因为直接使用了apt install
 systemctl enable lxcfs.service
 systemctl start lxcfs.service
+
+# https://blog.csdn.net/fuck487/article/details/86096134
+# 实时更新docker资源
+docker update --memory 8g --memory-swap -1 ssh-container
 ```
 
 ### 最终命令
