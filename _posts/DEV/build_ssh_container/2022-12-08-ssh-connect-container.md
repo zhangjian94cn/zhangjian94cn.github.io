@@ -57,11 +57,28 @@ tags:
 2. 使用宿主机的什么端口，来转发容器的22端口。例如，这里使用50001端口
 3. 容器目录的映射，`-v 宿主机目录:容器目录`。例如，这里挂载服务器的`/home/zhangjian`目录到容器的`/workspace`目录
 
-一个具体的命令如下（如果其中还有一些参数让你感到困惑，你可以参考[docker run doc](https://docs.docker.com/engine/reference/commandline/run/)）：
+操作步骤如下：
 
-```bash
-docker run -itd -p 50001:22 --name="ssh-container"  -v /home/zhangjian:/workspace ubuntu:22.04 /bin/bash
-```
+1. 首先，创建Dockerfile，其内容为：
+
+    ```dockerfile
+    FROM ubuntu:22.04
+    RUN apt-get update --fix-missing && apt-get install openssh-server sudo -y
+    ENTRYPOINT service ssh restar && bash
+    ``` 
+
+2. 生成对应image
+    
+    ```bash   
+    docker build . -t ssh-image
+    ```
+
+3. 生成容器的具体的命令如下（如果其中还有一些参数让你感到困惑，你可以参考[docker run doc](https://docs.docker.com/engine/reference/commandline/run/)
+
+
+    ```bash
+    docker run -itd -p 50001:22 --name="ssh-container"  -v /home/zhangjian:/workspace ssh-image /bin/bash
+    ```
 
 #### 设置容器自启动
 
@@ -77,16 +94,16 @@ docker update --restart=always <CONTAINER ID>
 docker update --restart=no <CONTAINER ID>
 ```
 
-#### 配置ssh服务
+#### 配置容器
 
-```bash
+<!-- ```bash
 # 进入容器
 docker exec -it ssh-container /bin/bash
 # root用户模式
 apt-get update && apt-get install openssh-server -y
 # 启动ssh服务
 /etc/init.d/ssh start
-```
+``` -->
 
 设置登录用户
 
@@ -103,13 +120,24 @@ apt install sudo && usermod -aG sudo zhangjian
 ssh zhangjian@<your IP> -p 50001
 ```
 
-然而，为了保证重启容器之后，你仍然能使用ssh顺利登上container，你需要设置ssh服务的自启动
+然而，为了保证重启容器之后，你仍然能使用ssh顺利登上container，你需要设置ssh服务的自启动，下面的是通过在dockerfile中加入ENTRYPOINT，实现ssh服务的自启动。
 
+<!-- 
 ```bash
 # 切换到root用户下
 su
 # add ssh start
 echo '/etc/init.d/ssh start' >> /root/.bashrc
+``` 
+-->
+
+
+
+
+
+```bash
+docker build . -t ssh-image
+docker run -itd -p 50001:22 --name="ssh-container"  -v /home/zhangjian:/workspace ubuntu:22.04 /bin/bash
 ```
 
 
