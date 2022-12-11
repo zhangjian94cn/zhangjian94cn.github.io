@@ -120,8 +120,6 @@ apt install sudo && usermod -aG sudo zhangjian
 ssh zhangjian@<your IP> -p 50001
 ```
 
-然而，为了保证重启容器之后，你仍然能使用ssh顺利登上container，你需要设置ssh服务的自启动，下面的是通过在dockerfile中加入ENTRYPOINT，实现ssh服务的自启动。
-
 <!-- 
 ```bash
 # 切换到root用户下
@@ -130,15 +128,6 @@ su
 echo '/etc/init.d/ssh start' >> /root/.bashrc
 ``` 
 -->
-
-
-
-
-
-```bash
-docker build . -t ssh-image
-docker run -itd -p 50001:22 --name="ssh-container"  -v /home/zhangjian:/workspace ubuntu:22.04 /bin/bash
-```
 
 
 <!-- 
