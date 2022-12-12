@@ -243,3 +243,17 @@ Failed to connect to bus: Host is down
 
 至此，我们获得了一个相对完整的ssh直连容器的方案。但是更进一步，如何避免端口转发，指定容器的资源使用等等，有机会再进行分享:)
 
+
+## 参考
+
+[System has not been booted with systemd as init system (PID 1). Can't operate](https://askubuntu.com/questions/1379425/system-has-not-been-booted-with-systemd-as-init-system-pid-1-cant-operate)
+
+[Start sshd automatically with docker container](https://stackoverflow.com/questions/22886470/start-sshd-automatically-with-docker-container)
+
+[Ubuntu18.04 ssh 开机自动启动的设置方法](https://blog.csdn.net/hwt0101/article/details/112527027)
+
+[Docker容器运行时权限和Linux系统功能](https://developer.aliyun.com/article/722230)
+
+[为什么strace在Docker 中不起作用？](https://linux.cn/article-12251-1.html)
+
+
