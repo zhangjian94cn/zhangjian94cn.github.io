@@ -103,7 +103,30 @@ four: $(wildcard *.o)
 
 ### 自动变量（Automatic Variables）
 
+[automatic variables](https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html)有很多，下面几个是比较常用的：
 
+```makefile
+hey: one two
+	# Outputs "hey", since this is the target name
+	echo $@
+
+	# Outputs all prerequisites newer than the target
+	echo $?
+
+	# Outputs all prerequisites
+	echo $^
+
+	touch hey
+
+one:
+	touch one
+
+two:
+	touch two
+
+clean:
+	rm -f hey one two
+```
 
 ## Fancy Rules
 
