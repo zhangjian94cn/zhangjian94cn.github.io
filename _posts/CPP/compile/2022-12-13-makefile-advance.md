@@ -130,11 +130,152 @@ clean:
 
 ## Fancy Rules
 
+### Implicit Rules
+
+下面的几个命令都是make中的隐式命令：
+- C程序的编译：blah.o自动由blah.c编译得到，其命令如下：`$(CC) -c $(CPPFLAGS) $(CFLAGS) $^ -o $@`
+- C++程序的编译：blah.o自动由blah.cc/blah.cpp编译得到，其命令如下：`$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $^ -o $@`
+- 目标文件的链接：可执行文件blah自动由blah.o生成，其命令如下`$(CC) $(LDFLAGS) $^ $(LOADLIBES) $(LDLIBS) -o $@`
+
+下面是一个编译C程序的例子，仔细观察其Implicit Rules的使用。
+```makefile
+CC = gcc # Flag for implicit rules
+CFLAGS = -g # Flag for implicit rules. Turn on debug info
+
+# Implicit rule #1: blah is built via the C linker implicit rule
+# Implicit rule #2: blah.o is built via the C compilation implicit rule, because blah.c exists
+blah: blah.o
+
+blah.c:
+	echo "int main() { return 0; }" > blah.c
+
+clean:
+	rm -f blah*
+```
+
+其中，有一些比较重要的变量：
+
+- CC: Program for compiling C programs; default cc
+- CXX: Program for compiling C++ programs; default g++
+- CFLAGS: Extra flags to give to the C compiler
+- CXXFLAGS: Extra flags to give to the C++ compiler
+- CPPFLAGS: Extra flags to give to the C preprocessor
+- LDFLAGS: Extra flags to give to compilers when they are supposed to invoke the linker
+
+### Static Pattern Rules
+
+形式如下：
+```makefile
+targets...: target-pattern: prereq-patterns ...
+   commands
+```
+
+通过target-pattern（使用通配符`%`）来匹配target，符合的target会对应于prereq-patterns
+
+接下来，让我们通过一个例子来比较下是否使用Static Pattern Rules的区别：
+
+```makefile
+# 未使用的
+objects = foo.o bar.o all.o
+all: $(objects)
+
+# These files compile via implicit rules
+foo.o: foo.c
+bar.o: bar.c
+all.o: all.c
+
+all.c:
+	echo "int main() { return 0; }" > all.c
+
+%.c:
+	touch $@
+
+clean:
+	rm -f *.c *.o all
+```
+
+
+```makefile
+# 使用了static pattern rule的，Makefile会更加简洁
+objects = foo.o bar.o all.o
+all: $(objects)
+
+# These files compile via implicit rules
+# Syntax - targets ...: target-pattern: prereq-patterns ...
+# In the case of the first target, foo.o, the target-pattern matches foo.o and sets the "stem" to be "foo".
+# It then replaces the '%' in prereq-patterns with that stem
+$(objects): %.o: %.c
+
+all.c:
+	echo "int main() { return 0; }" > all.c
+
+%.c:
+	touch $@
+
+clean:
+	rm -f *.c *.o all
+```
+
+### Static Pattern Rules and Filter
+
+（target-pattern不是已经起到filter作用吗？为什么还需要filter function？）
+
+```makefile
+obj_files = foo.result bar.o lose.o
+src_files = foo.raw bar.c lose.c
+
+all: $(obj_files)
+# Note: PHONY is important here. Without it, implicit rules will try to build the executable "all", since the prereqs are ".o" files.
+.PHONY: all 
+
+# Ex 1: .o files depend on .c files. Though we don't actually make the .o file.
+$(filter %.o,$(obj_files)): %.o: %.c
+	echo "target: $@ prereq: $<"
+
+# Ex 2: .result files depend on .raw files. Though we don't actually make the .result file.
+$(filter %.result,$(obj_files)): %.result: %.raw
+	echo "target: $@ prereq: $<" 
+
+%.c %.raw:
+	touch $@
+
+clean:
+	rm -f $(src_files)
+```
 
 
 
+### Pattern Rules
 
+Pattern rules一般会在下面两种情况下出现：
+1. 定义自己的implicit rules
+2. 形式更简单的static pattern rules
 
-## 
+下面是两个简单的例子：
+```makefile
+# Define a pattern rule that compiles every .c file into a .o file
+%.o : %.c
+		$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
+```
 
+```makefile
+# Define a pattern rule that has no pattern in the prerequisites.
+# This just creates empty .c files when needed.
+%.c:
+   touch $@
+```
+
+### Double-Colon Rules
+
+双冒号规则很少被使用，它可以允许对一个target定义多个rule。而如果你直接对一个target使用单引号定义多个规则，那么会出现警告（and only the second set of commands would run.）。
+
+```makefile
+all: blah
+
+blah::
+	echo "hello"
+
+blah::
+	echo "hello again"
+```
 
