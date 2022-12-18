@@ -1,5 +1,5 @@
 ---
-title: "Learn Makefiles"
+title: "Learn Makefiles (2)"
 subtitle: "Getting Advanced: Targets, Automatic Variables and Wildcards, Fancy Rules"
 layout: post
 author: "Zhang Jian"
