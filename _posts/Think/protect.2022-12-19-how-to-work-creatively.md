@@ -1,5 +1,5 @@
 ---
-title: "SuperPoint Outline"
+title: "How to Work Creatively"
 layout: post
 author: "Zhang Jian"
 header-style: text
