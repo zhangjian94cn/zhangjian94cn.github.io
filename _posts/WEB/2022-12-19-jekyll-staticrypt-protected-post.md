@@ -1,10 +1,9 @@
 ---
 title: "How to encrypt your website"
-layout: post
+layout: protected/jekyll-staticrypt-protected-post_encrypted
 author: "Zhang Jian"
 header-style: text
 mathjax: true
-layout: protected/jekyll-staticrypt-protected-post_encrypted
 permalink: "protected/jekyll-staticrypt-protected-post_encrypted.html"
 tags:
   - web
