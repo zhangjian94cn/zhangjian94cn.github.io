@@ -15,6 +15,9 @@ tags:
 
 [oneDAL](https://oneapi-src.github.io/oneDAL/)是一个高性能的数据分析库，其包含了数据分析的所有阶段（preprocessing, transformation, analysis, modeling, validation, and decision making）。oneDAL支持了批量、在线以及分布式的计算模式，其主要提供了两组C++接口：oneAPI/DAAL。
 
+## 安装
+
+官网提供了在不同系统环境下的[安装教程](https://github.com/oneapi-src/oneDAL/blob/master/INSTALL.md)
 
 
 ## 例程
