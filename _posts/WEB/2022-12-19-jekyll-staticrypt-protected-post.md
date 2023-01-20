@@ -1,5 +1,5 @@
 ---
-title: "How to encrypt your website"
+title: "How to Encrypt Your Website"
 layout: protected/jekyll-staticrypt-protected-post_encrypted
 author: "Zhang Jian"
 header-style: text
