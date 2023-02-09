@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .chat-header {
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #f2f2f2;
+      }
+
+      .chat-box {
+        width: 70%;
+        height: 60%;
+        overflow-y: scroll;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 2px 2px 5px #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .chat-box .message-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .chat-box .message-container.user {
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+
+      .chat-box .message {
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+      }
+
+      .chat-input {
+        width: 70%;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        border: none;
+        margin-top: 20px;
+        font-size: 18px;
+        outline: none;
+        border: 2px solid black;
+      }
+    </style>
+  
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        Chat with AI
+      </div>
+      <div class="chat-box" id="chat-box">
+      </div>
+      <input class="chat-input" id="chat-input" type="text" placeholder="Enter your message here"></input>
+    </div>
+
+    <script>
+      const chatBox = document.getElementById("chat-box");
+      const chatInput = document.getElementById("chat-input");
+
+      chatInput.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+          sendMessage();
+        }
+      });
+
+      function sendMessage() {
+        const message = chatInput.value;
+        if (!message) {
+          return;
+        }
+        addMessage(message, true);
+        chatInput.value = "";
+
+        fetch("http://124.222.119.248:8686/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message: message })
+        })
+          .then(res => res.json())
+          .then(data => {
+            addMessage(data.response, false);
+          });
+
+        }
+
+        function addMessage(message, isUser) {
+          const messageContainer = document.createElement("div");
+          messageContainer.classList.add("message-container");
+          if (isUser) {
+            messageContainer.classList.add("user");
+          }
+
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("message");
+          messageElement.innerText = message;
+
+          messageContainer.appendChild(messageElement);
+          chatBox.appendChild(messageContainer);
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+  </body>
+</html>
