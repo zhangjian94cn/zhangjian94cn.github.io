@@ -1,12 +1,9 @@
 ---
-title: "CV"
-subtitle: "Getting Started"
+title: "My Interview Documentation"
 layout: post
 author: "Zhang Jian"
 header-style: text
 mathjax: true
-tags:
-  - interview
 categories: [hidden]
 ---
 
