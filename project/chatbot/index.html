@@ -79,7 +79,8 @@
     <script>
       const chatBox = document.getElementById("chat-box");
       const chatInput = document.getElementById("chat-input");
-
+      
+      addMessage("您好！我是您的智能旅行计划师。请告诉我你想去哪里旅行？您可以直接回复我目的地，例如日本，香港，或者西双版纳。", false);
       chatInput.addEventListener("keyup", function(event) {
         if (event.keyCode === 13) {
           sendMessage();
@@ -140,11 +141,16 @@
           messageContainer.classList.add("message-container");
           if (isUser) {
             messageContainer.classList.add("user");
+            // messageContainer.style.backgroundColor = "blue"; 
           }
 
           const messageElement = document.createElement("div");
           messageElement.classList.add("message");
           messageElement.innerText = message;
+          if (isUser == false) {
+            messageElement.style.backgroundColor = "#4ECF5B"; 
+          }
+
 
           messageContainer.appendChild(messageElement);
           chatBox.appendChild(messageContainer);
