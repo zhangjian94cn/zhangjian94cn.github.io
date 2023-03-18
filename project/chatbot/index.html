@@ -94,16 +94,23 @@
         addMessage(message, true);
         chatInput.value = "";
 
-        fetch("http://124.222.119.248:9696/chat", {
+        fetch("https://zhangjian94cn-ai-explorer-openai-api.hf.space/run/predict", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message: message })
+          body: JSON.stringify({ 
+            // message: message
+            data: [
+              message,
+              message,
+              message,
+            ] 
+          })
         })
           .then(res => res.json())
           .then(data => {
-            addMessage(data.response, false);
+            addMessage(data.data[1], false);
           });
 
         }
