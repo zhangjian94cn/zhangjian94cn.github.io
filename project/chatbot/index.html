@@ -69,7 +69,7 @@
   <body>
     <div class="chat-container">
       <div class="chat-header">
-        Chat with AI
+        AI Explorer - Your Smart Guide to Exploring the World
       </div>
       <div class="chat-box" id="chat-box">
       </div>
@@ -86,7 +86,27 @@
         }
       });
 
+      // 生成新的userid
+      function generateUserId() {
+        // 这里可以使用一些算法来生成一个独有的userid
+        // 这里只是简单地生成一个随机数
+        return Math.floor(Math.random() * 1000000).toString();
+      }
+
       function sendMessage() {
+
+        // 获取userid，如果之前已经生成过就从localStorage中获取，否则生成一个新的
+        let userid = localStorage.getItem('userid');
+        if (!userid) {
+          userid = generateUserId();
+          localStorage.setItem('userid', userid);
+        }
+
+        // 刷新页面时生成新的userid
+        window.addEventListener('beforeunload', function() {
+          localStorage.removeItem('userid');
+        });
+
         const message = chatInput.value;
         if (!message) {
           return;
@@ -103,8 +123,8 @@
             // message: message
             data: [
               message,
-              message,
-              message,
+              Math.floor(Math.random() * 1000000).toString(),
+              userid,
             ] 
           })
         })
