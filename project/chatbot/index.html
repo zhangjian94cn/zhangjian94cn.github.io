@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type=moduel src="/js/markdown.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -216,10 +217,12 @@
             messageContainer.classList.add("user");
             // messageContainer.style.backgroundColor = "blue"; 
           }
-
+          
+          const html = marked.parse(message);
           const messageElement = document.createElement("div");
           messageElement.classList.add("message");
-          messageElement.innerText = message;
+          // messageElement.innerText = message;
+          messageElement.innerHTML = html; // 使用 innerHTML 设置 HTML
           if (isUser == false) {
             messageElement.style.backgroundColor = "#4ECF5B"; 
           }
