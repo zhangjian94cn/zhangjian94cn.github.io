@@ -66,6 +66,10 @@ https://github.com/kitian616/jekyll-TeXt-theme
 				{%- assign _date = _currentdate -%}
 			{%- endif -%}
 
+				{% if _article.categories contains 'hidden' %}
+					{% continue %}
+				{% endif %}
+
 				<div class="post-preview item" data-tags="{{ _tags }}">
 				    <a href="{{ _article.url | prepend: site.baseurl }}">
 				        <h2 class="post-title">
