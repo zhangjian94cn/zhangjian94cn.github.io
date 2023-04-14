@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> AI Explorer </title>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script type=moduel src="js/markdown.js"></script>
+    <link rel="shortcut icon" href="aie_logo.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+      .chat-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .chat-header {
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        background-color: #f2f2f2;
+      }
+
+      .chat-box {
+        width: 70%;
+        height: 60%;
+        overflow-y: scroll;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 2px 2px 5px #ccc;
+        border-radius: 10px;
+        margin-top: 20px;
+      }
+
+      .chat-box .message-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .chat-box .message-container.user {
+        justify-content: flex-end;
+        align-items: flex-end;
+      }
+
+      .chat-box .message {
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+      }
+
+      .chat-form {  
+        width :70%;  
+        display :flex ;  
+        align-items:center ;  
+        border-radius :10 px;  
+        border :none ;  
+        margin-top :20 px;   
+      }
+
+      .chat-input {
+        width: 70%;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        border: none;
+        margin-top: 20px;
+        font-size: 18px;
+        outline: none;
+        border: 2px solid black;
+        flex-grow :1 ;
+      }
+
+ 
+      .send-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 15px 30px;
+        border-radius: 10px;
+        background-color: #4CAF50;
+        color: black;;  
+        font-size: 100%;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        border: 4px solid white;  
+        flex-grow :1 ;
+      }
+      #loading {
+        display: none;
+      }
+      #loading.active {
+        display: block;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 10%px;
+        color: rgb(5, 22, 22);
+        letter-spacing: 2px;
+        text-shadow: 0px 0px 10px rgb(21, 23, 23);
+        animation: ellipsis 0.2s infinite;
+      }
+
+      @keyframes ellipsis {
+        0% {
+          content: '.';
+        } 
+        33% {
+          content: '..';
+        }
+        66% {
+          content: '...';
+        }
+        100% {
+          content: '.';
+        }
+      }
+    </style>
+  
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        AI旅行定制师
+      </div>
+      <div class="chat-box" id="chat-box">
+      <div id="loading" class="">Loading...</div>
+      </div>
+      <form class="chat-form" onsubmit="return false;">
+        <input class="chat-input" id="chat-input" type="text" placeholder="输入您的消息..."></input>
+        <input class="send-button" id="send-button" type="button" value="发送"></input>
+      </form>
+    </div>
+
+    
+
+    <script>
+      const chatBox = document.getElementById("chat-box");
+      const chatInput = document.getElementById("chat-input");
+      const sendButton = document.getElementById("send-button"); // 获取发送按钮
+  
+
+      addMessage("您好！我是您的智能旅行计划师。请告诉我你想去哪里旅行？您可以直接回复我目的地，例如日本，香港，或者西双版纳。", false);
+      chatInput.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+          sendMessage();
+        }
+      });
+      
+      sendButton.addEventListener("click", sendMessage); 
+
+      // 生成新的userid
+      function generateUserId() {
+        // 这里可以使用一些算法来生成一个独有的userid
+        // 这里只是简单地生成一个随机数
+        return Math.floor(Math.random() * 1000000).toString();
+      }
+
+      function sendMessage() {
+
+        // 获取userid，如果之前已经生成过就从localStorage中获取，否则生成一个新的
+        let userid = localStorage.getItem('userid');
+        if (!userid) {
+          userid = generateUserId();
+          localStorage.setItem('userid', userid);
+        }
+
+        // 刷新页面时生成新的userid
+        window.addEventListener('beforeunload', function() {
+          localStorage.removeItem('userid');
+        });
+
+        const message = chatInput.value;
+        if (!message) {
+          return;
+        }
+        addMessage(message, true);
+        chatInput.value = "";
+        
+        const loadingElement = document.getElementById("loading");
+        if (chatBox && loadingElement) {
+          chatBox.appendChild(loadingElement);
+        }
+        loadingElement.classList.add("active");
+
+
+        fetch("https://jiana-hackathon-chatbot-openai-api-ai--59c6db2.hf.space/run/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ 
+            // message: message
+            data: [
+              message,
+              Math.floor(Math.random() * 1000000).toString(),
+              userid,
+            ] 
+          })
+        })
+          .then(res => res.json())
+          .then(data => {
+            loadingElement.classList.remove("active");
+            addMessage(data.data[1], false);
+          });
+
+        }
+
+        function addMessage(message, isUser) {
+          const messageContainer = document.createElement("div");
+          messageContainer.classList.add("message-container");
+          if (isUser) {
+            messageContainer.classList.add("user");
+            // messageContainer.style.backgroundColor = "blue"; 
+          }
+          
+          const html = marked.parse(message);
+          const messageElement = document.createElement("div");
+          messageElement.classList.add("message");
+          // messageElement.innerText = message;
+          messageElement.innerHTML = html; // 使用 innerHTML 设置 HTML
+          if (isUser == false) {
+            messageElement.style.backgroundColor = "#4ECF5B"; 
+          }
+
+
+          messageContainer.appendChild(messageElement);
+          chatBox.appendChild(messageContainer);
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+  </body>
+</html>

@@ -4,6 +4,9 @@ description: "「Hello World」"
 ---
 
 {% for post in paginator.posts %}
+{% if post.categories contains 'hidden' %}
+    {% continue %}
+{% endif %}
 <div class="post-preview">
     <a href="{{ post.url | prepend: site.baseurl }}">
         <h2 class="post-title">
