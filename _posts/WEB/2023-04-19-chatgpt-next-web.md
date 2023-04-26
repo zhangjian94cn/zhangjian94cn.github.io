@@ -1,0 +1,38 @@
+---
+title: "ChatGPT Next Web"
+layout: post
+author: "Zhang Jian"
+header-style: text
+mathjax: true
+tags:
+  - web
+---
+
+如何debug chatgpt next web，目前终于是找到了一点方向
+https://tymick.me/blog/debug-nextjs-with-vs-code
+
+
+[如何基于VSCode调试Typescript代码](https://zhuanlan.zhihu.com/p/575391010)
+
+
+
+https://www.bilibili.com/video/BV1Ra411T7Ey/?spm_id_from=333.337.search-card.all.click&vd_source=d796e3a80f41647d11cde2c45cdd53c9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
