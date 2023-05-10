@@ -64,7 +64,7 @@ tags:
     ```dockerfile
     FROM ubuntu:22.04
     RUN apt-get update --fix-missing && apt-get install openssh-server sudo -y
-    ENTRYPOINT service ssh restar && bash
+    ENTRYPOINT service ssh restart && bash
     ``` 
 
 2. 生成对应image
