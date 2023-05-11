@@ -188,25 +188,28 @@ tune.Tuner(
 配置选项较多，不一一列举，参看[Specifying Training Options](https://docs.ray.io/en/latest/rllib/rllib-training.html#specifying-training-options)
 
 
-### [Key Concepts](https://docs.ray.io/en/master/rllib/core-concepts.html)
+### [Key Concepts](https://docs.ray.io/en/master/rllib/key-concepts.html)
 
-<!-- On this page, we’ll cover the key concepts to help you understand how RLlib works and how to use it. In RLlib, you use Algorithm’s to learn how to solve problem environments. The algorithms use policies to select actions. Given a policy, rollouts throughout an environment produce sample batches (or trajectories) of experiences. You can also customize the training_steps of your RL experiments. -->
+In RLlib, you use **Algorithms** to learn how to solve problem **environments**. The algorithms use **policies** to select **actions**. Given a policy, **rollouts** throughout an **environment** produce **sample batches** (or **trajectories**) of experiences. You can also customize the **training_steps** of your RL experiments.
+
+#### [Environments](https://docs.ray.io/en/latest/rllib/key-concepts.html#environments)
 
 An RLlib environment consists of:
 
-- all possible actions (action space)
-- a complete description of the environment, nothing hidden (state space)
-- an observation by the agent of certain parts of the state (observation space)
-- reward, which is the only feedback the agent receives per action.
+- all possible actions (**action space**)
+- a complete description of the environment, nothing hidden (**state space**)
+- an observation by the agent of certain parts of the state (**observation space**)
+- **reward**, which is the only feedback the agent receives per action.
 
 ![](/img/env_key_concept2.png)
 
-这个解释了什么是：episode，rollout
-The simulation iterations of action -> reward -> next state -> train -> repeat, until the end state, is called an **episode**, or in RLlib, a **rollout**.
+什么是：episode，rollout. 
+>The simulation iterations of `action -> reward -> next state -> train -> repeat`, until the end state, is called an **episode**, or in RLlib, a **rollout**.
 
-#### [Algorithms](https://docs.ray.io/en/latest/rllib/core-concepts.html#algorithms)
+#### [Algorithms](https://docs.ray.io/en/latest/rllib/key-concepts.html#algorithms)
 
-在这里给了一些code sample，我理解是只是一个pipeline，不存在实际的训练模型
+Algorithm的构建（3种方式）
+
 ```python
 # Configure.
 from ray.rllib.algorithms.ppo import PPOConfig
@@ -220,15 +223,16 @@ while True:
     print(algo.train())
 ```
 
-trainer和rollout的交互过程
+RLlib Algorithm classes coordinate the distributed workflow of running rollouts and optimizing policies. Algorithm classes leverage parallel iterators to implement the desired computation pattern. The following figure shows synchronous sampling, the simplest of these patterns:
 ![](/img/env_key_synchronous_sampling.png)
+
 
 rllib使用[actor](https://docs.ray.io/en/latest/ray-core/actors.html)把training的过程从一个core扩展到上千个core，通过配置训练过程中的[parallelism](https://docs.ray.io/en/latest/rllib/rllib-training.html#specifying-resources)，也就是`num_workers`参数，更多细节参考[scaling guide](https://docs.ray.io/en/latest/rllib/rllib-training.html#rllib-scaling-guide) 
 
 >  For example, setting num_workers=0 will only create the local worker, in which case both sample collection and training will be done by the local worker. On the other hand, setting num_workers=5 will create the local worker (responsible for training updates) and 5 remote workers (responsible for sample collection).
 
 
-#### [Policies](https://docs.ray.io/en/latest/rllib/core-concepts.html#policies)
+#### [Policies](https://docs.ray.io/en/latest/rllib/key-concepts.html#policies)
 
 [policy](https://docs.ray.io/en/latest/rllib/rllib-concepts.html#policies)是RLlib中的核心概念，简单来说，policies是：定义agent在环境中行为方式的python类。Rollout workers基于policy决定agent的行为。在 [Farama-Foundation Gymnasium](https://docs.ray.io/en/latest/rllib/rllib-env.html#gymnasium) 中，有一个agent和一个policy。在 [vector envs](https://docs.ray.io/en/latest/rllib/rllib-env.html#vectorized) 中，policy inference is for multiple agents at once。在 [multi-agent](https://docs.ray.io/en/latest/rllib/rllib-env.html#multi-agent-and-hierarchical) 中，there may be multiple policies, each controlling one or more agents。
 
@@ -252,9 +256,9 @@ MyTFPolicy = build_tf_policy(
 
 #### Policy Evaluation
 
-给定一个environment and policy，policy evaluation过程会生成batches of experiences，也就是 “environment interaction loop”。高效的 policy evaluation，往往实现起来比较困难，尤其在涉及 vectorization, RNNs, or when operating in a multi-agent environment时。RLlib提供了 [RolloutWorker](https://github.com/ray-project/ray/blob/master/rllib/evaluation/rollout_worker.py) 类，来管理所有的这些，nd this class is used in most RLlib algorithms。
+给定一个environment and policy，policy evaluation过程会生成batches of experiences，也就是 “environment interaction loop”。高效的 policy evaluation，往往实现起来比较困难，尤其在涉及 vectorization, RNNs, or when operating in a multi-agent environment时。RLlib提供了 [RolloutWorker](https://github.com/ray-project/ray/blob/master/rllib/evaluation/rollout_worker.py) 类，来管理所有的这些，this class is used in most RLlib algorithms。
 
-use rollout workers standalone to produce batches of experiences：`worker.sample()`,  or `worker.sample.remote()` in **parallel** on worker instances created as Ray actors (see WorkerSet).
+你可以使用 rollout workers 来生成 batches of experiences，即调用`worker.sample()`,  or `worker.sample.remote()` in **parallel** on worker instances created as Ray actors (see [WorkerSet](https://github.com/ray-project/ray/blob/master/rllib/evaluation/worker_set.py)).
 
 Here is an example of creating a set of rollout workers and using them gather experiences in parallel. The trajectories are concatenated, the policy learns on the trajectory batch, and then we broadcast the policy weights to the workers for the next round of rollouts:
 
@@ -285,6 +289,10 @@ while True:
 
 #### Sample Batches
 
+Whether running in a single process or a large cluster, all data in RLlib is interchanged in the form of sample batches. Sample batches encode one or more fragments of a trajectory. Typically, RLlib collects batches of size rollout_fragment_length from rollout workers, and concatenates one or more of these batches into a batch of size train_batch_size that is the input to SGD.
+
+A typical sample batch looks something like the following when summarized. Since all values are kept in arrays, this allows for efficient encoding and transmission across the network:
+
 ```python
 sample_batch = { 'action_logp': np.ndarray((200,), dtype=float32, min=-0.701, max=-0.685, mean=-0.694),
     'actions': np.ndarray((200,), dtype=int64, min=0.0, max=1.0, mean=0.495),
@@ -297,8 +305,14 @@ sample_batch = { 'action_logp': np.ndarray((200,), dtype=float32, min=-0.701, ma
 }
 ```
 
+In multi-agent mode, sample batches are collected separately for each individual policy. These batches are wrapped up together in a **MultiAgentBatch**, serving as a container for the individual agents’ sample batches.
+
 
 #### Training Step Method
+
+> It’s important to have a good understanding of the basic ray core methods before reading this section. Furthermore, we utilize concepts such as the SampleBatch (and its more advanced sibling: the MultiAgentBatch), RolloutWorker, and Algorithm, which can be read about on this page and the rollout worker reference docs.
+>
+>   Finally, developers who are looking to implement custom algorithms should familiarize themselves with the Policy and Model classes.
 
 - The `training_step()` isthe method of `Algorithm` class
 - When is `training_step()` invoked?
@@ -306,71 +320,76 @@ sample_batch = { 'action_logp': np.ndarray((200,), dtype=float32, min=-0.701, ma
   -  Ray Tune. `training_step()`
 
 
-一般步骤
-```python
-def training_step(self) -> ResultDict:
-    # 1. Sampling.
-    train_batch = synchronous_parallel_sample(
-                    worker_set=self.workers,
-                    max_env_steps=self.config["train_batch_size"]
-                )
 
-    # 2. Updating the Policy.
-    train_results = train_one_step(self, train_batch)
 
-    # 3. Synchronize worker weights.
-    self.workers.sync_weights()
+1. [Key Subconcepts](https://docs.ray.io/en/latest/rllib/key-concepts.html#key-subconcepts)
 
-    # 4. Return results.
-    return train_results
-```
 
-1. we collect trajectory data from the environment(s):
-
+    一般步骤
     ```python
-    train_batch = synchronous_parallel_sample(
+    def training_step(self) -> ResultDict:
+        # 1. Sampling.
+        train_batch = synchronous_parallel_sample(
                         worker_set=self.workers,
                         max_env_steps=self.config["train_batch_size"]
                     )
-    ```
-2. The train_batch is then passed to another utility function: train_one_step.
 
-    ```python
-    train_results = train_one_step(self, train_batch)
-    ```
-    
-    Methods like `train_one_step` and `multi_gpu_train_one_step` are used for training our Policy.
+        # 2. Updating the Policy.
+        train_results = train_one_step(self, train_batch)
 
-3. Now that we updated the local policy (the copy in self.workers.local_worker), we need to make sure that the copies in all remote workers (self.workers.remote_workers) have their weights synchronized (from the local one):
+        # 3. Synchronize worker weights.
+        self.workers.sync_weights()
 
-    ```python
-    self.workers.sync_weights()
+        # 4. Return results.
+        return train_results
     ```
 
-4. By calling `self.workers.sync_weights()`, weights are broadcasted from the local worker to the remote workers. See rollout worker reference docs for further details.
+   1. we collect trajectory data from the environment(s):
 
-    ```python
-    return train_results
-    ```
+       ```python
+       train_batch = synchronous_parallel_sample(
+                           worker_set=self.workers,
+                           max_env_steps=self.config["train_batch_size"]
+                       )
+       ```
+   2. The train_batch is then passed to another utility function: train_one_step.
 
-    A dictionary is expected to be returned that contains the results of the training update. It maps keys of type str to values that are of type float or to dictionaries of the same form, allowing for a nested structure.
+       ```python
+       train_results = train_one_step(self, train_batch)
+       ```
+       
+       Methods like `train_one_step` and `multi_gpu_train_one_step` are used for training our Policy.
 
-    For example, a results dictionary could map policy_ids to learning and sampling statistics for that policy:
+   3. Now that we updated the local policy (the copy in self.workers.local_worker), we need to make sure that the copies in all remote workers (self.workers.remote_workers) have their weights synchronized (from the local one):
 
-    ```python
-    {
-    'policy_1': {
-                    'learner_stats': {'policy_loss': 6.7291455},
-                    'num_agent_steps_trained': 32
-                },
-    'policy_2': {
-                    'learner_stats': {'policy_loss': 3.554927},
-                    'num_agent_steps_trained': 32
-                },
-    }
-    ```
+       ```python
+       self.workers.sync_weights()
+       ```
 
-#### [Training Step Method Utilities](https://docs.ray.io/en/latest/rllib/core-concepts.html#training-step-method-utilities)
+   4. By calling `self.workers.sync_weights()`, weights are broadcasted from the local worker to the remote workers. See rollout worker reference docs for further details.
+
+       ```python
+       return train_results
+       ```
+
+       A dictionary is expected to be returned that contains the results of the training update. It maps keys of type str to values that are of type float or to dictionaries of the same form, allowing for a nested structure.
+
+       For example, a results dictionary could map policy_ids to learning and sampling statistics for that policy:
+
+       ```python
+       {
+       'policy_1': {
+                       'learner_stats': {'policy_loss': 6.7291455},
+                       'num_agent_steps_trained': 32
+                   },
+       'policy_2': {
+                       'learner_stats': {'policy_loss': 3.554927},
+                       'num_agent_steps_trained': 32
+                   },
+       }
+       ```
+
+#### [Training Step Method Utilities](https://docs.ray.io/en/latest/rllib/key-concepts.html#training-step-method-utilities)
 
 需要搞清楚以下概念
 
@@ -379,6 +398,9 @@ def training_step(self) -> ResultDict:
 3. Train Ops
 4. Replay Buffers
 5. Parallel Request Utilities
+
+### [Environments](https://docs.ray.io/en/latest/rllib/rllib-env.html#environments)
+
 
 
 ## 运行
