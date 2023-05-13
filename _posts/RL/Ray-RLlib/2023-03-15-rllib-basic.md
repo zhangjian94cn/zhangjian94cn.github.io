@@ -479,6 +479,22 @@ Gymnasium主要来是用作single-agent training.
 
     Some environments may be very resource-intensive to create. RLlib will create num_workers + 1 copies of the environment since one copy is needed for the driver process. To avoid paying the extra overhead of the driver copy, which is needed to access the env’s action and observation spaces, you can defer environment initialization until reset() is called.
 
+#### Vectorized
+
+这个主要讲了env的向量化
+
+RLlib will auto-vectorize Gym envs for batch evaluation if the `num_envs_per_worker` config is set, or you can define a custom environment class that subclasses VectorEnv to implement `vector_step()` and `vector_reset()`.
+
+Note that auto-vectorization only applies to policy inference by default. This means that policy inference will be batched, but your envs will still be stepped one at a time. If you would like your envs to be stepped in parallel, you can set `"remote_worker_envs": True`. This will create env instances in Ray actors and step them in parallel. These remote processes introduce communication overheads, so this only helps if your env is very expensive to step / reset.
+
+When using remote envs, you can control the batching level for inference with `remote_env_batch_wait_ms`. The default value of 0ms means envs execute asynchronously and inference is only batched opportunistically. Setting the timeout to a large value will result in fully batched inference and effectively synchronous environment stepping. The optimal value depends on your environment step / reset time, and model inference speed.
+
+### Algorithms
+
+这里写的比较简单，主要就提供个查询功能，之后我再总结总结
+
+
+
 ## 运行
 
 [环境配置](https://github.com/ray-project/ray/tree/master/rllib)
