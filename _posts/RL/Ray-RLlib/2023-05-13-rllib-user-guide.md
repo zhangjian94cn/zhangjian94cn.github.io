@@ -406,6 +406,853 @@ Policy losses are defined over the `post_batch` data, so you can mutate that in 
 
 
 
+## Models, Preprocessors, and Action Distributions
+
+> 这个非常重要，讲清楚了整个rllib的流程，当然我还可以补充下action之后的behaviour
+
+The following diagram provides a conceptual overview of data flow between different components in RLlib. We start with an `Environment`, which - given an action - produces an observation. The observation is preprocessed by a `Preprocessor` and `Filter` (e.g. for running mean normalization) before being sent to a neural network `Model`. The model output is in turn interpreted by an `ActionDistribution` to determine the next action.
+
+![](/img/rllib-components.svg)
+
+The components highlighted in green can be replaced with custom user-defined implementations, as described in the next sections. The purple components are RLlib internal, which means they can only be modified by changing the algorithm source code.
+
+### Default Behaviors
+
+#### Built-in Preprocessors
+
+> 这个之前自定义action的时候 也遇到过，哈哈哈 将有些变化的步骤变成pre-process也是合理的
+
+RLlib tries to pick one of its built-in preprocessors based on the environment’s observation space. Thereby, the following simple rules apply:
+
+- Discrete observations are one-hot encoded, e.g. `Discrete(3) and value=1 -> [0, 1, 0].` 
+
+- MultiDiscrete observations are encoded by one-hot encoding each discrete element and then concatenating the respective one-hot encoded vectors. e.g. `MultiDiscrete([3, 4])` and `value=[1, 3] -> [0 1 0 0 0 0 1]` because the first 1 is encoded as `[0 1 0]` and the second 3 is encoded as `[0 0 0 1]`; these two vectors are then concatenated to `[0 1 0 0 0 0 1]`. 
+    
+  > 也就是flatted二进制编码
+
+- Tuple and Dict observations are flattened, thereby, Discrete and MultiDiscrete sub-spaces are handled as described above. Also, the original dict/tuple observations are still available inside a) the Model via the input dict’s “obs” key (the flattened observations are in “obs_flat”), as well as b) the Policy via the following line of code (e.g. put this into your loss function to access the original observations: `dict_or_tuple_obs = restore_original_dimensions(input_dict["obs"], self.obs_space, "tf|torch")` 
+
+  > Tuple and Dict 也被展平，其中的Discrete and MultiDiscrete sub-spaces也按照如上方式处理，original dict/tuple observations可以通过`input_dict["obs"]`获得，它给了一个样例
+
+- For Atari observation spaces, RLlib defaults to using the [DeepMind preprocessors](https://github.com/ray-project/ray/blob/master/rllib/env/wrappers/atari_wrappers.py) (`preprocessor_pref=deepmind`). However, if the Algorithm’s config key `preprocessor_pref` is set to “rllib”, the following mappings apply for Atari-type observation spaces:
+
+  - Images of shape `(210, 160, 3)` are downscaled to `dim x dim`, where dim is a model config key (see default Model config below). Also, you can set `grayscale=True` for reducing the color channel to 1, or `zero_mean=True` for producing -1.0 to 1.0 values (instead of 0.0 to 1.0 values by default).
+
+  - Atari RAM observations (1D space of shape `(128, )`) are zero-averaged (values between -1.0 and 1.0).
+
+In all other cases, no preprocessor will be used and the raw observations from the environment will be sent directly into your model.
+
+
+#### Default Model Config Settings
+
+> 讲解 default behavior for automatically constructing models，然后就是如何 customize your models
+
+In the following paragraphs, we will first describe RLlib’s default behavior for automatically constructing models (if you don’t setup a custom one), then dive into how you can customize your models by changing these settings or writing your own model classes.
+
+> 其实我觉得rllib完全没有必要把模型的搭建也用配置化的方式 搞一个接口出来，直接传入torch/tf的模型不好吗
+
+By default, RLlib will use the following config settings for your models. These include options for the `FullyConnectedNetworks` (`fcnet_hiddens` and `fcnet_activation`), `VisionNetworks` (`conv_filters` and `conv_activation`), auto-RNN wrapping, auto-Attention (GTrXL) wrapping, and some special options for Atari environments:
+
+```py
+MODEL_DEFAULTS: ModelConfigDict = {
+    # Experimental flag.
+    # If True, user specified no preprocessor to be created
+    # (via config._disable_preprocessor_api=True). If True, observations
+    # will arrive in model as they are returned by the env.
+    "_disable_preprocessor_api": False,
+    # Experimental flag.
+    # If True, RLlib will no longer flatten the policy-computed actions into
+    # a single tensor (for storage in SampleCollectors/output files/etc..),
+    # but leave (possibly nested) actions as-is. Disabling flattening affects:
+    # - SampleCollectors: Have to store possibly nested action structs.
+    # - Models that have the previous action(s) as part of their input.
+    # - Algorithms reading from offline files (incl. action information).
+    "_disable_action_flattening": False,
+
+    # === Built-in options ===
+    # FullyConnectedNetwork (tf and torch): rllib.models.tf|torch.fcnet.py
+    # These are used if no custom model is specified and the input space is 1D.
+    # Number of hidden layers to be used.
+    "fcnet_hiddens": [256, 256],
+    # Activation function descriptor.
+    # Supported values are: "tanh", "relu", "swish" (or "silu"),
+    # "linear" (or None).
+    "fcnet_activation": "tanh",
+
+    # VisionNetwork (tf and torch): rllib.models.tf|torch.visionnet.py
+    # These are used if no custom model is specified and the input space is 2D.
+    # Filter config: List of [out_channels, kernel, stride] for each filter.
+    # Example:
+    # Use None for making RLlib try to find a default filter setup given the
+    # observation space.
+    "conv_filters": None,
+    # Activation function descriptor.
+    # Supported values are: "tanh", "relu", "swish" (or "silu"),
+    # "linear" (or None).
+    "conv_activation": "relu",
+
+    # Some default models support a final FC stack of n Dense layers with given
+    # activation:
+    # - Complex observation spaces: Image components are fed through
+    #   VisionNets, flat Boxes are left as-is, Discrete are one-hot'd, then
+    #   everything is concated and pushed through this final FC stack.
+    # - VisionNets (CNNs), e.g. after the CNN stack, there may be
+    #   additional Dense layers.
+    # - FullyConnectedNetworks will have this additional FCStack as well
+    # (that's why it's empty by default).
+    "post_fcnet_hiddens": [],
+    "post_fcnet_activation": "relu",
+
+    # For DiagGaussian action distributions, make the second half of the model
+    # outputs floating bias variables instead of state-dependent. This only
+    # has an effect is using the default fully connected net.
+    "free_log_std": False,
+    # Whether to skip the final linear layer used to resize the hidden layer
+    # outputs to size `num_outputs`. If True, then the last hidden layer
+    # should already match num_outputs.
+    "no_final_linear": False,
+    # Whether layers should be shared for the value function.
+    "vf_share_layers": True,
+
+    # == LSTM ==
+    # Whether to wrap the model with an LSTM.
+    "use_lstm": False,
+    # Max seq len for training the LSTM, defaults to 20.
+    "max_seq_len": 20,
+    # Size of the LSTM cell.
+    "lstm_cell_size": 256,
+    # Whether to feed a_{t-1} to LSTM (one-hot encoded if discrete).
+    "lstm_use_prev_action": False,
+    # Whether to feed r_{t-1} to LSTM.
+    "lstm_use_prev_reward": False,
+    # Whether the LSTM is time-major (TxBx..) or batch-major (BxTx..).
+    "_time_major": False,
+
+    # == Attention Nets (experimental: torch-version is untested) ==
+    # Whether to use a GTrXL ("Gru transformer XL"; attention net) as the
+    # wrapper Model around the default Model.
+    "use_attention": False,
+    # The number of transformer units within GTrXL.
+    # A transformer unit in GTrXL consists of a) MultiHeadAttention module and
+    # b) a position-wise MLP.
+    "attention_num_transformer_units": 1,
+    # The input and output size of each transformer unit.
+    "attention_dim": 64,
+    # The number of attention heads within the MultiHeadAttention units.
+    "attention_num_heads": 1,
+    # The dim of a single head (within the MultiHeadAttention units).
+    "attention_head_dim": 32,
+    # The memory sizes for inference and training.
+    "attention_memory_inference": 50,
+    "attention_memory_training": 50,
+    # The output dim of the position-wise MLP.
+    "attention_position_wise_mlp_dim": 32,
+    # The initial bias values for the 2 GRU gates within a transformer unit.
+    "attention_init_gru_gate_bias": 2.0,
+    # Whether to feed a_{t-n:t-1} to GTrXL (one-hot encoded if discrete).
+    "attention_use_n_prev_actions": 0,
+    # Whether to feed r_{t-n:t-1} to GTrXL.
+    "attention_use_n_prev_rewards": 0,
+
+    # == Atari ==
+    # Set to True to enable 4x stacking behavior.
+    "framestack": True,
+    # Final resized frame dimension
+    "dim": 84,
+    # (deprecated) Converts ATARI frame to 1 Channel Grayscale image
+    "grayscale": False,
+    # (deprecated) Changes frame to range from [-1, 1] if true
+    "zero_mean": True,
+
+    # === Options for custom models ===
+    # Name of a custom model to use
+    "custom_model": None,
+    # Extra options to pass to the custom classes. These will be available to
+    # the Model's constructor in the model_config field. Also, they will be
+    # attempted to be passed as **kwargs to ModelV2 models. For an example,
+    # see rllib/models/[tf|torch]/attention_net.py.
+    "custom_model_config": {},
+    # Name of a custom action distribution to use.
+    "custom_action_dist": None,
+    # Custom preprocessors are deprecated. Please use a wrapper class around
+    # your environment instead to preprocess observations.
+    "custom_preprocessor": None,
+
+    # === Options for ModelConfigs in RLModules ===
+    # The latent dimension to encode into.
+    # Since most RLModules have an encoder and heads, this establishes an agreement
+    # on the dimensionality of the latent space they share.
+    # This has no effect for models outside RLModule.
+    # If None, model_config['fcnet_hiddens'][-1] value will be used to guarantee
+    # backward compatibility to old configs. This yields different models than past
+    # versions of RLlib.
+    "encoder_latent_dim": None,
+
+    # Deprecated keys:
+    # Use `lstm_use_prev_action` or `lstm_use_prev_reward` instead.
+    "lstm_use_prev_action_reward": DEPRECATED_VALUE,
+    # Deprecated in anticipation of RLModules API
+    "_use_default_native_models": DEPRECATED_VALUE,
+
+}
+```
+
+> 将model配置文件传入algo_config
+
+The dict above (or an overriding sub-set) is handed to the Algorithm via the model key within the main config dict like so:
+
+```py
+algo_config = {
+    # All model-related settings go into this sub-dict.
+    "model": {
+        # By default, the MODEL_DEFAULTS dict above will be used.
+
+        # Change individual keys in that dict by overriding them, e.g.
+        "fcnet_hiddens": [512, 512, 512],
+        "fcnet_activation": "relu",
+    },
+
+    # ... other Algorithm config keys, e.g. "lr" ...
+    "lr": 0.00001,
+}
+```
+
+
+#### Built-in Models
+
+> 就是说如果 no custom model is specified，rllib 就会使用默认的模型
+
+After preprocessing (if applicable) the raw environment outputs, the processed observations are fed through the policy’s model. In case, no custom model is specified (see further below on how to customize models), RLlib will pick a default model based on simple heuristics:
+
+> 下面的原则很简单，对于图像使用vision network，其他都用FC
+
+- A vision network (TF or Torch) for observations that have a shape of length larger than 2, for example, `(84 x 84 x 3)`.
+
+- A fully connected network (TF or Torch) for everything else.
+
+These default model types can further be configured via the **model config key** inside your Algorithm config (as discussed above). Available settings are listed above and also documented in the [model catalog file](https://github.com/ray-project/ray/blob/master/rllib/models/catalog.py).
+
+> 为什么要做flatten 感觉可能是因为ray要进行数据传输 必须得序列化
+
+Note that for the vision network case, you’ll probably have to configure `conv_filters`, if your environment observations have custom sizes. For example, `"model": {"dim": 42, "conv_filters": [[16, [4, 4], 2], [32, [4, 4], 2], [512, [11, 11], 1]]}` for 42x42 observations. Thereby, always make sure that the last Conv2D output has an output shape of [B, 1, 1, X] ([B, X, 1, 1] for PyTorch), where B=batch and X=last Conv2D layer’s number of filters, so that RLlib can flatten it. An informative error will be thrown if this is not the case.
+
+
+#### Built-in auto-LSTM, and auto-Attention Wrapper
+
+> 就是说网络输出的结果 还可以通过配置经过 lstm/attention （毕竟rl过程是有time step的）
+
+In addition, if you set `"use_lstm": True` or `"use_attention": True` in your model config, your model’s output will be further processed by an LSTM cell (TF or Torch), or an attention (GTrXL) network (TF or Torch), respectively. More generally, RLlib supports the use of recurrent/attention models for all its policy-gradient algorithms (A3C, PPO, PG, IMPALA), and the necessary sequence processing support is built into its policy evaluation utilities.
+
+
+For fully customized RNN/LSTM/Attention-Net setups see the [Recurrent Models](https://docs.ray.io/en/latest/rllib/rllib-models.html#rnns) and [Attention Networks/Transformers](https://docs.ray.io/en/latest/rllib/rllib-models.html#attention) sections below.
+
+It is not possible to use both auto-wrappers (lstm and attention) at the same time. Doing so will create an error.
+
+
+### Customizing Preprocessors and Models
+
+#### Custom Preprocessors and Environment Filters
+
+> 自定义的preprocessors没了
+
+```
+Custom preprocessors have been fully deprecated, since they sometimes conflict with the built-in preprocessors for handling complex observation spaces. Please use [wrapper classes](https://github.com/Farama-Foundation/Gymnasium/tree/main/gymnasium/wrappers) around your environment instead of preprocessors. Note that the built-in default Preprocessors described above will still be used and won’t be deprecated.
+```
+
+> 如何实现 ObservationWrapper RewardWrapper
+
+Instead of using the deprecated custom Preprocessors, you should use `gym.Wrappers` to preprocess your environment’s output (observations and rewards), but also your Model’s computed actions before sending them back to the environment.
+
+For example, for manipulating your env’s observations or rewards, do:
+
+```py
+import gym
+from ray.rllib.utils.numpy import one_hot
+
+class OneHotEnv(gym.core.ObservationWrapper):
+    # Override `observation` to custom process the original observation
+    # coming from the env.
+    def observation(self, observation):
+        # E.g. one-hotting a float obs [0.0, 5.0[.
+        return one_hot(observation, depth=5)
+
+
+class ClipRewardEnv(gym.core.RewardWrapper):
+    def __init__(self, env, min_, max_):
+        super().__init__(env)
+        self.min = min_
+        self.max = max_
+
+    # Override `reward` to custom process the original reward coming
+    # from the env.
+    def reward(self, reward):
+        # E.g. simple clipping between min and max.
+        return np.clip(reward, self.min, self.max)
+```
+
+#### Custom Models: Implementing your own Forward Logic
+
+> model logic 是什么？看标题好像是forward的过程
+
+If you would like to provide your own model logic (instead of using RLlib’s built-in defaults), you can sub-class either `TFModelV2` (for TensorFlow) or `TorchModelV2` (for PyTorch) and then register and specify your sub-class in the config as follows:
+
+
+- Custom TensorFlow Models
+
+  > 下面讲了 `forward()` 的参数
+
+  Custom TensorFlow models should subclass TFModelV2 and implement the `__init__()` and `forward()` methods. `forward()` takes a dict of tensor inputs (mapping str to Tensor types), whose keys and values depend on the [view requirements](https://docs.ray.io/en/latest/rllib/rllib-sample-collection.html) of the model. Normally, this input dict contains only the current observation `obs` and an `is_training` boolean flag, as well as an optional list of RNN states. `forward()` should return the model output (of size `self.num_outputs`) and - if applicable - a new list of internal states (in case of RNNs or attention nets). You can also override extra methods of the model such as value_function to implement a custom value branch.
+
+  Additional supervised/self-supervised losses can be added via the TFModelV2.custom_loss method:
+
+  Once implemented, your TF model can then be registered and used in place of a built-in default one:
+
+
+    ```py
+    import ray
+    import ray.rllib.algorithms.ppo as ppo
+    from ray.rllib.models import ModelCatalog
+    from ray.rllib.models.tf.tf_modelv2 import TFModelV2
+
+    class MyModelClass(TFModelV2):
+        def __init__(self, obs_space, action_space, num_outputs, model_config, name): ...
+        def forward(self, input_dict, state, seq_lens): ...
+        def value_function(self): ...
+
+    ModelCatalog.register_custom_model("my_tf_model", MyModelClass)
+
+    ray.init()
+    algo = ppo.PPO(env="CartPole-v1", config={
+        "model": {
+            "custom_model": "my_tf_model",
+            # Extra kwargs to be passed to your model's c'tor.
+            "custom_model_config": {},
+        },
+    })
+    ```
+
+- Custom PyTorch Models
+
+    > 和上面差不多
+
+    Similarly, you can create and register custom PyTorch models by subclassing TorchModelV2 and implement the `__init__()` and `forward()` methods. `forward()` takes a dict of tensor inputs (mapping str to PyTorch tensor types), whose keys and values depend on the view requirements of the model. Usually, the dict contains only the current observation obs and an is_training boolean flag, as well as an optional list of RNN states. forward() should return the model output (of size self.num_outputs) and - if applicable - a new list of internal states (in case of RNNs or attention nets). You can also override extra methods of the model such as value_function to implement a custom value branch.
+
+    Additional supervised/self-supervised losses can be added via the TorchModelV2.custom_loss method:
+
+    See these examples of [fully connected](https://github.com/ray-project/ray/blob/master/rllib/models/torch/fcnet.py), [convolutional](https://github.com/ray-project/ray/blob/master/rllib/models/torch/visionnet.py), and [recurrent](https://github.com/ray-project/ray/blob/master/rllib/models/torch/recurrent_net.py) torch models.
+
+
+    ```py
+    import torch.nn as nn
+
+    import ray
+    from ray.rllib.algorithms import ppo
+    from ray.rllib.models import ModelCatalog
+    from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
+
+    class CustomTorchModel(TorchModelV2):
+        def __init__(self, obs_space, action_space, num_outputs, model_config, name): ...
+        def forward(self, input_dict, state, seq_lens): ...
+        def value_function(self): ...
+
+    ModelCatalog.register_custom_model("my_torch_model", CustomTorchModel)
+
+    ray.init()
+    algo = ppo.PPO(env="CartPole-v1", config={
+        "framework": "torch",
+        "model": {
+            "custom_model": "my_torch_model",
+            # Extra kwargs to be passed to your model's c'tor.
+            "custom_model_config": {},
+        },
+    })
+    ```
+
+- Wrapping a Custom Model (TF and PyTorch) with an LSTM- or Attention Net
+
+    ...
+
+- Implementing custom Recurrent Networks
+
+- Implementing custom Attention Networks
+
+- Batch Normalization
+
+- Custom Model APIs (on Top of Default- or Custom Models)
+
+- More examples for Building Custom Models
+
+    ```py
+    class ComplexInputNetwork(TFModelV2):
+        """TFModelV2 concat'ing CNN outputs to flat input(s), followed by FC(s).
+
+        Note: This model should be used for complex (Dict or Tuple) observation
+        spaces that have one or more image components.
+
+        The data flow is as follows:
+
+        `obs` (e.g. Tuple[img0, img1, discrete0]) -> `CNN0 + CNN1 + ONE-HOT`
+        `CNN0 + CNN1 + ONE-HOT` -> concat all flat outputs -> `out`
+        `out` -> (optional) FC-stack -> `out2`
+        `out2` -> action (logits) and vaulue heads.
+        """
+
+        def __init__(self, obs_space, action_space, num_outputs, model_config, name):
+            self.original_space = (
+                obs_space.original_space
+                if hasattr(obs_space, "original_space")
+                else obs_space
+            )
+
+            self.processed_obs_space = (
+                self.original_space
+                if model_config.get("_disable_preprocessor_api")
+                else obs_space
+            )
+            super().__init__(
+                self.original_space, action_space, num_outputs, model_config, name
+            )
+
+            self.flattened_input_space = flatten_space(self.original_space)
+
+            # Build the CNN(s) given obs_space's image components.
+            self.cnns = {}
+            self.one_hot = {}
+            self.flatten_dims = {}
+            self.flatten = {}
+            concat_size = 0
+            for i, component in enumerate(self.flattened_input_space):
+                # Image space.
+                if len(component.shape) == 3 and isinstance(component, Box):
+                    config = {
+                        "conv_filters": model_config["conv_filters"]
+                        if "conv_filters" in model_config
+                        else get_filter_config(component.shape),
+                        "conv_activation": model_config.get("conv_activation"),
+                        "post_fcnet_hiddens": [],
+                    }
+                    self.cnns[i] = ModelCatalog.get_model_v2(
+                        component,
+                        action_space,
+                        num_outputs=None,
+                        model_config=config,
+                        framework="tf",
+                        name="cnn_{}".format(i),
+                    )
+                    concat_size += int(self.cnns[i].num_outputs)
+                # Discrete|MultiDiscrete inputs -> One-hot encode.
+                elif isinstance(component, (Discrete, MultiDiscrete)):
+                    if isinstance(component, Discrete):
+                        size = component.n
+                    else:
+                        size = np.sum(component.nvec)
+                    config = {
+                        "fcnet_hiddens": model_config["fcnet_hiddens"],
+                        "fcnet_activation": model_config.get("fcnet_activation"),
+                        "post_fcnet_hiddens": [],
+                    }
+                    self.one_hot[i] = ModelCatalog.get_model_v2(
+                        Box(-1.0, 1.0, (size,), np.float32),
+                        action_space,
+                        num_outputs=None,
+                        model_config=config,
+                        framework="tf",
+                        name="one_hot_{}".format(i),
+                    )
+                    concat_size += int(self.one_hot[i].num_outputs)
+                # Everything else (1D Box).
+                else:
+                    size = int(np.product(component.shape))
+                    config = {
+                        "fcnet_hiddens": model_config["fcnet_hiddens"],
+                        "fcnet_activation": model_config.get("fcnet_activation"),
+                        "post_fcnet_hiddens": [],
+                    }
+                    self.flatten[i] = ModelCatalog.get_model_v2(
+                        Box(-1.0, 1.0, (size,), np.float32),
+                        action_space,
+                        num_outputs=None,
+                        model_config=config,
+                        framework="tf",
+                        name="flatten_{}".format(i),
+                    )
+                    self.flatten_dims[i] = size
+                    concat_size += int(self.flatten[i].num_outputs)
+
+            # Optional post-concat FC-stack.
+            post_fc_stack_config = {
+                "fcnet_hiddens": model_config.get("post_fcnet_hiddens", []),
+                "fcnet_activation": model_config.get("post_fcnet_activation", "relu"),
+            }
+            self.post_fc_stack = ModelCatalog.get_model_v2(
+                Box(float("-inf"), float("inf"), shape=(concat_size,), dtype=np.float32),
+                self.action_space,
+                None,
+                post_fc_stack_config,
+                framework="tf",
+                name="post_fc_stack",
+            )
+
+            # Actions and value heads.
+            self.logits_and_value_model = None
+            self._value_out = None
+            if num_outputs:
+                # Action-distribution head.
+                concat_layer = tf.keras.layers.Input((self.post_fc_stack.num_outputs,))
+                logits_layer = tf.keras.layers.Dense(
+                    num_outputs,
+                    activation=None,
+                    kernel_initializer=normc_initializer(0.01),
+                    name="logits",
+                )(concat_layer)
+
+                # Create the value branch model.
+                value_layer = tf.keras.layers.Dense(
+                    1,
+                    activation=None,
+                    kernel_initializer=normc_initializer(0.01),
+                    name="value_out",
+                )(concat_layer)
+                self.logits_and_value_model = tf.keras.models.Model(
+                    concat_layer, [logits_layer, value_layer]
+                )
+            else:
+                self.num_outputs = self.post_fc_stack.num_outputs
+
+        @override(ModelV2)
+        def forward(self, input_dict, state, seq_lens):
+            if SampleBatch.OBS in input_dict and "obs_flat" in input_dict:
+                orig_obs = input_dict[SampleBatch.OBS]
+            else:
+                orig_obs = restore_original_dimensions(
+                    input_dict[SampleBatch.OBS], self.processed_obs_space, tensorlib="tf"
+                )
+            # Push image observations through our CNNs.
+            outs = []
+            for i, component in enumerate(tree.flatten(orig_obs)):
+                if i in self.cnns:
+                    cnn_out, _ = self.cnns[i](SampleBatch({SampleBatch.OBS: component}))
+                    outs.append(cnn_out)
+                elif i in self.one_hot:
+                    if "int" in component.dtype.name:
+                        one_hot_in = {
+                            SampleBatch.OBS: one_hot(
+                                component, self.flattened_input_space[i]
+                            )
+                        }
+                    else:
+                        one_hot_in = {SampleBatch.OBS: component}
+                    one_hot_out, _ = self.one_hot[i](SampleBatch(one_hot_in))
+                    outs.append(one_hot_out)
+                else:
+                    nn_out, _ = self.flatten[i](
+                        SampleBatch(
+                            {
+                                SampleBatch.OBS: tf.cast(
+                                    tf.reshape(component, [-1, self.flatten_dims[i]]),
+                                    tf.float32,
+                                )
+                            }
+                        )
+                    )
+                    outs.append(nn_out)
+            # Concat all outputs and the non-image inputs.
+            out = tf.concat(outs, axis=1)
+            # Push through (optional) FC-stack (this may be an empty stack).
+            out, _ = self.post_fc_stack(SampleBatch({SampleBatch.OBS: out}))
+
+            # No logits/value branches.
+            if not self.logits_and_value_model:
+                return out, []
+
+            # Logits- and value branches.
+            logits, values = self.logits_and_value_model(out)
+            self._value_out = tf.reshape(values, [-1])
+            return logits, []
+
+        @override(ModelV2)
+        def value_function(self):
+            return self._value_out
+
+    ```
+
+
+> 其实我有点不懂的是 在我之前llm-ppo的代码中 模型的定义并没有遵循 TorchModelV2/.. 这一套，那为什么仍然可行呢
+
+### Custom Action Distributions
+
+Similar to custom models and preprocessors, you can also specify a custom action distribution class as follows. The action dist class is passed a reference to the `model`, which you can use to access `model.model_config` or other attributes of the model. This is commonly used to implement [autoregressive action outputs](https://docs.ray.io/en/latest/rllib/rllib-models.html#autoregressive-action-distributions).
+
+
+```py
+import ray
+import ray.rllib.algorithms.ppo as ppo
+from ray.rllib.models import ModelCatalog
+from ray.rllib.models.preprocessors import Preprocessor
+
+class MyActionDist(ActionDistribution):
+    @staticmethod
+    def required_model_output_shape(action_space, model_config):
+        return 7  # controls model output feature vector size
+
+    def __init__(self, inputs, model):
+        super(MyActionDist, self).__init__(inputs, model)
+        assert model.num_outputs == 7
+
+    def sample(self): ...
+    def logp(self, actions): ...
+    def entropy(self): ...
+
+ModelCatalog.register_custom_action_dist("my_dist", MyActionDist)
+
+ray.init()
+algo = ppo.PPO(env="CartPole-v1", config={
+    "model": {
+        "custom_action_dist": "my_dist",
+    },
+})
+```
+
+### Supervised Model Losses
+
+You can mix supervised losses into any RLlib algorithm through custom models. For example, you can add an imitation learning loss on expert experiences, or a self-supervised autoencoder loss within the model. These losses can be defined over either policy evaluation inputs, or data read from [offline storage](https://docs.ray.io/en/latest/rllib/rllib-offline.html#input-pipeline-for-supervised-losses).
+
+
+**TensorFlow**: To add a supervised loss to a custom TF model, you need to override the `custom_loss()` method. This method takes in the existing policy loss for the algorithm, which you can add your own supervised loss to before returning. For debugging, you can also return a dictionary of scalar tensors in the `metrics()` method. Here is a [runnable example](https://github.com/ray-project/ray/blob/master/rllib/examples/custom_loss.py) of adding an imitation loss to CartPole training that is defined over a [offline dataset](https://docs.ray.io/en/latest/rllib/rllib-offline.html#input-pipeline-for-supervised-losses).
+
+**PyTorch**: There is no explicit API for adding losses to custom torch models. However, you can modify the loss in the policy definition directly. Like for TF models, offline datasets can be incorporated by creating an input reader and calling `reader.next()` in the loss forward pass.
+
+
+### Self-Supervised Model Losses
+
+You can also use the custom_loss() API to add in self-supervised losses such as VAE reconstruction loss and L2-regularization.
+
+
+### Variable-length / Complex Observation Spaces
+
+> 这个就是我在实现rlhf遇到的问题，实现可变长的 Observation Spaces
+
+RLlib supports complex and variable-length observation spaces, including `gym.spaces.Tuple, gym.spaces.Dict`, and `rllib.utils.spaces.Repeated`. The handling of these spaces is transparent to the user. RLlib internally will insert preprocessors to insert padding for repeated elements, flatten complex observations into a fixed-size vector during transit, and unpack the vector into the structured tensor before sending it to the model. The flattened observation is available to the model as `input_dict["obs_flat"]`, and the unpacked observation as `input_dict["obs"]`.
+
+> StructTensor-like 的图很好理解，就是把repeat的内容放到对应的key下面
+
+To enable batching of struct observations, RLlib unpacks them in a [StructTensor-like format](https://github.com/tensorflow/community/blob/master/rfcs/20190910-struct-tensor.md). In summary, repeated fields are “pushed down” and become the outer dimensions of tensor batches, as illustrated in this figure from the StructTensor RFC.
+
+![](/img/struct-tensor.png)
+
+**For further information about complex observation spaces, see:**
+
+- A custom environment and model that uses [repeated struct fields](https://github.com/ray-project/ray/blob/master/rllib/examples/complex_struct_space.py).
+- The pydoc of the [Repeated space](https://github.com/ray-project/ray/blob/master/rllib/utils/spaces/repeated.py).
+- The pydoc of the batched [repeated values tensor](https://github.com/ray-project/ray/blob/master/rllib/models/repeated_values.py).
+- The [unit tests](https://github.com/ray-project/ray/blob/master/rllib/tests/test_nested_observation_spaces.py) for Tuple and Dict spaces.
+
+
+### Variable-length / Parametric Action Spaces
+
+> 也就是说：可变长的 Action Spaces，是通过mask来实现的
+
+Custom models can be used to work with environments where (1) the set of valid actions v[aries per step](https://neuro.cs.ut.ee/the-use-of-embeddings-in-openai-five), and/or (2) the number of valid actions is [very large](https://arxiv.org/abs/1811.00260). The general idea is that the meaning of actions can be completely conditioned on the observation, i.e., the `a` in `Q(s, a)` becomes just a token in `[0, MAX_AVAIL_ACTIONS)` that only has meaning in the context of s. This works with algorithms in the `DQN and policy-gradient families` and can be implemented as follows:
+
+1. The environment should return a mask and/or list of valid action embeddings as part of the observation for each step. To enable batching, the number of actions can be allowed to vary from 1 to some max number
+
+```py
+class MyParamActionEnv(gym.Env):
+    def __init__(self, max_avail_actions):
+        self.action_space = Discrete(max_avail_actions)
+        self.observation_space = Dict({
+            "action_mask": Box(0, 1, shape=(max_avail_actions, )),
+            "avail_actions": Box(-1, 1, shape=(max_avail_actions, action_embedding_sz)),
+            "real_obs": ...,
+        })
+```
+
+2. A custom model can be defined that can interpret the `action_mask` and `avail_actions` portions of the observation. Here the model computes the action logits via the dot product of some network output and each action embedding. Invalid actions can be masked out of the softmax by scaling the probability to zero:
+
+```py
+class ParametricActionsModel(TFModelV2):
+    def __init__(self,
+                 obs_space,
+                 action_space,
+                 num_outputs,
+                 model_config,
+                 name,
+                 true_obs_shape=(4,),
+                 action_embed_size=2):
+        super(ParametricActionsModel, self).__init__(
+            obs_space, action_space, num_outputs, model_config, name)
+        self.action_embed_model = FullyConnectedNetwork(...)
+
+    def forward(self, input_dict, state, seq_lens):
+        # Extract the available actions tensor from the observation.
+        avail_actions = input_dict["obs"]["avail_actions"]
+        action_mask = input_dict["obs"]["action_mask"]
+
+        # Compute the predicted action embedding
+        action_embed, _ = self.action_embed_model({
+            "obs": input_dict["obs"]["cart"]
+        })
+
+        # Expand the model output to [BATCH, 1, EMBED_SIZE]. Note that the
+        # avail actions tensor is of shape [BATCH, MAX_ACTIONS, EMBED_SIZE].
+        intent_vector = tf.expand_dims(action_embed, 1)
+
+        # Batch dot product => shape of logits is [BATCH, MAX_ACTIONS].
+        action_logits = tf.reduce_sum(avail_actions * intent_vector, axis=2)
+
+        # Mask out invalid actions (use tf.float32.min for stability)
+        inf_mask = tf.maximum(tf.log(action_mask), tf.float32.min)
+        return action_logits + inf_mask, state
+```
+
+Depending on your use case it may make sense to use [just the masking](https://github.com/ray-project/ray/blob/master/rllib/examples/models/action_mask_model.py), [just action embeddings](https://github.com/ray-project/ray/blob/master/rllib/examples/parametric_actions_cartpole.py), or [both](https://github.com/ray-project/ray/blob/master/rllib/examples/models/parametric_actions_model.py). For a runnable example of “just action embeddings” in code, check out [examples/parametric_actions_cartpole.py](https://github.com/ray-project/ray/blob/master/rllib/examples/parametric_actions_cartpole.py).
+
+Note that since masking introduces `tf.float32.min` values into the model output, this technique might not work with all algorithm options. For example, algorithms might crash if they incorrectly process the `tf.float32.mi`n values. The cartpole example has working configurations for DQN (must set `hiddens=[]`), PPO (must disable running mean and set `model.vf_share_layers=True`), and several other algorithms. Not all algorithms support parametric actions; see the algorithm overview.
+
+### Autoregressive Action Distributions
+
+> 如何实现：action space(a1, a2): a2 的采样分布依赖于 a1
+
+In an action space with multiple components (e.g., `Tuple(a1, a2)`), you might want `a2` to be conditioned on the sampled value of `a1`, i.e., `a2_sampled ~ P(a2 | a1_sampled, obs)`. Normally, `a1` and `a2` would be sampled independently, reducing the expressivity of the policy.
+
+To do this, you need both a **custom model** that implements the autoregressive pattern, and a **custom action distribution class** that leverages that model. The [autoregressive_action_dist.py](https://github.com/ray-project/ray/blob/master/rllib/examples/autoregressive_action_dist.py) example shows how this can be implemented for a simple binary action space. For a more complex space, a more efficient architecture such as a [MADE](https://arxiv.org/abs/1502.03509) is recommended. Note that sampling a `N-part` action requires `N` forward passes through the model, however computing the log probability of an action can be done in one pass:
+
+```py
+class BinaryAutoregressiveOutput(ActionDistribution):
+    """Action distribution P(a1, a2) = P(a1) * P(a2 | a1)"""
+
+    @staticmethod
+    def required_model_output_shape(self, model_config):
+        return 16  # controls model output feature vector size
+
+    def sample(self):
+        # first, sample a1
+        a1_dist = self._a1_distribution()
+        a1 = a1_dist.sample()
+
+        # sample a2 conditioned on a1
+        a2_dist = self._a2_distribution(a1)
+        a2 = a2_dist.sample()
+
+        # return the action tuple
+        return TupleActions([a1, a2])
+
+    def logp(self, actions):
+        a1, a2 = actions[:, 0], actions[:, 1]
+        a1_vec = tf.expand_dims(tf.cast(a1, tf.float32), 1)
+        a1_logits, a2_logits = self.model.action_model([self.inputs, a1_vec])
+        return (Categorical(a1_logits, None).logp(a1) + Categorical(
+            a2_logits, None).logp(a2))
+
+    def _a1_distribution(self):
+        BATCH = tf.shape(self.inputs)[0]
+        a1_logits, _ = self.model.action_model(
+            [self.inputs, tf.zeros((BATCH, 1))])
+        a1_dist = Categorical(a1_logits, None)
+        return a1_dist
+
+    def _a2_distribution(self, a1):
+        a1_vec = tf.expand_dims(tf.cast(a1, tf.float32), 1)
+        _, a2_logits = self.model.action_model([self.inputs, a1_vec])
+        a2_dist = Categorical(a2_logits, None)
+        return a2_dist
+
+class AutoregressiveActionsModel(TFModelV2):
+    """Implements the `.action_model` branch required above."""
+
+    def __init__(self, obs_space, action_space, num_outputs, model_config,
+                 name):
+        super(AutoregressiveActionsModel, self).__init__(
+            obs_space, action_space, num_outputs, model_config, name)
+        if action_space != Tuple([Discrete(2), Discrete(2)]):
+            raise ValueError(
+                "This model only supports the [2, 2] action space")
+
+        # Inputs
+        obs_input = tf.keras.layers.Input(
+            shape=obs_space.shape, name="obs_input")
+        a1_input = tf.keras.layers.Input(shape=(1, ), name="a1_input")
+        ctx_input = tf.keras.layers.Input(
+            shape=(num_outputs, ), name="ctx_input")
+
+        # Output of the model (normally 'logits', but for an autoregressive
+        # dist this is more like a context/feature layer encoding the obs)
+        context = tf.keras.layers.Dense(
+            num_outputs,
+            name="hidden",
+            activation=tf.nn.tanh,
+            kernel_initializer=normc_initializer(1.0))(obs_input)
+
+        # P(a1 | obs)
+        a1_logits = tf.keras.layers.Dense(
+            2,
+            name="a1_logits",
+            activation=None,
+            kernel_initializer=normc_initializer(0.01))(ctx_input)
+
+        # P(a2 | a1)
+        # --note: typically you'd want to implement P(a2 | a1, obs) as follows:
+        # a2_context = tf.keras.layers.Concatenate(axis=1)(
+        #     [ctx_input, a1_input])
+        a2_context = a1_input
+        a2_hidden = tf.keras.layers.Dense(
+            16,
+            name="a2_hidden",
+            activation=tf.nn.tanh,
+            kernel_initializer=normc_initializer(1.0))(a2_context)
+        a2_logits = tf.keras.layers.Dense(
+            2,
+            name="a2_logits",
+            activation=None,
+            kernel_initializer=normc_initializer(0.01))(a2_hidden)
+
+        # Base layers
+        self.base_model = tf.keras.Model(obs_input, context)
+        self.register_variables(self.base_model.variables)
+        self.base_model.summary()
+
+        # Autoregressive action sampler
+        self.action_model = tf.keras.Model([ctx_input, a1_input],
+                                           [a1_logits, a2_logits])
+        self.action_model.summary()
+        self.register_variables(self.action_model.variables)
+```
+
+## Saving and Loading your RL Algorithms and Policies
+
+
+## How To Customize Policies
+
+
+## Sample Collections and Trajectory Views
+
+
+## Replay Buffers
+
+
+## Working With Offline Data
+
+
+## Catalog (Alpha)
+
+
+## Connectors (Alpha)
+
+
+## RL Modules (Alpha)
+
+
+## Fault Tolerance And Elastic Training
+
+
+## How To Contribute to RLlib
+
+
+## Working with the RLlib CLI
+
+
+
+
 
 
 
