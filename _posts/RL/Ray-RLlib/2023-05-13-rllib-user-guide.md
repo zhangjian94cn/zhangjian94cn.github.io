@@ -1223,11 +1223,244 @@ class AutoregressiveActionsModel(TFModelV2):
 
 ## How To Customize Policies
 
+This page describes the internal concepts used to implement algorithms in RLlib. You might find this useful if modifying or adding new algorithms to RLlib.
 
-## Sample Collections and Trajectory Views
+> policy做了哪些事情 加粗标出来了 也可以看policy的基类定义
 
+Policy classes encapsulate(封装) the core numerical components of RL algorithms. This typically includes the policy model that **determines actions to take**, **a trajectory postprocessor for experiences**, and **a loss function** to improve the policy given post-processed experiences. For a simple example, see the policy gradients [policy definition](https://github.com/ray-project/ray/blob/master/rllib/algorithms/pg/pg_tf_policy.py).
+
+> 大多数与深度学习框架的交互都被隔离到 Policy 接口，允许 RLlib 支持多个框架。 为了简化策略的定义，RLlib 包含了 Tensorflow 和 PyTorch 特定的模板。 您也可以从头开始编写自己的。 下面是一个例子：
+
+Most interaction with deep learning frameworks is isolated to the [Policy interface](https://github.com/ray-project/ray/blob/master/rllib/policy/policy.py), allowing RLlib to support multiple frameworks. To simplify the definition of policies, RLlib includes [Tensorflow](https://docs.ray.io/en/latest/rllib/rllib-concepts.html#building-policies-in-tensorflow) and [PyTorch-specific](https://docs.ray.io/en/latest/rllib/rllib-concepts.html#building-policies-in-pytorch) templates. You can also write your own from scratch. Here is an example:
+
+> 不同框架 其实对应的也就是 `compute_actions` 的model调用
+
+```py
+class CustomPolicy(Policy):
+    """Example of a custom policy written from scratch.
+
+    You might find it more convenient to use the `build_tf_policy` and
+    `build_torch_policy` helpers instead for a real policy, which are
+    described in the next sections.
+    """
+
+    def __init__(self, observation_space, action_space, config):
+        Policy.__init__(self, observation_space, action_space, config)
+        # example parameter
+        self.w = 1.0
+
+    def compute_actions(self,
+                        obs_batch,
+                        state_batches,
+                        prev_action_batch=None,
+                        prev_reward_batch=None,
+                        info_batch=None,
+                        episodes=None,
+                        **kwargs):
+        # return action batch, RNN states, extra values to include in batch
+        return [self.action_space.sample() for _ in obs_batch], [], {}
+
+    def learn_on_batch(self, samples):
+        # implement your learning code here
+        return {}  # return stats
+
+    def get_weights(self):
+        return {"w": self.w}
+
+    def set_weights(self, weights):
+        self.w = weights["w"]
+```
+
+The above basic policy, when run, will produce batches of observations with the basic `obs`, `new_obs`, `actions`, `rewards`, `dones`, and `infos` columns. There are two more mechanisms to pass along and emit extra information:
+
+> 这个我不是很懂
+
+**Policy recurrent state**: Suppose you want to compute actions based on the current timestep of the episode. While it is possible to have the environment provide this as part of the observation, we can instead compute and store it as part of the Policy recurrent state:
+
+```py
+def get_initial_state(self):
+    """Returns initial RNN state for the current policy."""
+    return [0]  # list of single state element (t=0)
+                # you could also return multiple values, e.g., [0, "foo"]
+
+def compute_actions(self,
+                    obs_batch,
+                    state_batches,
+                    prev_action_batch=None,
+                    prev_reward_batch=None,
+                    info_batch=None,
+                    episodes=None,
+                    **kwargs):
+    assert len(state_batches) == len(self.get_initial_state())
+    new_state_batches = [[
+        t + 1 for t in state_batches[0]
+    ]]
+    return ..., new_state_batches, {}
+
+def learn_on_batch(self, samples):
+    # can access array of the state elements at each timestep
+    # or state_in_1, 2, etc. if there are multiple state elements
+    assert "state_in_0" in samples.keys()
+    assert "state_out_0" in samples.keys()
+```
+
+
+**Extra action info output**: You can also emit extra outputs at each step which will be available for learning on. For example, you might want to output the behaviour policy logits as extra action info, which can be used for importance weighting, but in general arbitrary values can be stored here (as long as they are convertible to numpy arrays):
+
+```py
+def compute_actions(self,
+                    obs_batch,
+                    state_batches,
+                    prev_action_batch=None,
+                    prev_reward_batch=None,
+                    info_batch=None,
+                    episodes=None,
+                    **kwargs):
+    action_info_batch = {
+        "some_value": ["foo" for _ in obs_batch],
+        "other_value": [12345 for _ in obs_batch],
+    }
+    return ..., [], action_info_batch
+
+def learn_on_batch(self, samples):
+    # can access array of the extra values at each timestep
+    assert "some_value" in samples.keys()
+    assert "other_value" in samples.keys()
+```
+
+### Policies in Multi-Agent
+
+> 需要policy这个抽象 除了用来封装不同的framework以外 还可以用于multi-agent environments
+
+Beyond being agnostic of framework implementation, one of the main reasons to have a Policy abstraction is for use in multi-agent environments. For example, the [rock-paper-scissors example](https://docs.ray.io/en/latest/rllib/rllib-env.html#rock-paper-scissors-example) shows how you can leverage the Policy abstraction to evaluate heuristic policies against learned policies.
+
+### Building Policies in PyTorch
+
+
+Defining a policy in PyTorch is quite similar to that for TensorFlow (and the process of defining a algorithm given a Torch policy is exactly the same). Here’s a simple example of a trivial torch policy ([runnable file here](https://github.com/ray-project/ray/blob/master/rllib/examples/custom_torch_policy.py)):
+
+```py
+from ray.rllib.policy.sample_batch import SampleBatch
+from ray.rllib.policy.torch_policy_template import build_torch_policy
+
+def policy_gradient_loss(policy, model, dist_class, train_batch):
+    logits, _ = model.from_batch(train_batch)
+    action_dist = dist_class(logits)
+    log_probs = action_dist.logp(train_batch[SampleBatch.ACTIONS])
+    return -train_batch[SampleBatch.REWARDS].dot(log_probs)
+
+# <class 'ray.rllib.policy.torch_policy_template.MyTorchPolicy'>
+MyTorchPolicy = build_torch_policy(
+    name="MyTorchPolicy",
+    loss_fn=policy_gradient_loss)
+```
+
+Now, building on the TF examples above, let’s look at how the [A3C torch policy](https://github.com/ray-project/ray/blob/master/rllib/algorithms/a3c/a3c_torch_policy.py) is defined:
+
+```py
+A3CTorchPolicy = build_torch_policy(
+    name="A3CTorchPolicy",
+    get_default_config=lambda: ray.rllib.algorithms.a3c.a3c.DEFAULT_CONFIG,
+    loss_fn=actor_critic_loss,
+    stats_fn=loss_and_entropy_stats,
+    postprocess_fn=add_advantages,
+    extra_action_out_fn=model_value_predictions,
+    extra_grad_process_fn=apply_grad_clipping,
+    optimizer_fn=torch_optimizer,
+    mixins=[ValueNetworkMixin])
+```
+
+> 后面还有一些 先不写了 
+
+
+## [Sample Collections and Trajectory Views](https://docs.ray.io/en/latest/rllib/rllib-sample-collection.html#sample-collections-and-trajectory-views)
+
+### The SampleCollector Class is Used to Store and Retrieve Temporary Data
+
+> 这个我之前观察到了 `RolloutWorkers` 中包含 `Sampler`
+
+RLlib’s [RolloutWorkers](https://github.com/ray-project/ray/blob/master/rllib/evaluation/rollout_worker.py), when running against a live environment, use the `SamplerInput` class to interact with that environment and produce batches of experiences. The two implemented sub-classes of `SamplerInput` are `SyncSampler` and `AsyncSampler` (residing under the `RolloutWorker.sampler` property).
+
+> `SampleCollector` 我倒是没有关注过
+
+In case the “_use_trajectory_view_api” top-level config key is set to True (by default since version >=1.1.0), every such sampler object will use the `SampleCollector` API to store and retrieve temporary environment-, model-, and other data during rollouts (see figure below).
+
+![](/img/rllib-sample-collection.svg)
+
+> Policy 会告诉 Sampler 中的 SampleCollector，它(policy)需要什么（which data to store and how to present it back to the dependent methods ），这主要是通过`ViewRequirement`来实现的
+> 
+> 这种设计的方法可以借鉴
+
+
+**Sample collection process implemented by RLlib**: The Policy’s model tells the Sampler and its SampleCollector object, which data to store and how to present it back to the dependent methods (e.g. `Model.compute_actions()`). This is done using a dict that maps strings (column names) to `ViewRequirement` objects (details see below).
+
+The exact behavior for a single such rollout and the number of environment transitions therein are determined by the following `AlgorithmConfig.rollout(..)` args:
+
+... 一些代码示例 就不展开了
+
+> 通过 `RolloutWorker.sample()` 来触发单次的 rollout，
+
+To trigger a single rollout, RLlib calls `RolloutWorker.sample()`, which returns a SampleBatch or MultiAgentBatch object representing all the data collected during that rollout. These batches are then usually further concatenated (from the `num_workers` parallelized RolloutWorkers) to form a final train batch. The size of that train batch is determined by the `train_batch_size` config parameter. Train batches are usually sent to the Policy’s `learn_on_batch` method, which handles loss- and gradient calculations, and optimizer stepping.
+
+> 你可以定义自己的 `SampleCollector`
+
+RLlib’s default `SampleCollector` class is the `SimpleListCollector`, which appends single timestep data (e.g. actions) to lists, then builds SampleBatches from these and sends them to the downstream processing functions. It thereby tries to avoid collecting duplicate data separately (OBS and NEXT_OBS use the same underlying list). If you want to implement your own collection logic and data structures, you can sub-class SampleCollector and specify that new class under the Algorithm’s “sample_collector” config key.
+
+> 其实我没太懂，Policy’s Model 如何让 RolloutWorker and its SampleCollector 知道：不同方法需要什么数据。
+> 他还列出了一些方法... BUT 和上面的话有什么逻辑关系？
+
+Let’s now look at how the Policy’s Model lets the RolloutWorker and its SampleCollector know, what data in the ongoing episode/trajectory to use for the different required method calls during rollouts. These method calls in particular are: `Policy.compute_actions_from_input_dict()` to compute actions to be taken in an episode. Policy.postprocess_trajectory(), which is called after an episode ends or a rollout hit its rollout_fragment_length limit (in batch_mode=truncated_episodes), and Policy.learn_on_batch(), which is called with a “train_batch” to improve the policy.
+
+### Trajectory View API
+
+> 这个 Trajectory View API 目前我还没有涉及到
+> trajectory view API 允许自定义模型来 define what parts of the trajectory they require in order to execute the **forward pass**
+> 比如 一般的模型只需要 最后一次观测，RNN 或者 attention 模型 需要模型之前的状态
+
+The trajectory view API allows custom models to define what parts of the trajectory they require in order to execute the forward pass. For example, in the simplest case, a model might only look at the latest observation. However, an RNN- or attention based model could look at previous states emitted by the model, concatenate previously seen rewards with the current observation, or require the entire range of the n most recent observations.
+
+The trajectory view API lets models define these requirements and lets RLlib gather the required data for the forward pass in an efficient way.
+
+Since the following methods all call into the model class, they are all indirectly using the trajectory view API. It is important to note that the API is only accessible to the user via the model classes (see below on how to setup trajectory view requirements for a custom model).
+
+In particular, the methods receiving inputs that depend on a Model’s trajectory view rules are:
+
+- `Policy.compute_actions_from_input_dict()`
+- `Policy.postprocess_trajectory()` and
+- `Policy.learn_on_batch()` (and consecutively: the Policy’s loss function).
+
+> 下面这些我没怎么看
+
+The input data to these methods can stem from either the environment (observations, rewards, and env infos), the model itself (previously computed actions, internal state outputs, action-probs, etc..) or the Sampler (e.g. agent index, env ID, episode ID, timestep, etc..). All data has an associated time axis, which is 0-based, meaning that the first action taken, the first reward received in an episode, and the first observation (directly after a reset) all have t=0.
+
+The idea is to allow more flexibility and standardization in how a model defines required “views” on the ongoing trajectory (during action computations/inference), past episodes (training on a batch), or even trajectories of other agents in the same episode, some of which may even use a different policy.
+
+Such a “view requirements” formalism is helpful when having to support more complex model setups like RNNs, attention nets, observation image framestacking (e.g. for Atari), and building multi-agent communication channels.
+
+The way to define a set of rules used for making the Model see certain data is through a “view requirements dict”, residing in the Policy.model.view_requirements property. View requirements dicts map strings (column names), such as “obs” or “actions” to a ViewRequirement object, which defines the exact conditions by which this column should be populated with data.
+
+#### View Requirement Dictionaries
+
+#### The ViewRequirement class
+
+#### How does RLlib determine, which Views are required?
+
+#### Setting ViewRequirements manually in your Model
+
+#### Setting ViewRequirements manually after Policy construction
 
 ## Replay Buffers
+
+### Quick Intro to Replay Buffers in RL
+
+
+### Replay Buffers in RLlib
+
+
+
+
+### Advanced Usage
+
 
 
 ## Working With Offline Data
