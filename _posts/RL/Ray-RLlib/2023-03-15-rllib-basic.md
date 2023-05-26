@@ -401,6 +401,98 @@ In multi-agent mode, sample batches are collected separately for each individual
 
 ### [Environments](https://docs.ray.io/en/latest/rllib/rllib-env.html#environments)
 
+#### Configuring Environments
+
+使用自定义env的两种方法
+
+You can pass either a string name or a Python class to specify an environment. By default, strings will be interpreted as a gym environment name. Custom env classes passed directly to the algorithm must take a single env_config parameter in their constructor:
+
+```py
+import gym, ray
+from ray.rllib.algorithms import ppo
+
+class MyEnv(gym.Env):
+    def __init__(self, env_config):
+        self.action_space = <gym.Space>
+        self.observation_space = <gym.Space>
+    def reset(self):
+        return <obs>
+    def step(self, action):
+        return <obs>, <reward: float>, <done: bool>, <info: dict>
+
+ray.init()
+algo = ppo.PPO(env=MyEnv, config={
+    "env_config": {},  # config to pass to env class
+})
+
+while True:
+    print(algo.train())
+```
+
+You can also register a custom env creator function with a string name. This function must take a single env_config (dict) parameter and return an env instance:
+
+```py
+from ray.tune.registry import register_env
+
+def env_creator(env_config):
+    return MyEnv(...)  # return an env instance
+
+register_env("my_env", env_creator)
+algo = ppo.PPO(env="my_env")
+```
+
+当训练中包含多个env时，可以用如下范式：
+
+In the above example, note that the env_creator function takes in an env_config object. This is a dict containing options passed in through your algorithm. You can also access env_config.worker_index and env_config.vector_index to get the worker id and env id within the worker (if num_envs_per_worker > 0). This can be useful if you want to train over an ensemble of different environments, for example:
+
+```py
+class MultiEnv(gym.Env):
+    def __init__(self, env_config):
+        # pick actual env based on worker and env indexes
+        self.env = gym.make(
+            choose_env_for(env_config.worker_index, env_config.vector_index))
+        self.action_space = self.env.action_space
+        self.observation_space = self.env.observation_space
+    def reset(self):
+        return self.env.reset()
+    def step(self, action):
+        return self.env.step(action)
+
+register_env("multienv", lambda config: MultiEnv(config))
+```
+
+#### Gymnasium
+
+Gymnasium主要来是用作single-agent training.
+
+1. Performance
+
+    There are two ways to scale experience collection with Gym environments:
+
+    1. Vectorization within a single process: 这里说的是每个env的执行是很快的，算法的throughput同时是被限制在模型的eval上，可以通过在一个worker上设置多个env来解决这个问题
+    
+    > You can configure {"num_envs_per_worker": M} to have RLlib create M concurrent environments per worker. RLlib auto-vectorizes Gym environments via `VectorEnv.wrap()`.
+    
+    2. Distribute across multiple processes: 也可以让rllib创建多个processes（Ray actors）来做experience collection. In most algorithms this can be controlled by setting the `{"num_workers": N}` config.
+
+2. Expensive Environments
+
+    Some environments may be very resource-intensive to create. RLlib will create num_workers + 1 copies of the environment since one copy is needed for the driver process. To avoid paying the extra overhead of the driver copy, which is needed to access the env’s action and observation spaces, you can defer environment initialization until reset() is called.
+
+#### Vectorized
+
+这个主要讲了env的向量化
+
+RLlib will auto-vectorize Gym envs for batch evaluation if the `num_envs_per_worker` config is set, or you can define a custom environment class that subclasses VectorEnv to implement `vector_step()` and `vector_reset()`.
+
+Note that auto-vectorization only applies to policy inference by default. This means that policy inference will be batched, but your envs will still be stepped one at a time. If you would like your envs to be stepped in parallel, you can set `"remote_worker_envs": True`. This will create env instances in Ray actors and step them in parallel. These remote processes introduce communication overheads, so this only helps if your env is very expensive to step / reset.
+
+When using remote envs, you can control the batching level for inference with `remote_env_batch_wait_ms`. The default value of 0ms means envs execute asynchronously and inference is only batched opportunistically. Setting the timeout to a large value will result in fully batched inference and effectively synchronous environment stepping. The optimal value depends on your environment step / reset time, and model inference speed.
+
+### Algorithms
+
+这里写的比较简单，主要就提供个查询功能，之后我再总结总结
+
 
 
 ## 运行
