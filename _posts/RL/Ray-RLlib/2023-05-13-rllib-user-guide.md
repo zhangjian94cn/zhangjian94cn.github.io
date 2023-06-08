@@ -1474,6 +1474,246 @@ The way to define a set of rules used for making the Model see certain data is t
 
 ## RL Modules (Alpha)
 
+> 主要是用来替代 ModelV2 的，其主要包含了3个methods
+
+RLModule is a **neural network container** that implements three public methods: [forward_train()](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.forward_train.html#ray.rllib.core.rl_module.rl_module.RLModule.forward_train), [forward_exploration()](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.forward_exploration.html#ray.rllib.core.rl_module.rl_module.RLModule.forward_exploration), and [forward_inference()](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.forward_inference.html#ray.rllib.core.rl_module.rl_module.RLModule.forward_inference). Each method corresponds to a distinct reinforcement learning phase.
+
+
+[forward_exploration()](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.forward_exploration.html#ray.rllib.core.rl_module.rl_module.RLModule.forward_exploration) handles acting and data collection, balancing **exploration** and **exploitation**. On the other hand, the [forward_inference()](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.forward_inference.html#ray.rllib.core.rl_module.rl_module.RLModule.forward_inference) serves the learned model during evaluation, often being less stochastic.
+
+> forward_train() 管理训练阶段，处理 用于得到loss的 相关计算，例如在 DQN 模型中学习 Q 值。
+
+[forward_train()](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.forward_train.html#ray.rllib.core.rl_module.rl_module.RLModule.forward_train) manages the training phase, handling calculations exclusive to computing losses, such as learning Q values in a DQN model.
+
+### Enabling RL Modules in the Configuration
+
+Enable RLModules by setting the `_enable_rl_module_api` flag to `True` in the configuration object.
+
+```py
+import torch
+from pprint import pprint
+
+from ray.rllib.algorithms.ppo import PPOConfig
+
+config = (
+    PPOConfig()
+    .framework("torch")
+    .environment("CartPole-v1")
+    .rl_module(_enable_rl_module_api=True)
+)
+
+algorithm = config.build()
+
+# run for 2 training steps
+for _ in range(2):
+    result = algorithm.train()
+    pprint(result)
+```
+
+### Constructing RL Modules 
+
+> 这里的 a unified way 指的是什么？
+
+RLModule API provides **a unified way to define custom reinforcement learning models in RLlib**. This API enables you to design and implement your own models to suit specific needs.
+
+> 可以使用 `SingleAgentRLModuleSpec` and `MultiAgentRLModuleSpec` 来 defining module objects
+
+To maintain consistency and usability, RLlib offers a standardized approach for defining module objects for both single-agent and multi-agent reinforcement learning environments. This is achieved through the [SingleAgentRLModuleSpec](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.SingleAgentRLModuleSpec.html#ray.rllib.core.rl_module.rl_module.SingleAgentRLModuleSpec) and [MultiAgentRLModuleSpec](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.marl_module.MultiAgentRLModuleSpec.html#ray.rllib.core.rl_module.marl_module.MultiAgentRLModuleSpec) classes. The built-in RLModules in RLlib follow this consistent design pattern, making it easier for you to understand and utilize these modules.
+
+```py
+import gymnasium as gym
+from ray.rllib.core.rl_module.rl_module import SingleAgentRLModuleSpec
+from ray.rllib.core.testing.torch.bc_module import DiscreteBCTorchModule
+
+env = gym.make("CartPole-v1")
+
+spec = SingleAgentRLModuleSpec(
+    module_class=DiscreteBCTorchModule,
+    observation_space=env.observation_space,
+    action_space=env.action_space,
+    model_config_dict={"fcnet_hiddens": [64]},
+)
+
+module = spec.build()
+```
+
+You can pass RLModule specs to the algorithm configuration to be used by the algorithm.
+
+> 这个代码，将上面 module_class=DiscreteBCTorchModule，model_config_dict={"fcnet_hiddens": [64]}, 都分开传入了，observation_space和action_space则没写？
+
+```py
+import gymnasium as gym
+from ray.rllib.core.rl_module.rl_module import SingleAgentRLModuleSpec
+from ray.rllib.core.testing.torch.bc_module import DiscreteBCTorchModule
+from ray.rllib.core.testing.bc_algorithm import BCConfigTest
+
+
+config = (
+    BCConfigTest()
+    .environment("CartPole-v1")
+    .rl_module(
+        _enable_rl_module_api=True,
+        rl_module_spec=SingleAgentRLModuleSpec(module_class=DiscreteBCTorchModule),
+    )
+    .training(model={"fcnet_hiddens": [32, 32]})
+)
+
+algo = config.build()
+```
+
+> 刚才的问题 这里给出了解答，比如 `observation_space`, `action_space` 在其他配置中会包含
+
+For passing RLModule specs, all fields do not have to be filled as they are filled based on the described environment or other algorithm configuration parameters (i.e. ,`observation_space`, `action_space`, `model_config_dict` are not required fields when passing a custom RLModule spec to the algorithm config.)
+
+### Writing Custom Single Agent RL Modules
+
+> single-agent 使用 RLModule，multi-agent 使用 MultiAgentRLModule
+
+For single-agent algorithms (e.g., PPO, DQN) or independent multi-agent algorithms (e.g., PPO-MultiAgent), use [RLModule](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.html#ray.rllib.core.rl_module.rl_module.RLModule). For more advanced multi-agent use cases with a shared communication between agents, extend the [MultiAgentRLModule](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.marl_module.MultiAgentRLModule.html#ray.rllib.core.rl_module.marl_module.MultiAgentRLModule) class.
+
+> single-agent 作为 multi-agent 的一种特殊情况
+
+RLlib treats single-agent modules as a special case of [MultiAgentRLModule](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.marl_module.MultiAgentRLModule.html#ray.rllib.core.rl_module.marl_module.MultiAgentRLModule) with only one module. Create the multi-agent representation of all RLModules by calling [as_multi_agent()](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.as_multi_agent.html#ray.rllib.core.rl_module.rl_module.RLModule.as_multi_agent). For example:
+
+```py
+import gymnasium as gym
+from ray.rllib.core.rl_module.rl_module import SingleAgentRLModuleSpec
+from ray.rllib.core.testing.torch.bc_module import DiscreteBCTorchModule
+
+env = gym.make("CartPole-v1")
+spec = SingleAgentRLModuleSpec(
+    module_class=DiscreteBCTorchModule,
+    observation_space=env.observation_space,
+    action_space=env.action_space,
+    model_config_dict={"fcnet_hiddens": [64]},
+)
+
+module = spec.build()
+marl_module = module.as_multi_agent()
+```
+
+RLlib implements the following abstract framework specific base classes:
+
+- `TorchRLModule`: For PyTorch-based RLModules.
+- `TfRLModule`: For TensorFlow-based RLModules.
+
+The minimum requirement is for sub-classes of [RLModule](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.html#ray.rllib.core.rl_module.rl_module.RLModule) is to implement the following methods:
+
+- `_forward_train()`: Forward pass for training.
+- `_forward_inference()`: Forward pass for inference.
+- `_forward_exploration()`: Forward pass for exploration.
+
+Also the class’s constrcutor requires a dataclass config object called [RLModuleConfig](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModuleConfig.html#ray.rllib.core.rl_module.rl_module.RLModuleConfig) which contains the following fields:
+
+- **observation_space**: The observation space of the environment (either processed or raw).
+- **action_space**: The action space of the environment.
+- **model_config_dict**: The model config dictionary of the algorithm. Model hyper-parameters such as number of layers, type of activation, etc. are defined here.
+- **catalog_class**: The Catalog object of the algorithm.
+
+When writing RLModules, you need to use these fields to construct your model.
+
+```py
+from typing import Mapping, Any
+from ray.rllib.core.rl_module.torch.torch_rl_module import TorchRLModule
+from ray.rllib.core.rl_module.rl_module import RLModuleConfig
+from ray.rllib.utils.nested_dict import NestedDict
+
+import torch
+import torch.nn as nn
+
+
+class DiscreteBCTorchModule(TorchRLModule):
+    def __init__(self, config: RLModuleConfig) -> None:
+        super().__init__(config)
+
+        input_dim = self.config.observation_space.shape[0]
+        hidden_dim = self.config.model_config_dict["fcnet_hiddens"][0]
+        output_dim = self.config.action_space.n
+
+        self.policy = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Linear(hidden_dim, output_dim),
+        )
+
+        self.input_dim = input_dim
+
+    def _forward_inference(self, batch: NestedDict) -> Mapping[str, Any]:
+        with torch.no_grad():
+            return self._forward_train(batch)
+
+    def _forward_exploration(self, batch: NestedDict) -> Mapping[str, Any]:
+        with torch.no_grad():
+            return self._forward_train(batch)
+
+    def _forward_train(self, batch: NestedDict) -> Mapping[str, Any]:
+        action_logits = self.policy(batch["obs"])
+        return {"action_dist": torch.distributions.Categorical(logits=action_logits)}
+
+```
+
+---
+
+> 您可以强制检查传入和传出 RLModules 的数据中是否存在某些输入或输出键。 
+
+In [RLModule](https://docs.ray.io/en/latest/rllib/package_ref/doc/ray.rllib.core.rl_module.rl_module.RLModule.html#ray.rllib.core.rl_module.rl_module.RLModule) you can enforce the checking for the existence of certain input or output keys in the data that is communicated into and out of RLModules. This serves multiple purposes:
+
+- For the I/O requirement of each method to be self-documenting.
+- For failures to happen quickly. If users extend the modules and implement something that does not match the assumptions of the I/O specs, the check reports missing keys and their expected format. For example, we always RLModule should have an `obs` key on the input batch and an output `action_dist` key as the output.
+
+```py
+class DiscreteBCTorchModule(TorchRLModule):
+    ...
+
+    @override(TorchRLModule)
+    def input_specs_exploration(self) -> SpecType:
+        # Enforce that input nested dict to exploration method has a key "obs"
+        return ["obs"]
+
+    @override(TorchRLModule)
+    def output_specs_exploration(self) -> SpecType:
+        # Enforce that output nested dict from exploration method has a key
+        # "action_dist"
+        return ["action_dist"]
+
+```
+
+> 指定参数的method 总共有6个
+
+RLModule has two methods for each forward method, totaling 6 methods that can be override to describe the specs of the input and output of each method:
+
+- input_specs_inference()
+- output_specs_inference()
+- input_specs_exploration()
+- output_specs_exploration()
+- input_specs_train()
+- output_specs_train()
+
+### Writing Custom Multi-Agent RL Modules (Advanced)
+
+### Extending Existing RLlib RLModules
+
+RLlib provides a number of RL Modules for different frameworks (e.g., PyTorch, TensorFlow, etc.). Extend these modules by inheriting from them and overriding the methods you need to customize. For example, extend `PPOTorchRLModule` and augment it with your own customization. Then pass the new customized class into the algorithm configuration.
+
+There are two possible ways to extend existing RL Modules:
+
+One way to extend existing RL Modules is to inherit from them and override the methods you need to customize. For example, extend `PPOTorchRLModule` and augment it with your own customization. Then pass the new customized class into the algorithm configuration to use the PPO algorithm to optimize your custom RLModule.
+
+> 这个就是现在主要用的方法，这里虽然讲了怎么用，但是却没有讲为什么这么用
+
+```py
+class MyPPORLModule(PPORLModule):
+
+    def __init__(self, config: RLModuleConfig):
+        super().__init__(config)
+        ...
+
+# Pass in the custom RLModule class to the spec
+algo_config = algo_config.rl_module(
+    rl_module_spec=SingleAgentRLModuleSpec(module_class=MyPPORLModule)
+)
+```
+
 
 ## Fault Tolerance And Elastic Training
 
