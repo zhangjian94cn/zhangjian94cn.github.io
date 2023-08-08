@@ -27,6 +27,68 @@ tags:
 5. 练习项目经验
 全栈工程师需要对如何将前端和后端整合在一起有足够的经验。为了练习这个技能，可以通过编写简单的项目来实践，例如制作一个博客系统。
 
+### 设置开机启动
+
+cron定时任务 我已经使用过了，还是很不错的
+
+
+**方法一：使用cron定时任务**
+
+1. 编辑cron定时任务文件：
+   打开终端，并以root权限编辑cron定时任务文件。在终端中输入以下命令：
+
+   ```bash
+   sudo crontab -e
+   ```
+
+2. 在打开的编辑器中添加一行：
+   在编辑器中添加以下内容，这将在开机时运行你的脚本。假设你的脚本位于`/path/to/your_script.sh`：
+
+   ```
+   @reboot /bin/bash /path/to/your_script.sh
+   ```
+
+   保存并退出编辑器。
+
+**方法二：使用系统d服务**
+
+1. 创建一个.service文件：
+   在`/etc/systemd/system/`目录下创建一个以`.service`为扩展名的文件，例如`your_script.service`。
+
+   ```bash
+   sudo nano /etc/systemd/system/your_script.service
+   ```
+
+2. 编辑.service文件：
+   在打开的编辑器中添加以下内容，替换`your_script`和`/path/to/your_script.sh`为你的脚本名称和路径。
+
+   ```plaintext
+   [Unit]
+   Description=Your Script Service
+   After=network.target
+
+   [Service]
+   Type=simple
+   ExecStart=/bin/bash /path/to/your_script.sh
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+   保存并退出编辑器。
+
+3. 启用并运行服务：
+   执行以下命令启用和运行你的服务：
+
+   ```bash
+   sudo systemctl enable your_script.service
+   sudo systemctl start your_script.service
+   ```
+
+
+
+
+
 
 ## Reference
 
@@ -46,3 +108,8 @@ https://einverne.github.io/post/2020/02/flexget.html
 [如何搭建vscode server服务](https://github.com/coder/code-server)，最好还是使用docker比较方便
 
 之后要学习下使用docker compose，进行多个容器的部署
+
+
+
+
+
