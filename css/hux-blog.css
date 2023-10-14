@@ -1694,3 +1694,32 @@ img::-moz-selection {
 .no-scroll {
   overflow-y: hidden;
 }
+
+/* 基本样式 */
+.experience-list {
+  list-style: none;
+  padding: 0;
+}
+
+.experience-item {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+/* 响应式样式 - 在小屏幕上将 div 元素堆叠在一起 */
+@media (max-width: 600px) {
+  .experience-item {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+
+  .experience-details {
+      margin-bottom: 5px;
+  }
+
+  .experience-date {
+      text-align: left;
+  }
+}
