@@ -39,17 +39,29 @@ In addition, I was an intern at NetEase Games, responsible for editing and rende
 
 ## Experience
 
-<ul>
-    <li>
-        <div style="float:left; text-align:left">Alibaba Group, Tao Technology Department</div> 
-        <div style="float:right; text-align:right"><font color=gray size=3><b>2020.06-2022.07</b></font></div>
+<ul class="experience-list">
+    <li class="experience-item">
+        <div class="experience-details">
+            Alibaba Group, Tao Technology Department
+        </div>
+        <div class="experience-date">
+            <font color=gray size=3><b>2020.06-2022.07</b></font>
+        </div>
     </li>
-    <li>
-        <div style="float:left; text-align:left"><a href="https://www.d5render.com/">D5 Render</a>, Rendering Engine Group (Internship)</div> 
-        <div style="float:right; text-align:right"><font color=gray size=3><b>2019.10-2020.04</b></font></div>
+    <li class="experience-item">
+        <div class="experience-details">
+            <a href="https://www.d5render.com/">D5 Render</a>, Rendering Engine Group (Internship)
+        </div>
+        <div class="experience-date">
+            <font color=gray size=3><b>2019.10-2020.04</b></font>
+        </div>
     </li>
-    <li>
-        <div style="float:left; text-align:left">NetEase Games, Game Engine Group (Summer Internship)</div> 
-        <div style="float:right; text-align:right"><font color=gray size=3><b>2019.06-2019.08</b></font></div>
+    <li class="experience-item">
+        <div class="experience-details">
+            NetEase Games, Game Engine Group (Summer Internship)
+        </div>
+        <div class="experience-date">
+            <font color=gray size=3><b>2019.06-2019.08</b></font>
+        </div>
     </li>
 </ul>

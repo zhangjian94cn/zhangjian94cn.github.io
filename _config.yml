@@ -1,7 +1,8 @@
 # Site settings
 title: Zhang Jian
 SEOTitle: 章坚的博客 | Zhang Jian Blog
-header-img: img/home-bg.jpg
+header-img: img/comic.jpg
+# header-img: img/home-bg.jpg
 email: jianzhang@smail.nju.edu.cn
 description: "I am an algorithm engineer. My personal interests involve computer vision, computer graphics and robotics. "
 # keyword: "黄玄, Hux黄玄, Hux, 鬼栈, huxpro, @huxpro, 黄玄的博客, Hux Blog, 博客, 个人网站, 互联网, Web, JavaScript, 前端, 设计"
@@ -20,6 +21,7 @@ github_username:    zhangjian94cn
 # facebook_username:  huxpro
 # linkedin_username:  firstname-lastname-idxxxx
 google_scholar_username:  vUlkWIEAAAAJ
+chatbot_http:  http://124.222.119.248:3000/
 
 
 
