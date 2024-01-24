@@ -110,6 +110,69 @@ https://einverne.github.io/post/2020/02/flexget.html
 之后要学习下使用docker compose，进行多个容器的部署
 
 
+## 2024 01 24, Wednesday, 19:56:07
+
+记录一次重新恢复服务器的翻墙的过程
+
+### clash
+
+1. 第一个问题
+
+   因为之前是直接使用的service，可以查看 `vim /etc/systemd/system/clash.service`
+
+   里面的内容如下：
+
+   ```s
+   [Unit]
+   Description=Clash daemon, A rule-based proxy in Go.
+   After=network.target
+
+   [Service]
+   Type=simple
+   Restart=always
+   ExecStart=/usr/local/bin/clash -d /home/zhangjian/.config/clash
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+   注意到其中是有个-d的，后面原来跟的是/etc/clash，然后我就猜测这个就是为什么
+   我直接运行clash可以，但是运行clash服务总出问题的原因，因为我也`which clash`
+   可执行文件路径是没有问题的
+
+2. 第二个问题
+
+   git clone总是不成功，于是我猜测是不是socks5和http的端口应该分开，这个是在
+   /home/zhangjian/.config/clash/config.yaml当中设置，但是目前看没有问题
+
+### github
+
+主要是参考这个链接
+https://gist.github.com/laispace/666dd7b27e9116faece6
+
+试了其中的很多都不行，最后是通过这个解决的：
+```bash
+Host github.com
+    Hostname ssh.github.com
+    Port 443
+    User git
+```
+
+这个是GPT的解释
+
+这段配置是针对 SSH 客户端的，通常位于用户的 SSH 配置文件 `~/.ssh/config` 中。这个配置指示 SSH 如何连接到 `github.com`，并且它适用于某些特定的情况，比如：
+
+1. **防火墙或网络限制**：有些公司或组织可能会阻止标准的 SSH 端口（22端口），这个配置使得 SSH 连接通过 443 端口，这是 HTTPS 通常使用的端口，很少被阻止。
+
+2. **使用 HTTPS 端口转发 SSH 流量**：GitHub 允许通过 HTTPS 端口（443）来转发 SSH 连接，以帮助那些无法通过标准端口 22 进行 SSH 连接的用户。
+
+这段配置的含义是：
+
+- `Host github.com`：这是一个别名，指定了以下配置适用于对 `github.com` 的 SSH 连接。
+- `Hostname ssh.github.com`：这实际上是 GitHub 服务器的主机名，专门用于通过 443 端口接收 SSH 连接。
+- `Port 443`：这告诉 SSH 客户端使用 443 端口而不是默认的 SSH 端口 22。
+- `User git`：GitHub 要求所有通过 SSH 连接的用户都使用 `git` 作为用户名。
+
+当你尝试通过 SSH 连接到 GitHub（如 `ssh -T git@github.com`）时，SSH 客户端会查看这个配置文件，根据配置建立连接。如果你的网络环境不允许通过标准的 SSH 端口 22 连接，这样的配置可以帮助你绕过这些限制。
 
 
 
