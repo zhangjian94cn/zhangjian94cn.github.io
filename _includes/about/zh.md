@@ -5,7 +5,7 @@
  * @FilePath: /zhangjian94cn.github.io/_includes/about/zh.md
 -->
 
-Hi，我是章坚，目前就职于江苏移动的人工智能团队。在此之前，我曾就职于英特尔和阿里，在英特尔，我担任人工智能构架工程师。主要负责基于[分布式框架Ray](https://github.com/ray-project/ray)的大语言模型预训练与微调。在阿里，我曾担任高级算法工程师，研究方向是：基于神经渲染的3D重建技术。作为<a href="https://tech.taobao.org/objectdrawer">Object Drawer</a>项目的主要成员，负责重建算法的开发与优化。
+Hi，我是章坚，目前就职于江苏移动的人工智能团队。在此之前，我曾就职于英特尔和阿里，在英特尔，我担任人工智能构架工程师。主要负责基于[分布式框架Ray](https://github.com/ray-project/ray)的大语言模型预训练与微调。在阿里，我担任高级算法工程师，研究方向是：基于神经渲染的3D重建技术。作为<a href="https://tech.taobao.org/objectdrawer">Object Drawer</a>项目的主要成员，负责重建算法的开发与优化。
 
 我在美丽的六朝古都南京，完成了本科以及研究生的学业，我遇见了“止于至善”的<a href="https://www.seu.edu.cn/">东南大学</a>以及“诚朴雄伟”的<a href="https://www.nju.edu.cn/">南京大学</a>。东大电子学院不仅有着严格的学业课程要求，同时还给我们创造了良好的工程技术条件。在南京大学ViSG实验室，我完成了“高精度语义地图的重建”项目，主要包含：基于激光雷达的位姿估计、场景重建以及场景理解。非常感谢<a href="https://ese.nju.edu.cn/zy/list.htm">周博</a>、<a href="https://ese.nju.edu.cn/yy/list.htm">于博</a>以及<a href="https://ese.nju.edu.cn/dsd/list.htm">都教授</a>的悉心指导。此外，我曾经在网易游戏实习，负责体素化场景的编辑与渲染。
 
