@@ -142,90 +142,71 @@ tags:
     </tbody>
 </table>
 
-## 🎯 三、整体建设目标与规划
 
-## 📅 四、一季度开发计划
-
-### 一季度研发排期（基于多智能体的意图识别优化）
-<table style="width: 100%; text-align: center;">
-  <thead>
-    <tr>
-      <th style="text-align: center;"><strong>阶段</strong></th>
-      <th style="text-align: center;"><strong>工作任务</strong></th>
-      <th style="text-align: center;"><strong>描述</strong></th>
-      <th style="text-align: center;"><strong>目标</strong></th>
-      <th style="text-align: center;"><strong>进展</strong></th>
-      <th style="text-align: center;"><strong>计划完成时间</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td rowspan="2" style="background-color: #f8f9fa;"><strong>1阶段</strong><br>(1月20 ~ 2月10)</td>
-      <td><strong>设计</strong></td>
-      <td style="text-align: left;">完善技术架构设计，明确各模块功能及接口定义</td>
-      <td style="text-align: left;">完成数智助手核心智能体的架构设计，输出详细的技术文档与设计图</td>
-      <td><span style="color: #1890ff;">进行中</span></td>
-      <td>2025年2月6日</td>
-    </tr>
-    <tr>
-      <td><strong>搭建</strong></td>
-      <td style="text-align: left;">搭建基础框架，涵盖代码初始化、服务配置、日志管理等内容，为后续开发提供标准化支撑</td>
-      <td style="text-align: left;">搭建稳定可靠的基础框架，确保系统的可扩展性和易维护性</td>
-      <td><span style="color: #d9d9d9;">待开发</span></td>
-      <td>2025年2月10日</td>
-    </tr>
-    <tr>
-      <td rowspan="3" style="background-color: #f8f9fa;"><strong>2阶段</strong><br>(2月11 ~ 3月5)</td>
-      <td><strong>智能体通信机制</strong></td>
-      <td style="text-align: left;">实现智能体之间的通信，确保多模块数据交互的准确性和可靠性</td>
-      <td style="text-align: left;">实现智能体的通信机制，确保数据传递的高效性和一致性</td>
-      <td><span style="color: #d9d9d9;">待开发</span></td>
-      <td>2025年2月14日</td>
-    </tr>
-    <tr>
-      <td><strong>意图澄清与识别</strong></td>
-      <td style="text-align: left;">实现自然语言处理模块，支持用户意图的澄清与精确识别</td>
-      <td style="text-align: left;">开发意图澄清与识别模块，支持多种用户场景需求</td>
-      <td><span style="color: #d9d9d9;">待开发</span></td>
-      <td>2025年2月21日</td>
-    </tr>
-    <tr>
-      <td><strong>模块串联与协作</strong></td>
-      <td style="text-align: left;">将业务智能体串联起来，形成逻辑闭环，确保核心功能模块能够协同工作</td>
-      <td style="text-align: left;">完成模块间的串联与协作，实现智能体的核心功能闭环</td>
-      <td><span style="color: #d9d9d9;">待开发</span></td>
-      <td>2025年3月5日</td>
-    </tr>
-    <tr>
-      <td rowspan="3" style="background-color: #f8f9fa;"><strong>3阶段</strong><br>(3月6 ~ 3月21日)</td>
-      <td><strong>性能优化</strong></td>
-      <td style="text-align: left;">通过负载测试与压力测试优化系统响应速度、并发处理能力及资源利用率</td>
-      <td style="text-align: left;">优化智能体性能，达到预期的响应速度与并发处理指标</td>
-      <td><span style="color: #d9d9d9;">待开发</span></td>
-      <td>2025年3月10日</td>
-    </tr>
-    <tr>
-      <td><strong>单元测试与集成测试</strong></td>
-      <td style="text-align: left;">对各模块功能进行深入测试，并模拟实际场景进行集成测试，验证模块协作的稳定性</td>
-      <td style="text-align: left;">完成单元测试与集成测试，确保系统的稳定性和功能完整性</td>
-      <td><span style="color: #d9d9d9;">待开发</span></td>
-      <td>2025年3月14日</td>
-    </tr>
-    <tr>
-      <td><strong>上线准备</strong></td>
-      <td style="text-align: left;">完成所有测试后，输出上线评估报告，为正式交付提供保障</td>
-      <td style="text-align: left;">输出测试报告及上线评估文档，为交付做好准备</td>
-      <td><span style="color: #d9d9d9;">待开发</span></td>
-      <td>2025年3月21日</td>
-    </tr>
-  </tbody>
-</table>
-
-## 🧠 五、Deepseek R1 融合
+## 🧠 三、Deepseek R1 融合
 
 为了进一步提升系统的语义理解和意图解析能力，我们计划引入最新的 Deepseek R1 模型，并将其与现有的多智能体架构深度融合。Deepseek R1 模型在深层语义分析、实体识别和复杂意图解析方面具有显著优势，为整体系统提供额外的智能支撑。
 
 ### 5.1 集成方案一：基于深度思考过程的认知迭代
+
+<div class="mermaid">
+graph LR
+    subgraph ReasoningLoop["推理循环 (迭代n次)"]
+        style ReasoningLoop fill:#fff4e6,stroke:#ffb86c
+        UserInput(("用户输入"))
+        KB[(知识库)]
+        RC[相关知识片段]
+        RL[deepseek R1]
+        T((思考过程))
+        
+        UserInput --> KB
+        KB --> RC
+        RC --> RL
+        RL --> T
+        %% 增加 deepseek R1 与知识库的双向交互
+        RL <--> KB
+        T -.-> RL
+    end
+    
+    subgraph AugmentedGen["增强生成"]
+        style AugmentedGen fill:#e6f3ff,stroke:#61afef
+        FR((最终思考))
+        LLM[LLM]
+        Answer((模型回答))
+        
+        T --> FR
+        FR --> LLM
+        LLM --> Answer
+    end
+    
+    RC2[补充知识]
+    KB --> RC2
+    RC2 --> LLM
+    
+    %% 样式定义
+    classDef default fill:#fff,stroke:#333,stroke-width:1px;
+    classDef input fill:#ffb86c,stroke:#d18616,color:#000;
+    classDef process fill:#61afef,stroke:#4b8cc2,color:#000;
+    classDef data fill:#98c379,stroke:#7a9c61,color:#000;
+    
+    %% 应用样式
+    class UserInput,T,FR,Answer input;
+    class RL,LLM process;
+    class KB,RC,RC2 data;
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis'
+    }
+  });
+</script>
 
 在原有意图澄清与理解模块的基础上，我们进一步提取 Deepseek R1 模型内部的思考过程（chain-of-thought），并在此过程中调用知识库进行信息补充与反馈，使模型能通过多轮迭代不断优化解析结果。
 
@@ -245,17 +226,35 @@ def deepseek_iterative_analysis(user_input, max_iterations=3):
     
     combined_input = initial_result["chain_of_thought"]
     for i in range(max_iterations):
-        # 查询知识库，根据当前思考过程查找背景数据
+        # 1. 主动查询知识库获取相关信息
         kb_info = query_knowledge_base(combined_input)
+        
+        # 2. 让知识库根据当前思考状态推送补充信息
+        kb_suggestions = knowledge_base_suggestions(combined_input)
+        
+        # 3. 合并两种知识来源
+        enriched_knowledge = merge_knowledge(kb_info, kb_suggestions)
+        
         # 将知识库信息与当前思考内容组合，形成用于优化的新输入
-        input_for_refinement = f"{combined_input}\n额外信息：{kb_info}"
+        input_for_refinement = {
+            "thought_process": combined_input,
+            "kb_query_results": kb_info,
+            "kb_suggestions": kb_suggestions,
+            "context": enriched_knowledge
+        }
+        
         # 迭代优化：调用 Deepseek R1 进行进一步解析
         refined_result = deepseek_r1_api(input_for_refinement, mode="iterative-refinement")
+        
+        # 4. 更新知识库
+        update_knowledge_base(refined_result)
+        
         # 更新思考过程
         combined_input = refined_result.get("chain_of_thought", combined_input)
         # 根据一定收敛指标判断是否提前退出迭代
         if has_converged(combined_input):
             break
+    
     final_result = {
         "final_intent": refined_result.get("result", initial_result["result"]),
         "final_chain_of_thought": combined_input
@@ -265,10 +264,43 @@ def deepseek_iterative_analysis(user_input, max_iterations=3):
 # 辅助函数（伪代码实现）
 def query_knowledge_base(query_text):
     """
-    根据提供的查询文本在内部知识库中检索相关信息，
-    这里返回的是模拟结果。
+    主动查询知识库获取信息
     """
-    return "相关的背景知识或数据"
+    return {
+        "query_results": "查询到的知识",
+        "confidence": 0.85,
+        "source": "knowledge_base"
+    }
+
+def knowledge_base_suggestions(thought_process):
+    """
+    知识库根据当前思考过程主动推送相关信息
+    """
+    return {
+        "suggestions": "知识库推荐的补充信息",
+        "relevance": 0.75,
+        "reasoning": "推荐原因"
+    }
+
+def merge_knowledge(kb_info, kb_suggestions):
+    """
+    合并主动查询和被动推送的知识
+    """
+    return {
+        "combined_knowledge": "整合后的知识",
+        "priority": "优先级排序",
+        "metadata": {
+            "query_source": kb_info,
+            "suggestion_source": kb_suggestions
+        }
+    }
+
+def update_knowledge_base(refined_result):
+    """
+    根据推理结果更新知识库
+    """
+    # 实现知识库的动态更新逻辑
+    pass
 
 def has_converged(chain_text):
     """
@@ -316,3 +348,185 @@ def process_with_deepseek_agent(user_input):
 - **模块灵活性**：无论是作为现有 Agent 的增强，还是独立智能体存在，Deepseek R1 模型均可以根据业务需求灵活调度和升级。
 
 未来，我们将持续监控 Deepseek R1 模型在实际场景下的表现，并根据用户反馈不断优化融合策略，确保系统在智能化水平上保持领先。
+
+
+## 📅 四、一季度开发计划
+
+### 一季度研发排期（基于多智能体的意图识别优化）
+<table style="width: 100%; text-align: center;">
+  <thead>
+    <tr>
+      <th style="text-align: center;"><strong>阶段</strong></th>
+      <th style="text-align: center;"><strong>工作任务</strong></th>
+      <th style="text-align: center;"><strong>描述</strong></th>
+      <th style="text-align: center;"><strong>目标</strong></th>
+      <th style="text-align: center;"><strong>进展</strong></th>
+      <th style="text-align: center;"><strong>计划完成时间</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="2" style="background-color: #f8f9fa;"><strong>1阶段</strong><br>(1月20 ~ 2月10)</td>
+      <td><strong>AutoGen框架调研</strong></td>
+      <td style="text-align: left;">深入研究AutoGen框架特性，评估业务适配性，完善技术架构设计</td>
+      <td style="text-align: left;">输出AutoGen框架评估报告和详细的技术方案设计文档</td>
+      <td><span style="color: #1890ff;">进行中</span></td>
+      <td>2025年2月6日</td>
+    </tr>
+    <tr>
+      <td><strong>基础环境搭建</strong></td>
+      <td style="text-align: left;">搭建AutoGen开发环境，完成基础组件配置，建立标准化开发规范</td>
+      <td style="text-align: left;">完成AutoGen基础环境搭建和开发规范制定</td>
+      <td><span style="color: #d9d9d9;">待开发</span></td>
+      <td>2025年2月10日</td>
+    </tr>
+    <tr>
+      <td rowspan="3" style="background-color: #f8f9fa;"><strong>2阶段</strong><br>(2月11 ~ 3月5)</td>
+      <td><strong>独立模块接入</strong></td>
+      <td style="text-align: left;">将AutoGen智能体作为独立模块接入现有数智助手系统</td>
+      <td style="text-align: left;">完成AutoGen模块的独立接入和基础功能验证</td>
+      <td><span style="color: #d9d9d9;">待开发</span></td>
+      <td>2025年2月20日</td>
+    </tr>
+    <tr>
+      <td><strong>小规模试点</strong></td>
+      <td style="text-align: left;">在特定业务场景下进行小规模试点测试，收集运行数据</td>
+      <td style="text-align: left;">完成试点测试并达到90%的意图识别准确率</td>
+      <td><span style="color: #d9d9d9;">待开发</span></td>
+      <td>2025年2月25日</td>
+    </tr>
+    <tr>
+      <td><strong>性能优化</strong></td>
+      <td style="text-align: left;">基于试点数据优化智能体性能，调整资源配置</td>
+      <td style="text-align: left;">优化系统性能，实现75%的业务场景覆盖</td>
+      <td><span style="color: #d9d9d9;">待开发</span></td>
+      <td>2025年3月5日</td>
+    </tr>
+    <tr>
+      <td rowspan="3" style="background-color: #f8f9fa;"><strong>3阶段</strong><br>(3月6 ~ 3月21日)</td>
+      <td><strong>意图澄清能力开发</strong></td>
+      <td style="text-align: left;">开发基于AutoGen的意图澄清功能，提升多轮对话准确性</td>
+      <td style="text-align: left;">实现初步的意图澄清能力，提升用户体验</td>
+      <td><span style="color: #d9d9d9;">待开发</span></td>
+      <td>2025年3月12日</td>
+    </tr>
+    <tr>
+      <td><strong>系统测试</strong></td>
+      <td style="text-align: left;">进行全面的功能测试和性能测试，验证系统稳定性</td>
+      <td style="text-align: left;">完成系统测试，确保各项指标达标</td>
+      <td><span style="color: #d9d9d9;">待开发</span></td>
+      <td>2025年3月17日</td>
+    </tr>
+    <tr>
+      <td><strong>效果评估</strong></td>
+      <td style="text-align: left;">收集并分析运行数据，评估优化效果，输出评估报告</td>
+      <td style="text-align: left;">完成第一季度效果评估报告，为下阶段优化提供依据</td>
+      <td><span style="color: #d9d9d9;">待开发</span></td>
+      <td>2025年3月21日</td>
+    </tr>
+  </tbody>
+</table>
+
+## 🎯 五、全年建设计划
+<table style="width: 100%; border-collapse: collapse; text-align: center;">
+  <thead>
+    <tr style="background-color: #f0f0f0;">
+      <th style="width: 12%; padding: 10px; border: 1px solid #ddd;">季度</th>
+      <th style="width: 18%; padding: 10px; border: 1px solid #ddd;">主要目标</th>
+      <th style="width: 30%; padding: 10px; border: 1px solid #ddd;">关键措施</th>
+      <th style="width: 40%; padding: 10px; border: 1px solid #ddd;">原有成果 vs 优化后成果</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ddd;">第一季度</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">基于AutoGen多智能体框架的意图理解增强</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        1. 以独立模块形式接入AutoGen智能体<br>
+        2. 在现有数智助手中进行小规模试点<br>
+        3. 收集运行数据与用户反馈<br>
+        4. 优化智能体性能与资源占用<br>
+        5. 评估业务场景适配性
+      </td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        【原有效果】<br>
+        • 意图识别准确率：80%<br>
+        • 业务场景覆盖：60%<br><br>
+        【优化后效果】<br>
+        • 意图识别准确率：90%<br>
+        • 业务场景覆盖：75%<br>
+        • AutoGen模块接入验证<br>
+        • 初步意图澄清能力
+      </td>
+    </tr>
+    <tr style="background-color: #fafafa;">
+      <td style="padding: 10px; border: 1px solid #ddd;">第二季度</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">Deepseek R1融合与智能体全面整合</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        6. AutoGen智能体全面整合到业务框架<br>
+        7. 引入Deepseek R1模型，实现chain-of-thought推理<br>
+        8. 构建完整的多智能体协作机制<br>
+        9. 实现基于DAG的任务规划系统<br>
+        10. 开发智能体能力画像系统
+      </td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        【原有效果】<br>
+        • 任务响应时间：300ms<br>
+        • 调度成功率：85%<br>
+        • 并发处理能力：1000 QPS<br><br>
+        【优化后效果】<br>
+        • 任务响应时间：150ms<br>
+        • 调度成功率：95%<br>
+        • 并发处理能力：3000 QPS<br>
+        • 支持动态任务优先级<br>
+        • 智能体协作效率提升40%
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ddd;">第三季度</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">知识图谱与安全体系建设</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        11. 构建动态加密知识图谱<br>
+        12. 实现数据分级加密机制<br>
+        13. 开发智能脱敏系统<br>
+        14. 建立安全审计追踪<br>
+        15. 优化数据访问控制
+      </td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        【原有效果】<br>
+        • 安全评分：70分<br>
+        • 数据加密覆盖：60%<br>
+        • 安全事件响应：4h<br><br>
+        【优化后效果】<br>
+        • 安全评分：90分<br>
+        • 数据加密覆盖：95%<br>
+        • 安全事件响应：30min<br>
+        • 漏洞数量减少50%<br>
+        • 支持全链路追踪
+      </td>
+    </tr>
+    <tr style="background-color: #fafafa;">
+      <td style="padding: 10px; border: 1px solid #ddd;">第四季度</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">智能体决策优化与协作升级</td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        16. 构建规约化能力画像体系<br>
+        17. 实现多智能体选举投票机制<br>
+        18. 优化智能体协作架构<br>
+        19. 落地MMCP多模态上下文协议<br>
+        20. 完善智能体评估与反馈体系
+      </td>
+      <td style="padding: 10px; border: 1px solid #ddd;">
+        【原有效果】<br>
+        • 智能体匹配率：75%<br>
+        • 任务响应时间：30分钟<br>
+        • 数据传输效率：基准值<br><br>
+        【优化后效果】<br>
+        • 智能体匹配率：95%以上<br>
+        • 任务响应时间：15分钟<br>
+        • 数据压缩比：60%<br>
+        • 调用时间缩短60%<br>
+        • 单智能体效率提升2倍
+      </td>
+    </tr>
+  </tbody>
+</table>
