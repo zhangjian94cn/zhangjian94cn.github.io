@@ -1,6 +1,6 @@
 ---
-title: "基于AutoGen的多智能体架构设计"
-subtitle: "多智能体对话系统"
+title: "基于AutoGen的数智助手问答架构设计"
+subtitle: "多智能体对话系统的深度思维链实践"
 layout: post
 author: "Zhang Jian" 
 header-style: text
@@ -9,11 +9,9 @@ tags:
   - AI
   - 多智能体
   - AutoGen
+  - Deepseek R1
   - 架构设计
 ---
-
-
-<!-- > 📢 导读：本文详细介绍了一个基于多智能体的智能对话系统架构设计，从整体框架到具体实现，为您呈现完整的技术解决方案。 -->
 
 ## 🔍 一、整体架构设计
 
@@ -311,6 +309,69 @@ def has_converged(chain_text):
 
 上述代码展示了如何通过多轮迭代，将 Deepseek R1 的内部思考过程与外部知识库数据相结合，以实现逐步优化的语义解析。
 
+以下是一个移动业务场景的实际应用案例：
+
+### 场景案例:套餐推荐优化
+
+> 🔍 用户咨询:"我想给父母换个套餐,他们每月通话时长200分钟左右,偶尔刷视频,主要是和家人视频通话,预算150元以内。"
+
+<table style="width: 100%; border-collapse: collapse;">
+  <tr>
+    <th style="width: 50%; padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6;">传统向量检索模式</th>
+    <th style="width: 50%; padding: 10px; background-color: #f8f9fa; border: 1px solid #dee2e6;">Deepseek R1 思维链模式</th>
+  </tr>
+  <tr>
+    <td style="padding: 15px; border: 1px solid #dee2e6; vertical-align: top;">
+      <strong>处理流程:</strong><br>
+      1. 提取关键词: "通话时长200分钟", "视频通话", "150元"<br>
+      2. 向量检索匹配相似套餐<br>
+      3. 按相似度排序推荐<br><br>
+      <strong>存在问题:</strong><br>
+      • 缺乏场景理解,可能推荐不合适套餐<br>
+      • 无法理解"父母"这类用户特征<br>
+      • 忽略了"偶尔刷视频"的频率特征<br>
+      • 推荐结果过于机械
+    </td>
+    <td style="padding: 15px; border: 1px solid #dee2e6; vertical-align: top;">
+      <strong>思维链分析:</strong><br>
+      1. <em>用户画像解析</em><br>
+      ✓ 目标用户:老年群体(父母)<br>
+      ✓ 使用习惯:以通话为主,视频使用频率低<br>
+      ✓ 消费特征:预算敏感,性价比导向<br><br>
+      2. <em>需求分层</em><br>
+      ✓ 核心需求:通话套餐(约200分钟)<br>
+      ✓ 次要需求:视频通话流量<br>
+      ✓ 价格上限:150元<br><br>
+      3. <em>套餐匹配逻辑</em><br>
+      ✓ 优先考虑老年专属套餐<br>
+      ✓ 通话时长满足200分钟基本需求<br>
+      ✓ 适量流量满足视频通话需求<br>
+      ✓ 套餐价格需预留一定余量<br><br>
+      4. <em>个性化建议</em><br>
+      ✓ 推荐开通亲情网<br>
+      ✓ 建议设置流量提醒<br>
+      ✓ 介绍相关优惠活动
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 15px; border: 1px solid #dee2e6;">
+      <strong>推荐结果:</strong><br>
+      直接推荐"月租129元200分钟通话+10G流量套餐"
+    </td>
+    <td style="padding: 15px; border: 1px solid #dee2e6;">
+      <strong>智能推荐:</strong><br>
+      1. 主套餐:老年关爱套餐 118元/月<br>
+      - 300分钟通话<br>
+      - 5G定向流量(视频通话专用)<br>
+      - 送亲情网业务<br>
+      2. 备选方案:夕阳红套餐 108元/月<br>
+      - 200分钟通话<br>
+      - 3G定向流量<br>
+      - 赠送视频通话特权
+    </td>
+  </tr>
+</table>
+
 ### 5.2 集成方案二：新增独立 Deepseek R1 Agent
 
 为了更灵活地利用 Deepseek R1 的能力，可以将其封装为一个独立的智能体，作为整个多智能体协作系统中的一员。其他 Agent 在遇到复杂语义问题时，可主动调用此 Deepseek Agent 获取更精细的解析结果。
@@ -530,3 +591,9 @@ def process_with_deepseek_agent(user_input):
     </tr>
   </tbody>
 </table>
+
+</div>
+
+
+
+
