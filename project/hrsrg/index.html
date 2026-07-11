@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>HieRarchical Sparse Radiance Grid</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          TeX: {
+            equationNumbers: {
+              autoNumber: "AMS"
+            }
+          },
+          SVG: {
+            scale: 90
+          },
+          tex2jax: {
+            inlineMath: [ ['$','$'] ],
+            displayMath: [ ['$$','$$'] ],
+            processEscapes: true,
+          }
+        });
+    </script>
+    
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG">
+    </script>
+    <!-- <base href="/"> -->
+
+        <!--FACEBOOK-->
+    <!-- <meta property="og:image" content="https://people.eecs.berkeley.edu/~bmild/fourfeat/img/foxface.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="512">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://people.eecs.berkeley.edu/~bmild/fourfeat/"/>
+    <meta property="og:title" content="Fourier Feature Networks" />
+    <meta property="og:description" content="Project page for Fourier Features Let Networks Learn High Frequency Functions in Low Dimensional Domains." /> -->
+
+        <!--TWITTER-->
+    <!-- <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fourier Feature Networks" />
+    <meta name="twitter:description" content="Project page for Fourier Features Let Networks Learn High Frequency Functions in Low Dimensional Domains." />
+    <meta name="twitter:image" content="https://people.eecs.berkeley.edu/~bmild/fourfeat/img/foxface.jpg" />
+ -->
+
+<!--     <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
+  <!-- <link rel="icon" type="image/png" href="img/seal_icon.png"> -->
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- Replace blocked CDNs with local files or BootCDN -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110862391-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-110862391-1');
+    </script>
+
+    <!-- Local JS files -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+    
+    <script src="js/app.js"></script>
+</head>
+
+<body>
+    <div class="container" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                Digging into Radiance Grid for <br> 
+                Real-Time View Synthesis with Detail Preservation</br> 
+                <small>
+                    ECCV 2022 (POSTER)
+                </small>
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a href="https://zhangjian94cn.github.io/">
+                          Jian Zhang*
+                        </a>
+                        
+                        </br>Alibaba Group
+                    </li>
+                    <li>
+                        <!-- <a href="https://people.eecs.berkeley.edu/~pratul/">
+                          Pratul Srinivasan*
+                        </a> -->
+                        Jinchi Huang*
+                        </br>Alibaba Group
+                    </li>
+                    <li>
+                        <!-- <a href="http://people.eecs.berkeley.edu/~bmild/">
+                            Ben Mildenhall*
+                        </a> -->
+                        Bowen Cai*
+                        </br>Alibaba Group
+                    </li>
+
+                    <li>
+                        <a href="https://hufu6371.github.io/huanfu/">
+                            Huan Fu#
+                        </a>
+                        
+                        </br>Alibaba Group
+                    </li>
+
+                    <li>
+                        <a href="https://mingming-gong.github.io/">
+                            Mingming Gong
+                        </a>
+                        
+                        </br>University of Melbourne
+                    </li>
+                    
+                    <br>
+                    
+                    <li>
+                        <a href="http://igm.univ-mlv.fr/~cwang/index.php">
+                            Chaohui Wang
+                        </a>
+                        
+                        </br>Univ Gustave Eiffel
+                    </li>
+                    
+                    <li>
+                        <!-- <a href="https://scholar.google.com/citations?user=lvA86MYAAAAJ&hl=en">
+                          Utkarsh Singhal
+                        </a> -->
+                        Jiaming Wang
+                        </br>Alibaba Group
+                    </li>
+
+                    <li>
+                        <!-- <a href="http://cseweb.ucsd.edu/~ravir/">
+                          Ravi Ramamoorthi
+                        </a> -->
+                        Hongchen Luo
+                        </br>Alibaba Group
+                    </li>
+
+                    <li>
+                        <!-- <a href="https://jonbarron.info/">
+                          Jonathan T. Barron
+                        </a> -->
+                        Rongfei Jia
+                        </br>Alibaba Group
+                    </li>
+
+                    <li>
+                        Binqiang Zhao
+                        </br>Alibaba Group
+                    </li>
+
+                </ul>
+                *denotes equal contribution &nbsp; &nbsp;
+                #denotes corresponding author
+            </div>
+        </div>
+
+
+        <div class="row">
+                <div class="col-md-8 col-md-offset-2 text-center">
+                    <ul class="nav-pills" style="display: flex !important; justify-content: center !important; gap: 3rem !important; list-style: none; padding: 0;">
+                        <li style="float: none !important; display: block !important;">
+                            <a href="./assets/hrsrg-eccv2022-3346.pdf">
+                            <image src="img/adasrg_paper_img.jpeg" height="60px">
+                                <h4><strong>Paper</strong></h4>
+                            </a>
+                        </li>
+
+                        <!-- <li>
+                            <a href="https://github.com/zhangjian94cn/HrSRG">
+                            <image src="img/github.png" height="60px">
+                                <h4><strong>Code</strong></h4>
+                            </a>
+                        </li> -->
+
+                        <li style="float: none !important; display: block !important;">
+                            <a href="https://pan.baidu.com/s/15ZKE5cpT4X02-Dni9_-W_g?pwd=38jm">
+                            <image src="img/dataset.png" height="60px">
+                                <h4><strong>Dataset</strong></h4>
+                            </a>
+                        </li>
+
+
+                    </ul>
+                </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <image src="img/main-figure-eccv.png" class="img-responsive" alt="overview"><br>
+                <p class="text-justify">
+                Neural Radiance Fields (NeRF) series are impressive in representing scenes and synthesizing high-quality novel views. 
+                However, most previous works fail to preserve texture details and suffer from slow training speed. 
+                A recent method SNeRG demonstrates that baking a trained NeRF as a Sparse Neural Radiance Grid enables real-time view synthesis with slight scarification of rendering quality. 
+                In this paper, we dig into the Radiance Grid representation and present a set of improvements, which together result in significantly boosted performance in terms of both speed and quality. 
+                First, we propose an HieRarchical Sparse Radiance Grid (HrSRG) representation that has higher voxel resolution for informative spaces and fewer voxels for other spaces. 
+                HrSRG leverages a hierarchical voxel grid building process, and can describe a scene at high resolution without excessive memory footprint. 
+                Furthermore, we show that directly optimizing the voxel grid leads to surprisingly good texture details in rendered images. 
+                This direct optimization is memory-friendly and requires multiple orders of magnitude less time than conventional NeRFs as it only involves a tiny MLP. 
+                Finally, we find that a critical factor that prevents fine details restoration is the misaligned 2D pixels among images caused by camera pose errors. 
+                We propose to use the perceptual loss to add tolerance to misalignments, leading to the improved visual quality of rendered images.
+
+                </p>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Overview Video
+                </h3>
+                <div class="text-center">
+                    <div style="position:relative;padding-top:56.25%;">
+                        <iframe src="https://www.youtube.com/embed/zLU4d7fx8oY" title="HrSRG" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    HieRarchical Sparse Radiance Grid (HrSRG)
+                </h3>
+                <image src="img/AdaSRG-OP.png" class="img-responsive" alt="overview"><br>
+                <p class="text-justify">
+                    We first bake Def-NeRF$^{\dagger}$ into a $N^3$ voxle grid to represent a scene. 
+                    A voxel contains opacity (or volume density), diffuse color, and a 3-dimensional specular feature. 
+                    For a specific voxel, we randomly cast $K$ rays from $K$ origins passing through the voxel, and compute their accumulated transmittance values. 
+                    With this operation, we can assign each voxel a maximum transmittance value. 
+                    Then, we define four transmittance intervals (or 3D spaces) A, B, C, and D as shown in above figure based on the transmittance thresholds $\tau_1$, $\tau_2$, and $\tau_3$, respectively. 
+                    We find that space A contains most of the high-frequency texture details while other spaces contribute slightly to the base color in the rendering process. This observation motives us to utilize higher voxel resolution for space A, and lower voxel resolution for spaces B, C, and D. 
+                    For the purpose, we introduce the merging and splitting operations leveraging the octree data structure.
+                </p>
+                <p class="text-justify">
+                    <b>Merging.</b> By converting the $N^3$ voxle grid to a tree structure with maximum depth $L$, we have a transmittance value for each node and leaf. 
+                    For each node that is with depth $L_i$ and has eight leaves, if the maximum transmittance value among itself and its leaves is below $\tau$, we delete the eight leaves. 
+                    We recursively consider depth $L_1$, $L_2$, and $L_3$ with thresholds $\tau_3$, $\tau_2$, and $\tau_1$, respectively. 
+                    As a results, we capture the approximate voxel resolutions $(N/2)^3$, $(N/4)^3$, $(N/8)^3$ for spaces B, C, and D, respectively.
+                </p>
+
+                <p class="text-justify">
+                    <b>Splitting.</b> After the merging operation, if a leaf is with depth $L$, we take it as a parent of eight new leaves. 
+                    A newly created leaf has the same voxel values (i.e., $(\text{c},\sigma,\text{v})$) as its parent. 
+                    With this splitting operation, the space A would have a voxel resolution of $(2N)^3$.
+                </p>
+            </div>
+        </div>
+            
+
+
+        <!-- <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Citation
+                </h3>
+                <div class="form-group col-md-10 col-md-offset-1">
+                    <textarea id="bibtex" class="form-control" readonly>
+@article{tancik2020fourfeat,
+    title={Fourier Features Let Networks Learn High Frequency Functions in Low Dimensional Domains},
+    author={Matthew Tancik and Pratul P. Srinivasan and Ben Mildenhall and Sara Fridovich-Keil and Nithin Raghavan and Utkarsh Singhal and Ravi Ramamoorthi and Jonathan T. Barron and Ren Ng},
+    journal={NeurIPS},
+    year={2020}
+}</textarea>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <p class="text-justify">
+                    We are very grateful for the support provided by the Tao Technology Department, Alibaba Group.
+                </p>
+
+                <p class="text-justify">
+                    The website template was borrowed from <a href="http://mgharbi.com/">Michaël Gharbi</a>.
+                </p>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

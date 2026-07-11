@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>水墨莲花 / Ink Lotus</title>
+    <meta
+      name="description"
+      content="水墨莲花：以 3D Gaussian Splatting 重构一幅莲花国画，让笔墨在浏览器中获得空间、光与时间。"
+    />
+    <meta property="og:title" content="水墨莲花 / Ink Lotus" />
+    <meta
+      property="og:description"
+      content="A meeting of real-time 3D Gaussian Splatting and the quiet beauty of Chinese ink painting."
+    />
+    <meta property="og:image" content="/project/ink-splat-lotus/img/cover.webp" />
+    <link
+      rel="preload"
+      as="fetch"
+      href="scene.json"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css?v=20260711-editorial-v22" />
+  </head>
+  <body>
+    <main class="experience-shell">
+      <section
+        class="hero-stage"
+        aria-labelledby="hero-title"
+        data-splat-stage
+        data-splat-config="scene.json"
+      >
+        <div id="scene-root" class="scene-root" data-splat-root aria-hidden="true"></div>
+        <div class="paper-wash" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <a class="back-link" href="/">Zhang Jian · Selected Works</a>
+          <p class="eyebrow">3D Gaussian Splatting · Ink in Motion</p>
+          <h1 id="hero-title">水墨莲花</h1>
+          <p class="hero-subtitle">
+            以数十万枚三维高斯基元，重构一幅可以呼吸、流散与回应触碰的水墨。
+          </p>
+          <p class="hero-techline">
+            Single-image reconstruction · Real-time neural rendering · Same-source GPU particles
+          </p>
+        </div>
+
+        <div id="loading" class="loading-panel" data-splat-loading role="status">
+          <span class="loading-mark"></span>
+          <span id="loading-label" data-splat-loading-label>墨色正在成形</span>
+        </div>
+
+        <div id="fallback" class="fallback-panel" data-splat-fallback hidden>
+          <video id="fallback-video" data-splat-fallback-video muted autoplay playsinline loop preload="none"></video>
+          <div class="fallback-copy">
+            <p>这片水墨暂时未能在浏览器中展开。</p>
+            <button id="retry-button" data-splat-retry type="button">再试一次</button>
+          </div>
+        </div>
+
+        <nav class="effect-controls" aria-label="Ink splat effects">
+          <button class="effect-button is-active" type="button" data-splat-mode="calm" aria-label="静观完整的水墨莲花">静观</button>
+          <button class="effect-button" type="button" data-splat-mode="dissolve" aria-label="让莲花化作流动的墨粒">化墨</button>
+          <button class="effect-button" type="button" data-splat-mode="sculpt" aria-label="触碰并扰动莲花的结构">触墨</button>
+          <button class="effect-button" type="button" data-splat-mode="reform" aria-label="让散开的粒子重新归形">归形</button>
+          <button class="effect-button" type="button" data-splat-mode="reset" aria-label="恢复初始视角与状态">重置</button>
+        </nav>
+      </section>
+
+      <section class="technology-band" aria-labelledby="technology-title">
+        <div class="chapter-layout">
+          <header class="chapter-heading">
+            <p class="section-kicker">01 · The Technology</p>
+            <h2 id="technology-title">不是把画面立起来，而是把颜色、体积与光重新写进空间。</h2>
+          </header>
+          <div class="chapter-copy">
+            <p class="chapter-lead">
+              3D 高斯泼溅（3D Gaussian Splatting）以三维高斯为基本单元。每一枚基元都携带位置、尺度、方向、颜色与透明度；数十万枚基元在 GPU 上被实时投影、排序与混合，最终连续成像，无需传统的三角网格与贴图。
+            </p>
+            <p>
+              它不是一张被弯折的图片，也不是一段预录视频。视角改变时，轮廓、遮挡与空间关系会被重新计算，于是这株莲花真正存在于浏览器里的三维场中，可以被环绕、靠近，也可以回应一次触碰。
+            </p>
+            <p>
+              本作从单幅水墨出发：BiRefNet 分离纸面与主体，TripoSplat 推断花、叶与茎的三维结构，Spark.js 再将 Gaussian Splat 交给 WebGL2 实时渲染。化墨与归形所使用的 GPU 粒子同样采自莲花本体，因此每一次流散都保留着原来组织的颜色与方向。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="process-band" aria-labelledby="process-title">
+        <div class="process-inner">
+          <header class="process-heading">
+            <p class="section-kicker">From Image to Field</p>
+            <h2 id="process-title">一幅画，如何成为一方空间</h2>
+          </header>
+          <ol class="process-list">
+            <li>
+              <span class="process-number">01</span>
+              <p class="process-name">取形 / Reconstruct</p>
+              <p>清理纸面背景，并从单幅观察中推断花、叶与茎的深度关系。</p>
+            </li>
+            <li>
+              <span class="process-number">02</span>
+              <p class="process-name">成场 / Render</p>
+              <p>用半透明高斯基元承载柔边与晕染，在 GPU 上实时完成投影、排序与混合。</p>
+            </li>
+            <li>
+              <span class="process-number">03</span>
+              <p class="process-name">入境 / Interact</p>
+              <p>让射线命中真实表面，让同源点云沿着流场化开，并在留白中重新聚拢。</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="aesthetics-band" aria-labelledby="aesthetics-title">
+        <div class="chapter-layout chapter-layout--reverse">
+          <header class="chapter-heading">
+            <p class="section-kicker">02 · The Aesthetics</p>
+            <h2 id="aesthetics-title">技术给它空间，水墨给它时间。</h2>
+          </header>
+          <div class="chapter-copy">
+            <p class="chapter-lead">
+              水墨最动人的地方，不只是已经落下的笔，更是墨色将尽未尽、纸面仍在呼吸的那一刻。Gaussian Splat 的柔边、半透明与离散结构，恰好允许形体停留在“有”与“无”之间。
+            </p>
+            <p>
+              因此，这里没有把莲花塑成坚硬的三维物件。花瓣仍保留胭脂的薄，荷叶仍有焦墨与淡墨的层次；当它化开，光先在轮廓上凝住，随后组织顺着同一股风散入宣纸，最终把画面还给安静的留白。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="reflection-band" aria-label="Creative statement and technical credits">
+        <div class="reflection-inner">
+          <blockquote>
+            我想做的，不是把国画变成一个 3D 模型，而是让一笔墨从纸上的瞬间，延伸成一段可以被观看、触碰与等待的时间。
+          </blockquote>
+          <dl class="technical-notes">
+            <div>
+              <dt>Representation</dt>
+              <dd>3D Gaussian Splatting · TripoSplat</dd>
+            </div>
+            <div>
+              <dt>Realtime</dt>
+              <dd>Spark.js · Three.js · WebGL2</dd>
+            </div>
+            <div>
+              <dt>Interaction</dt>
+              <dd>Same-source GPU particles · Raycasting · Shader fields</dd>
+            </div>
+            <div>
+              <dt>Delivery</dt>
+              <dd>Static Web · Cloudflare R2</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <footer class="project-footer">
+        <p>Ink Lotus · 2026</p>
+        <a href="/">返回作品集</a>
+      </footer>
+    </main>
+
+    <!-- SPLAT_RUNTIME_START -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+          "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/2.1.0/spark.module.js"
+        }
+      }
+    </script>
+    <script type="module" src="runtime/bootstrap.js?v=0.3.0"></script>
+    <!-- SPLAT_RUNTIME_END -->
+  </body>
+</html>

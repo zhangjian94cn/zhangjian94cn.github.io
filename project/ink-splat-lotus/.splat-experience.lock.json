@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 2,
+  "runtimeVersion": "0.3.0",
+  "threeVersion": "0.180.0",
+  "sparkVersion": "2.1.0",
+  "profile": "ink-elegant",
+  "generatedFiles": {
+    "runtime/bootstrap.js": "c938cb12ebd22ac84b78043388c48ff6449cbca4d14e34a642fa7f8e2d23e65b",
+    "runtime/aesthetic-profile.js": "f9ab215c889dae70bd625d22d7e79a161f5b7583ccfd70e054ab0ad11af06d57",
+    "runtime/experience.js": "5adc521ec9989712c69ce1ce004682ba213fe0f4adac74aaa37d389a09cc7cbf",
+    "runtime/splat-vfx.js": "772043250ce7601972b90fef4457f7ba65f3d97891b89cd3e547db82ead5c4ec",
+    "runtime/postprocessing.js": "75fd2c592ee4da9007cba63f367cb928ec9bce645400735d76ccf761ef20db35"
+  },
+  "managedHtmlBlockSha256": "fde2682e166c16cbf7d89f795105d2d1d36520bac2fa39d7e4fd41258730c3fd"
+}
