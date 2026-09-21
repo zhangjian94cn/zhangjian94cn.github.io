@@ -1,0 +1,75 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kubernetes 架构、工作负载和探针 · DevOps 实战手册</title><meta name="description" content="Compose 把多服务放在一台机器上。Kubernetes 进一步通过 API 保存期望状态，让多个控制器持续尝试把现实调整到期望。学习它的关键是看懂“谁在协调什么”，而不是先记住大量 YAML 字段。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-25"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" open><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link active" aria-current="page"><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>Kubernetes 应用运行</span><span>/</span><span>第 25 章</span></div><div class="chapter-eyebrow">CHAPTER 25 <span>·</span> 第 7 篇<span class="version-label">v0.3 阅读版</span></div><h1>Kubernetes 架构、工作负载和探针</h1><div class="chapter-outcome"><strong>学习目标</strong><span>部署应用，观察副本恢复；分别诊断 CrashLoopBackOff、镜像拉取失败和就绪失败</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 一次声明怎样变成进程</a><a class="toc-level-2" href="#section-2">2. 选择正确的工作负载对象</a><a class="toc-level-2" href="#section-3">3. 从可解释的顺序开始</a><a class="toc-level-2" href="#section-4">4. 三种探针分工</a><a class="toc-level-2" href="#section-5">5. 看懂三类常见失败</a><a class="toc-level-2" href="#section-6">6. 删除一个 Pod，观察协调</a><a class="toc-level-2" href="#section-7">7. 验收与下一步</a></details><div class="prose"><p>Compose 把多服务放在一台机器上。Kubernetes 进一步通过 API 保存期望状态，让多个控制器持续尝试把现实调整到期望。学习它的关键是看懂“谁在协调什么”，而不是先记住大量 YAML 字段。</p>
+<p>前置是容器、网络、发布与数据库迁移。配套 <code>k8s/README.md</code> 给出完整本地步骤；需要 Docker、kind、kubectl、默认 StorageClass 和足够运行三个本地节点的资源。本书没有在编写环境启动真实集群，命令结果仍需实际验证。</p>
+<h2 id="section-1">1. 一次声明怎样变成进程<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<p>你向 API Server 提交 Deployment。对象被持久保存，控制器根据它维护 ReplicaSet；ReplicaSet 维护 Pod 数量；调度器为待调度 Pod 选择节点；节点上的 kubelet 与容器运行时启动容器并报告状态。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>主要责任</th>
+<th>不自动负责什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>API 与状态存储</td>
+<td>保存和验证对象状态</td>
+<td>证明业务数据正确</td>
+</tr>
+<tr>
+<td>控制器</td>
+<td>反复比较现实与期望</td>
+<td>解决所有依赖故障</td>
+</tr>
+<tr>
+<td>调度器</td>
+<td>根据资源与约束选择节点</td>
+<td>给容量不足的集群凭空增加节点</td>
+</tr>
+<tr>
+<td>kubelet</td>
+<td>在节点落实 Pod 运行要求</td>
+<td>替应用实现事务和幂等</td>
+</tr>
+<tr>
+<td>应用</td>
+<td>处理业务与运行协议</td>
+<td>控制整个集群的资源策略</td>
+</tr>
+</tbody></table></div>
+<p>协调不是一次性的脚本步骤。删除由 Deployment 管理的 Pod 后，控制器通常会创建替代 Pod；删除 Deployment 则是改变期望本身。声明的副本数不等于任何时刻都有相同数量的健康实例。</p>
+<h2 id="section-2">2. 选择正确的工作负载对象<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>Deployment 适合可替换的无状态应用实例；Job 表达有完成条件的任务；CronJob 表达调度任务；DaemonSet 用于在符合条件的节点运行实例。StatefulSet 提供稳定身份与存储关联，但不直接实现数据库复制和高可用。</p>
+<p>本项目把 API 放进 Deployment，把迁移放进独立 Job，把教学数据库放进单副本 StatefulSet。迁移有锁与事务，仍应由发布流程有序触发，不能因为应用有三个副本就让三个实例各自随意迁移。</p>
+<h2 id="section-3">3. 从可解释的顺序开始<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<p>在 <code>ticketdesk/</code> 执行配套 README 的流程：构建镜像、创建专用 kind 集群、加载镜像、建立命名空间与本地秘密、启动数据库、等待迁移完成、最后应用 API 配置。</p>
+<pre><code class="language-bash">kind create cluster --name ticketdesk --config k8s/kind.yaml
+kind load docker-image ticketdesk:dev --name ticketdesk
+kubectl --context kind-ticketdesk get nodes
+kubectl --context kind-ticketdesk get storageclass
+</code></pre>
+<p>镜像需要预先按 README 构建。Secret 由本机脚本生成虚构实验密码，不进入 Git；再次运行时保留既有密码，不能只更新应用端却不更新已初始化的数据库身份。</p>
+<p>迁移完成后才部署应用：</p>
+<pre><code class="language-bash">kubectl --context kind-ticketdesk -n ticketdesk wait --for=condition=complete job/ticketdesk-migrate-v03 --timeout=120s
+kubectl --context kind-ticketdesk apply -k k8s/base
+kubectl --context kind-ticketdesk -n ticketdesk rollout status deployment/ticketdesk --timeout=180s
+</code></pre>
+<p>如果前面数据库或迁移尚未创建，这段不会独立成功。执行过程按 README 连续进行，不能把正文摘要当成跳过前置条件的快捷入口。</p>
+<h2 id="section-4">4. 三种探针分工<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<p>startup probe 保护启动阶段；liveness probe 用于判断容器是否需要被重启；readiness probe 决定实例是否满足接收常规服务流量的条件。本例分别使用基本存活响应和访问数据库的就绪响应。</p>
+<p>数据库中断时，如果 liveness 也检查数据库，可能导致所有应用一起重启，增加恢复压力。把依赖问题表达为未就绪，通常更容易保留诊断现场；是否如此设计仍要看应用是否能够自行恢复依赖连接。</p>
+<p>探针有间隔、超时和失败阈值，状态变化不会立即完成。超时还需与应用的连接、查询预算配合。一次 readiness 成功，也不能替代创建和更新工单的业务验收。</p>
+<h2 id="section-5">5. 看懂三类常见失败<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">kubectl --context kind-ticketdesk -n ticketdesk get pods -o wide
+kubectl --context kind-ticketdesk -n ticketdesk describe pod &#39;&lt;实际 Pod 名称&gt;&#39;
+kubectl --context kind-ticketdesk -n ticketdesk logs &#39;&lt;实际 Pod 名称&gt;&#39; --previous
+kubectl --context kind-ticketdesk -n ticketdesk get events --sort-by=.metadata.creationTimestamp
+</code></pre>
+<p><code>ImagePullBackOff</code> 先看镜像名称、拉取权限与节点是否有本地镜像；<code>CrashLoopBackOff</code> 先看进程退出原因与上一次日志；Running 但未 Ready 则检查探针与依赖。这些状态描述不同阶段，不能统一回答“把 Pod 删掉重试”。</p>
+<p>本地 <code>ticketdesk:dev</code> 使用 IfNotPresent，后续重建同名标签时，节点可能仍保留旧内容。正式实验用独立候选标签或 digest，并明确加载与替换过程。</p>
+<h2 id="section-6">6. 删除一个 Pod，观察协调<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p>确认 API 已有两个健康副本，记录 Pod 名称、UID 和节点。只删除其中一个实际 Pod，再观察新 Pod 的 UID 与启动过程，并对同一工单持续查询。这个实验删除的是可替换 API，不是数据库或 PVC。</p>
+<p>控制器补副本证明协调起作用，不证明零中断或数据高可用。副本可能共享节点，数据库仍是单点，流量路由也存在状态传播延迟。记录实际响应，不把对象数量当成用户体验。</p>
+<h2 id="section-7">7. 验收与下一步<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p>交付对象关系表、镜像身份、数据库与迁移顺序、三种探针的解释，以及一次 Pod 替换时间线。用 port-forward 对本地服务运行 <code>scripts/smoke.py</code>，确认旧工单仍可查询。</p>
+<p>阅读 <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Kubernetes Deployment</a> 核对控制行为。下一章将处理稳定访问入口，并解释为什么 Pod IP 不适合作为应用长期地址。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-24.html"><small>← 上一篇</small><strong>用 Ansible 管理主机配置</strong></a><a href="chapter-26.html"><small>下一章 →</small><strong>Service、DNS 与 Gateway API</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 一次声明怎样变成进程</a><a class="toc-level-2" href="#section-2">2. 选择正确的工作负载对象</a><a class="toc-level-2" href="#section-3">3. 从可解释的顺序开始</a><a class="toc-level-2" href="#section-4">4. 三种探针分工</a><a class="toc-level-2" href="#section-5">5. 看懂三类常见失败</a><a class="toc-level-2" href="#section-6">6. 删除一个 Pod，观察协调</a><a class="toc-level-2" href="#section-7">7. 验收与下一步</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

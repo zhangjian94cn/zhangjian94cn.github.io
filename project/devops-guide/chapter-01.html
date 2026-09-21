@@ -1,0 +1,106 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DevOps 如何让需求稳定到达用户 · DevOps 实战手册</title><meta name="description" content="业务同事提出一个很小的要求：“工单增加一个优先级。”开发半天写完，测试等到周五，发布又等运维排期。上线之后旧数据报错，大家开始讨论应该由谁回退。真正困难的部分，发生在代码写完之后。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-01"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" open><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link active" aria-current="page"><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>认识交付全流程</span><span>/</span><span>第 01 章</span></div><div class="chapter-eyebrow">CHAPTER 01 <span>·</span> 第 1 篇<span class="version-label">v0.3 阅读版</span></div><h1>DevOps 如何让需求稳定到达用户</h1><div class="chapter-outcome"><strong>学习目标</strong><span>对照一个“提交后上线失败”的故事画出交付链，找出等待点、信息断点和责任人</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 先定义什么叫交付成功</a><a class="toc-level-2" href="#section-2">2. DevOps 具体改变什么</a><a class="toc-level-2" href="#section-3">3. 小批量与快速反馈怎样降低不确定性</a><a class="toc-level-2" href="#section-4">4. DevOps、SRE 与平台工程怎样配合</a><a class="toc-level-2" href="#section-5">5. 贯穿全书的工单服务</a><a class="toc-level-2" href="#section-6">6. 实践：画出你自己的交付链</a><a class="toc-level-2" href="#section-7">7. 常见误区与思考题</a><a class="toc-level-2" href="#section-8">8. 本章验收</a></details><div class="prose"><p>业务同事提出一个很小的要求：“工单增加一个优先级。”开发半天写完，测试等到周五，发布又等运维排期。上线之后旧数据报错，大家开始讨论应该由谁回退。真正困难的部分，发生在代码写完之后。</p>
+<p>本章从这次变更出发，认识软件交付的全过程。读完后，你应能画出项目的交付链，指出其中的等待和风险，并为后面的实验选择一条适合自己的学习路径。</p>
+<h2 id="section-1">1. 先定义什么叫交付成功<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<p>提交进入 Git 仓库，说明代码被记录。测试通过，说明选定的行为在测试条件下成立。容器启动，说明进程开始运行。这些都是证据，但每一个证据覆盖的范围不同。</p>
+<p>对工单用户来说，成功意味着：能创建工单、优先级能保存、旧工单仍能打开、响应时间可接受。对维护团队来说，还需要知道运行版本、发现异常、恢复服务以及保护数据的方法。因此，交付目标必须同时描述业务结果和运行条件。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>交付环节</th>
+<th>团队要回答的问题</th>
+<th>留下的证据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>需求</td>
+<td>谁遇到了什么问题？怎样算解决？</td>
+<td>用户故事、验收条件</td>
+</tr>
+<tr>
+<td>变更</td>
+<td>改了什么？为什么这样改？</td>
+<td>Issue、Commit、PR、评审</td>
+</tr>
+<tr>
+<td>验证</td>
+<td>哪些行为已确认？哪些风险仍在？</td>
+<td>测试结果、检查报告</td>
+</tr>
+<tr>
+<td>构建</td>
+<td>交付的文件究竟是哪一份？</td>
+<td>制品、版本、镜像 digest</td>
+</tr>
+<tr>
+<td>发布</td>
+<td>把什么交给了哪个环境？</td>
+<td>部署记录、配置、审批</td>
+</tr>
+<tr>
+<td>运行</td>
+<td>用户现在能否完成任务？</td>
+<td>业务请求、日志、指标</td>
+</tr>
+<tr>
+<td>改进</td>
+<td>为什么出了问题？如何减少再次发生？</td>
+<td>复盘与改进任务</td>
+</tr>
+</tbody></table></div>
+<p>你可以把这张表当成全书的目录地图。工具会变化，这些问题一直存在。</p>
+<h2 id="section-2">2. DevOps 具体改变什么<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>DevOps 关注开发与运行之间的协作和反馈。开发人员需要理解代码上线后的表现，运维人员需要参与可运行性设计，测试和安全人员把专业判断尽早放进流程。团队共同对服务结果负责，同时保留清楚的专业分工。</p>
+<p>例如，优先级字段会影响数据库结构。若评审时就请维护人员检查兼容性，可能选择先增加带默认值的列，再上线应用。若直到发布窗口才发现旧应用无法工作，解决成本就会大得多。</p>
+<p>常见的 CALMS 框架可以帮助检查团队能力：Culture 是协作文化，Automation 是自动化，Lean 强调减少浪费，Measurement 强调测量，Sharing 强调知识共享。它们需要落实成工作行为：评审可以被复用、失败能够公开讨论、重要步骤能够重复执行、告警有处理人、知识能离开个人电脑。</p>
+<h2 id="section-3">3. 小批量与快速反馈怎样降低不确定性<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<p>一次变更包含十个互不相关的功能，失败时就有十组可能原因。把它们拆成独立、兼容的小变更，便于审查、验证和恢复。这里的“小”不是机械限制代码行数，而是让一个变更的意图和影响可以被理解。</p>
+<p>工单优先级可以分成三次兼容交付：先扩展数据库结构，再加入 API 行为，最后在页面显示。每次都有独立验收，并能在后续步骤暂缓时维持现有能力。相关研究与实践背景可阅读 <a href="https://dora.dev/capabilities/working-in-small-batches/">DORA：小批量工作</a>。</p>
+<p>但拆分也有成本。如果两次变更必须同时上线才正确，就不能只凭形式拆开。应先重新设计兼容关系，再决定交付单位。</p>
+<h2 id="section-4">4. DevOps、SRE 与平台工程怎样配合<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>视角</th>
+<th>主要关注</th>
+<th>在本项目中的体现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DevOps</td>
+<td>需求到运行的协作、自动化与反馈</td>
+<td>PR 检查、发布记录、运行反馈</td>
+</tr>
+<tr>
+<td>SRE</td>
+<td>用工程方法管理可靠性</td>
+<td>SLO、容量、事件响应、减少重复劳动</td>
+</tr>
+<tr>
+<td>平台工程</td>
+<td>为内部开发者提供可用的公共能力</td>
+<td>服务模板、默认流水线、自服务环境</td>
+</tr>
+</tbody></table></div>
+<p>一个小团队可以由几个人兼任这些职责。团队扩大之后，平台团队可以维护公共能力，但业务团队仍需理解自己服务的运行结果。平台提供按钮并不会自动转移全部责任。</p>
+<p>本书先让你经历交付过程，再介绍更复杂的平台与治理。有关 SRE 实践的进一步阅读见 <a href="https://sre.google/workbook/table-of-contents/">Google SRE Workbook</a>。</p>
+<h2 id="section-5">5. 贯穿全书的工单服务<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>我们使用一个小型工单 API，数据保存在 PostgreSQL。它提供创建、查询和修改状态的功能，另有健康检查、版本、日志和基础指标。配套页面可以操作虚构工单。</p>
+<p>这个应用刻意保持业务简单。你不需要先写一个完整前端，也不需要一开始搭建 Kubernetes。第一卷先完成 Git、测试、构建、部署和恢复；后续卷再增加基础设施、集群、观测与治理能力。</p>
+<p>配套示例是教学实现，当前没有登录和访问授权，因此只绑定本机地址。后续生产改造需要单独设计身份系统、容量、连接池与运行支持，不能把本地演练直接当成生产服务。</p>
+<h2 id="section-6">6. 实践：画出你自己的交付链<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p>选择最近做过的一个变更，记录以下信息：需求进入时间、开始开发时间、评审时间、测试完成时间、发布完成时间和第一次获得用户反馈的时间。如果没有真实项目，就使用“工单增加优先级”的虚拟案例。</p>
+<p>把每个步骤分成“实际处理”和“等待”。等待可以来自排期、权限、环境、信息不完整或跨团队交接。选出一个最影响交付的等待点，写出一个可以验证的改进，例如把环境申请表变成带自检的模板，而不是笼统地写“提高效率”。</p>
+<p>不要用这个练习给个人排名。等待通常由系统条件共同造成，改进也需要团队共同完成。</p>
+<h2 id="section-7">7. 常见误区与思考题<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p><strong>“已经装了 CI 工具，所以实现了 DevOps。”</strong> 检查流程是否真的在使用：失败是否有人处理，版本是否可追溯，发布后是否能观察用户结果。工具安装记录不能回答这些问题。</p>
+<p><strong>“自动化越多越好。”</strong> 自动化会重复你的规则。规则不明确时，脚本也可能更快地重复错误。先解释正确行为，再将可重复部分交给自动化。</p>
+<p>思考题：如果 API 测试全绿，但用户创建工单仍失败，可能缺少哪三类验证？把答案与“网络入口、配置差异、数据库迁移、身份权限、真实用户路径”等因素比较，说明每一项应该在哪个环节发现。</p>
+<h2 id="section-8">8. 本章验收<a class="heading-link" href="#section-8" aria-label="本节链接">#</a></h2>
+<ul>
+<li>能用自己的话说明需求、代码、制品、部署与运行结果之间的关系。</li>
+<li>完成一张有责任和证据的交付链表。</li>
+<li>找出一个等待点，提出可观察效果的改进。</li>
+<li>选择基础主线、运维强化或负责人阅读路径。</li>
+</ul>
+<p>下一章先把环境和自检做好，避免把安装失败误当成应用故障。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="index.html"><small>← 上一篇</small><strong>全书导读</strong></a><a href="chapter-02.html"><small>下一章 →</small><strong>准备实验环境并学会自检</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 先定义什么叫交付成功</a><a class="toc-level-2" href="#section-2">2. DevOps 具体改变什么</a><a class="toc-level-2" href="#section-3">3. 小批量与快速反馈怎样降低不确定性</a><a class="toc-level-2" href="#section-4">4. DevOps、SRE 与平台工程怎样配合</a><a class="toc-level-2" href="#section-5">5. 贯穿全书的工单服务</a><a class="toc-level-2" href="#section-6">6. 实践：画出你自己的交付链</a><a class="toc-level-2" href="#section-7">7. 常见误区与思考题</a><a class="toc-level-2" href="#section-8">8. 本章验收</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

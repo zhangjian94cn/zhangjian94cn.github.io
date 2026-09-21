@@ -1,0 +1,99 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第 2 课：拆开一个智能体，看清每个部件负责什么 · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" aria-current="page"><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson02" aria-labelledby="lesson02-title"><header class="article-header"><div class="eyebrow">模块 01 / 智能体的概念与结构</div><h1 id="lesson02-title">第 2 课：拆开一个智能体，看清每个部件负责什么</h1><div class="meta">建议学习 25 分钟（含练习） · 本课产出：结构清单与状态</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">2 / 16</span></div></header><article class="article"><h2 id="lesson02-1">模型不是整个系统</h2>
+<p>把 Agent 想成一名新加入服务台的同事：他需要知道任务，有工具可用，能看见当前进展，也必须知道哪些操作不能自己决定。仅有“聪明的大脑”，还不足以承担工作。</p>
+<p><strong>本课产出：一张结构清单，以及一份能够跨步骤保存的最小任务状态。</strong></p>
+<p>继续处理 IT-2048。假设系统找到虚构政策 <strong>KB-MFA-03</strong>：旧认证设备不可用时，先完成规定的身份核验，再由授权人员审批账户恢复操作。助手的工作是把这条规则准确带入草案，而不是绕过它。</p>
+<figure class="figure"><a href="assets/agent-loop.svg" aria-label="打开原尺寸结构图"><img class="diagram" src="assets/agent-loop.svg" alt="先看责任边界：模型提出行动，执行器决定是否允许，观察结果进入下一轮。" loading="lazy"></a><figcaption>先看责任边界：模型提出行动，执行器决定是否允许，观察结果进入下一轮。 点击图可查看原尺寸。</figcaption></figure><h2 id="lesson02-2">八个部件及其边界</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>部件</th>
+<th>在工单助手中负责什么</th>
+<th>最容易混淆的地方</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模型（Model）</td>
+<td>理解描述、选择查询、组织草案</td>
+<td>模型的判断不等于系统授权</td>
+</tr>
+<tr>
+<td>指令（Instructions）</td>
+<td>定义目标、输出要求和处理边界</td>
+<td>提示词无法替代工具层权限检查</td>
+</tr>
+<tr>
+<td>工具（Tools）</td>
+<td>读取工单、检索政策、取得原文</td>
+<td>工具返回内容也可能缺失或错误</td>
+</tr>
+<tr>
+<td>状态（State）</td>
+<td>记录本次任务已知事实、待办及步骤</td>
+<td>不能只依赖一段越来越长的聊天记录</td>
+</tr>
+<tr>
+<td>记忆（Memory）</td>
+<td>保存有明确用途、可复用的信息</td>
+<td>不是把所有历史对话永久存起来</td>
+</tr>
+<tr>
+<td>控制循环（Control Loop）</td>
+<td>决定继续、重试、等待或结束</td>
+<td>需要可执行的上限和停止条件</td>
+</tr>
+<tr>
+<td>环境（Environment）</td>
+<td>工单系统、知识库及其当前状态</td>
+<td>外部环境可能在任务进行中变化</td>
+</tr>
+<tr>
+<td>权限（Permissions）</td>
+<td>限制谁能访问哪些数据和动作</td>
+<td>不能靠模型自行宣布“已批准”</td>
+</tr>
+</tbody></table></div>
+<p>这些是职责划分，不要求部署八个服务。小型实现可以在一个程序中组织它们，但每项责任仍然要有人承担。</p>
+<h2 id="lesson02-3">状态、上下文和记忆不是同一件事</h2>
+<p>**上下文（Context）**是模型在当前一次调用中看见的材料。<strong>状态</strong>是系统为本次任务保存的进展事实；程序可以从状态中挑选必要部分放进上下文。**长期记忆（Long-Term Memory）**则用于跨任务复用信息。</p>
+<p>例如：“这次查询已失败一次”属于任务状态；“给模型展示政策的第三条”属于上下文构建；“该处理人员偏好简短草案”可能成为经过确认的长期偏好。</p>
+<p>身份核验结果不应被泛化为“这个员工以后都可信”。一次任务中成立的授权、审批及政策版本，不天然适用于下一次任务。第一版助手完全可以不使用长期记忆，先做好任务状态与可追溯证据。</p>
+<p>下面是一份示意状态，字段由程序管理，而不是任由模型改写：</p>
+<div class="code-wrap"><pre><code class="language-json">{
+  &quot;ticket_id&quot;: &quot;IT-2048&quot;,
+  &quot;phase&quot;: &quot;collecting_evidence&quot;,
+  &quot;policy_refs&quot;: [],
+  &quot;missing_fields&quot;: [&quot;identity_verification_result&quot;],
+  &quot;approval_status&quot;: &quot;not_requested&quot;,
+  &quot;read_retry_count&quot;: 0,
+  &quot;tool_call_count&quot;: 1,
+  &quot;next_step&quot;: &quot;search_policies&quot;
+}
+</code></pre></div>
+<p>其中 <code>approval_status</code> 必须来自审批系统的可信记录。模型可以建议发起审批，却不能直接把它设为 <code>approved</code>。</p>
+<h2 id="lesson02-4">给工具设计一个可靠的接口</h2>
+<p>工具不是“一段让 AI 随便执行的代码”。它应该有清楚的名称、参数、返回值和错误类型。例如：</p>
+<div class="code-wrap"><pre><code class="language-text">read_ticket(ticket_id)
+  成功：工单字段、版本、读取时间
+  失败：NOT_FOUND / FORBIDDEN / TIMEOUT
+
+search_policies(query, category)
+  成功：候选政策 ID、标题、版本、有效状态
+  失败：UNAVAILABLE / INVALID_ARGUMENT
+</code></pre></div>
+<p>每次调用都要检查实际登录人的权限。把 <code>ticket_id</code> 改成另一部门的编号，不应该就能读取对方工单。检索结果也要按访问范围过滤，不能等模型看到内容以后，再要求它“不要泄露”。</p>
+<p>账户重置工具不属于本课程第一版的工具集合。未来如果新增，审批必须绑定工单、具体动作、目标账户及有效范围，并在执行时再次检查。审批不能仅仅是一句聊天记录中的“可以”。</p>
+<h2 id="lesson02-5">把停止条件写进程序</h2>
+<p>合理的控制循环是：读取当前状态 → 选择可用动作 → 校验 → 执行工具 → 更新状态 → 判断是否结束。</p>
+<p>下面是一份设计示例：最多 8 次工具调用；只读请求遇到短暂超时最多重试 1 次；找不到有效政策就转人工；缺少身份核验则生成待核验草案。数值是示例，需要用真实业务数据调整。第12课离线程序采用更简单的规则：默认最多8个循环步骤，包含本地生成、检查和结束动作；工具失败立即停止，不实现本课的自动重试。两种计数口径不能混用。</p>
+<p>限制应由运行程序执行。仅在提示词里写“不要反复尝试”，不能保证系统一定停下来。预算耗尽也不是成功：应输出已经确认的事实、未完成的部分和下一步接手方式。</p>
+<h2 id="lesson02-6">练习：找出结构中的四个问题</h2>
+<p>某团队这样设计助手：“把所有员工历史对话放进提示词；让模型判断谁有权限；工具失败就一直重试；只要模型说审批通过，就重置账户。”请指出每处问题，并给出替代设计。</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>历史对话不应无差别进入上下文。按任务和权限选择必要内容，跨任务保存的信息需有用途、来源及更新机制。</p>
+<p>权限判断应由可信程序和身份系统执行。模型可以识别所需权限，但不能授予权限。</p>
+<p>重试必须区分错误类型。只读请求的临时超时可有限重试；没有权限时应停止；可能产生副作用的操作不能在结果未知时盲目重试。</p>
+<p>审批状态应由独立审批记录提供，并绑定具体动作。模型生成的文字不是审批凭证。第一版还应直接移除账户重置工具，从能力集合上落实边界。</p>
+
+</div></details>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson01.html"><small>上一课</small>先判断问题，再决定要不要 Agent</a><a class="next" href="lesson03.html"><small>下一课</small>跟踪一次工具调用闭环</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

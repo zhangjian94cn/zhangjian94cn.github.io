@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>纸潮 / Paper Tide</title>
+    <meta
+      name="description"
+      content="纸潮 / Paper Tide：对 WBproject 的编辑式重构案例页，展示项目亮点、技术栈和多端宣传级界面预览。"
+    />
+    <style>
+      :root {
+        --paper: #fbf4e9;
+        --mint: #e8fbf6;
+        --cream: #fff3dd;
+        --ink: #211913;
+        --ink-soft: rgba(33, 25, 19, 0.72);
+        --line: rgba(80, 54, 34, 0.14);
+        --card: rgba(255, 252, 246, 0.86);
+        --accent: #6b4a32;
+        --shadow: 0 28px 70px rgba(64, 42, 25, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 18% 4%, rgba(210, 255, 238, 0.9), transparent 30%),
+          radial-gradient(circle at 88% 22%, rgba(255, 221, 174, 0.58), transparent 28%),
+          linear-gradient(180deg, #f7fbf7 0%, #fbf1df 100%);
+        font-family: "Avenir Next", "PingFang SC", "Helvetica Neue", sans-serif;
+      }
+
+      p,
+      .fact-value,
+      .section-body,
+      .highlight-item,
+      .note-card,
+      .screen-intro,
+      .footer p {
+        overflow-wrap: anywhere;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        position: relative;
+        width: min(1360px, calc(100vw - 40px));
+        margin: 0 auto;
+        padding: 24px 0 78px;
+      }
+
+      .topbar,
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .topbar {
+        margin-bottom: 20px;
+        color: var(--ink-soft);
+        font-size: 14px;
+      }
+
+      .topbar a {
+        text-decoration: none;
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 36px;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .hero {
+        overflow: hidden;
+        padding: 36px;
+        background:
+          linear-gradient(135deg, rgba(238, 251, 255, 0.94), rgba(255, 245, 224, 0.94)),
+          var(--card);
+      }
+
+      .hero-copy {
+        max-width: 920px;
+        margin: 0 auto 30px;
+        text-align: center;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border: 1px solid rgba(90, 63, 34, 0.16);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.66);
+        color: rgba(82, 60, 42, 0.82);
+        font-size: 13px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        letter-spacing: -0.03em;
+      }
+
+      h1,
+      h2 {
+        font-family: "Baskerville", "Georgia", "Songti SC", serif;
+      }
+
+      .hero-title {
+        margin-top: 22px;
+        font-size: clamp(58px, 9vw, 112px);
+        line-height: 0.88;
+      }
+
+      .hero-subtitle {
+        max-width: 760px;
+        margin: 24px auto 0;
+        color: var(--ink-soft);
+        font-size: clamp(18px, 2.1vw, 26px);
+        line-height: 1.65;
+      }
+
+      .hero-note {
+        max-width: 820px;
+        margin: 18px auto 0;
+        color: rgba(74, 55, 38, 0.82);
+        font-size: 15px;
+        line-height: 1.8;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 19px;
+        border: 1px solid rgba(80, 53, 35, 0.15);
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .button-primary {
+        color: #fff8ed;
+        background: linear-gradient(135deg, #2f251d 0%, #6b4a32 100%);
+      }
+
+      .button-secondary {
+        color: #4a3122;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .hero-board {
+        position: relative;
+        margin: 8px auto 0;
+        overflow: hidden;
+        border-radius: 32px;
+        box-shadow: 0 34px 80px rgba(41, 31, 21, 0.16);
+      }
+
+      .hero-board img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .facts {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin: 20px 0;
+      }
+
+      .fact {
+        padding: 21px;
+      }
+
+      .fact-label,
+      .section-kicker {
+        color: rgba(90, 63, 34, 0.72);
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .fact-label {
+        margin-bottom: 8px;
+      }
+
+      .fact-value {
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+        gap: 20px;
+      }
+
+      .section {
+        padding: 32px;
+      }
+
+      .section + .section {
+        margin-top: 20px;
+      }
+
+      .section-title {
+        margin-top: 13px;
+        font-size: clamp(34px, 4vw, 52px);
+        line-height: 1.03;
+      }
+
+      .section-body {
+        margin-top: 18px;
+        color: var(--ink-soft);
+        font-size: 16px;
+        line-height: 1.85;
+      }
+
+      code {
+        padding: 0.14em 0.44em;
+        border-radius: 999px;
+        background: rgba(242, 232, 214, 0.78);
+        font-family: "SFMono-Regular", "Menlo", monospace;
+        font-size: 0.92em;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .highlight-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 24px;
+      }
+
+      .highlight-item {
+        padding: 18px;
+        border: 1px solid rgba(85, 58, 31, 0.12);
+        border-radius: 24px;
+        background: rgba(255, 253, 249, 0.76);
+      }
+
+      .highlight-item strong {
+        display: block;
+        margin-bottom: 10px;
+        font-family: "Baskerville", "Georgia", "Songti SC", serif;
+        font-size: 20px;
+      }
+
+      .stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .stack span {
+        padding: 10px 14px;
+        border: 1px solid rgba(90, 63, 34, 0.12);
+        border-radius: 999px;
+        background: rgba(246, 235, 216, 0.88);
+        font-size: 14px;
+      }
+
+      .note-card {
+        margin-top: 18px;
+        padding: 22px;
+        border: 1px solid rgba(85, 58, 31, 0.12);
+        border-radius: 28px;
+        color: rgba(66, 47, 29, 0.86);
+        background: linear-gradient(180deg, rgba(242, 226, 202, 0.82), rgba(255, 252, 245, 0.9));
+        line-height: 1.82;
+      }
+
+      .screens {
+        margin-top: 20px;
+        padding: 34px;
+      }
+
+      .screen-intro {
+        max-width: 780px;
+        margin: 18px 0 28px;
+        color: var(--ink-soft);
+        font-size: 16px;
+        line-height: 1.85;
+      }
+
+      .promo-board {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(87, 70, 48, 0.12);
+        border-radius: 34px;
+        background:
+          radial-gradient(circle at 30% 8%, rgba(206, 255, 236, 0.72), transparent 40%),
+          radial-gradient(circle at 86% 82%, rgba(255, 224, 182, 0.62), transparent 38%),
+          radial-gradient(140% 120% at 50% 120%, rgba(64, 46, 30, 0.1), transparent 55%),
+          linear-gradient(135deg, #f0fbf6, #fff4e4);
+        box-shadow: 0 28px 80px rgba(49, 36, 24, 0.12);
+      }
+
+      .showcase {
+        padding: clamp(24px, 4vw, 52px);
+      }
+
+      .showcase + .showcase {
+        margin-top: 24px;
+      }
+
+      .showcase-heading {
+        position: relative;
+        z-index: 3;
+        margin-bottom: 22px;
+        text-align: center;
+      }
+
+      .showcase-heading h3 {
+        font-size: clamp(30px, 4vw, 54px);
+        line-height: 1.05;
+      }
+
+      .showcase-heading p {
+        max-width: 740px;
+        margin: 10px auto 0;
+        color: rgba(70, 52, 36, 0.72);
+        line-height: 1.7;
+      }
+
+      .laptop-frame {
+        position: relative;
+        z-index: 2;
+        width: min(1180px, 96%);
+        margin: 0 auto;
+        filter: drop-shadow(0 34px 70px rgba(50, 38, 24, 0.26));
+      }
+
+      .laptop-device-svg {
+        display: block;
+        width: 100%;
+        aspect-ratio: 530 / 320;
+        height: auto;
+        overflow: visible;
+      }
+
+      .floating-badge {
+        position: absolute;
+        z-index: 5;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        min-height: 58px;
+        padding: 12px 22px 12px 14px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: 24px;
+        color: rgba(30, 29, 34, 0.88);
+        background:
+          radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 34%),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(248, 249, 255, 0.5) 48%, rgba(255, 255, 255, 0.68));
+        box-shadow:
+          0 26px 60px rgba(43, 34, 74, 0.16),
+          0 10px 24px rgba(74, 54, 34, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+        -webkit-backdrop-filter: blur(24px) saturate(1.55) brightness(1.04);
+        backdrop-filter: blur(24px) saturate(1.55) brightness(1.04);
+        font-size: clamp(18px, 2vw, 28px);
+        font-weight: 800;
+        line-height: 1;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.32);
+        white-space: nowrap;
+      }
+
+      .floating-badge::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(100deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 38%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(215, 218, 235, 0.1));
+        opacity: 0.75;
+      }
+
+      .badge-icon {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        flex: none;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 1px solid rgba(128, 112, 84, 0.18);
+        border-radius: 13px;
+        color: rgba(99, 70, 46, 0.84);
+        background:
+          linear-gradient(145deg, rgba(255, 249, 237, 0.82), rgba(255, 229, 190, 0.48)),
+          rgba(255, 255, 255, 0.42);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.78),
+          0 6px 14px rgba(70, 48, 28, 0.08);
+        -webkit-backdrop-filter: blur(10px) saturate(1.35);
+        backdrop-filter: blur(10px) saturate(1.35);
+      }
+
+      .badge-icon svg {
+        width: 22px;
+        height: 22px;
+        opacity: 0.88;
+      }
+
+      .desktop-badge-a {
+        left: 0;
+        top: 30%;
+      }
+
+      .desktop-badge-b {
+        right: 0;
+        top: 40%;
+      }
+
+      .phone-cluster {
+        position: relative;
+        width: min(1120px, 96%);
+        margin: 0 auto;
+        padding: 4px 0 8px;
+      }
+
+      .phone-trio-svg {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+      }
+
+      .mobile-badge-a {
+        left: 27%;
+        top: 27%;
+      }
+
+      .mobile-badge-b {
+        right: -1%;
+        top: 30%;
+      }
+
+      .mobile-badge-c {
+        right: 23%;
+        bottom: 7%;
+      }
+
+      .footer {
+        margin-top: 20px;
+        padding: 28px 30px;
+      }
+
+      .footer p {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.8;
+      }
+
+      @media (max-width: 980px) {
+        .facts,
+        .content-grid,
+        .highlight-list {
+          grid-template-columns: 1fr;
+        }
+
+        .footer {
+          display: grid;
+        }
+
+        .laptop-frame {
+          width: 100%;
+        }
+
+        .phone-cluster {
+          width: 100%;
+        }
+
+        .floating-badge {
+          font-size: 16px;
+          min-height: 48px;
+          padding: 8px 14px 8px 10px;
+        }
+
+        .badge-icon {
+          width: 32px;
+          height: 32px;
+        }
+
+        .badge-icon svg {
+          width: 18px;
+          height: 18px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          width: min(100vw - 18px, 100%);
+          padding: 14px 0 46px;
+        }
+
+        .topbar,
+        .footer {
+          display: grid;
+          gap: 10px;
+        }
+
+        .hero,
+        .section,
+        .screens,
+        .footer {
+          padding: 20px 16px;
+          border-radius: 26px;
+        }
+
+        .hero-title {
+          font-size: 48px;
+        }
+
+        .hero-actions,
+        .footer .hero-actions {
+          display: grid;
+          justify-content: stretch;
+        }
+
+        .button {
+          width: 100%;
+        }
+
+        .showcase {
+          padding: 18px 10px 24px;
+        }
+
+        .laptop-frame {
+          width: 100%;
+        }
+
+        .phone-cluster {
+          padding: 8px 0 18px;
+        }
+
+        .floating-badge {
+          position: static;
+          margin: 10px auto 0;
+          width: max-content;
+          max-width: 92%;
+        }
+
+        .desktop-badge-a,
+        .desktop-badge-b,
+        .mobile-badge-a,
+        .mobile-badge-b,
+        .mobile-badge-c {
+          left: auto;
+          right: auto;
+          top: auto;
+          bottom: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="topbar">
+        <a href="/portfolio.html">← Back to portfolio</a>
+        <span>Static case study on zhangjian94cn.top</span>
+      </div>
+
+      <section class="panel hero">
+        <div class="hero-copy">
+          <div class="badge">Portfolio Case · 2026</div>
+          <h1 class="hero-title">纸潮<br />Paper Tide</h1>
+          <p class="hero-subtitle">
+            把轻量发帖、配图、点赞、收藏、评论和图片预览这条原始交互链，改写成更像线上杂志的一期纸页。
+          </p>
+          <p class="hero-note">
+            这个页面承载的是静态作品集案例，不在主站托管 <code>paper-tide</code> 的 Hono 后端。当前站点展示为静态作品页，
+            完整源码、可写交互和本地开发流程请前往 GitHub 仓库查看。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/zhangjian94cn/paper-tide" target="_blank" rel="noreferrer">
+              查看 GitHub 仓库
+            </a>
+            <a class="button button-secondary" href="/portfolio.html">
+              返回作品集列表
+            </a>
+          </div>
+        </div>
+
+        <figure class="promo-board hero-board">
+          <img src="./img/promo-hero-board.png" alt="Paper Tide promotional board with laptop and mobile devices" />
+        </figure>
+      </section>
+
+      <section class="facts">
+        <div class="panel fact">
+          <div class="fact-label">Project Type</div>
+          <div class="fact-value">Portfolio case study<br />with launch-grade visuals</div>
+        </div>
+        <div class="panel fact">
+          <div class="fact-label">Baseline</div>
+          <div class="fact-value">WBproject parity for posting, image and social interactions</div>
+        </div>
+        <div class="panel fact">
+          <div class="fact-label">Frontend</div>
+          <div class="fact-value">Vue 3 + Vite + Pinia + TypeScript</div>
+        </div>
+        <div class="panel fact">
+          <div class="fact-label">Backend</div>
+          <div class="fact-value">Hono + in-memory state for lightweight local demo</div>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel section">
+          <p class="section-kicker">Project Overview</p>
+          <h2 class="section-title">把“发一条动态”改成“编一页纸”</h2>
+          <div class="section-body">
+            <code>paper-tide</code> 延续 WBproject 的核心能力边界，但前端视觉语言彻底换了一套：保留轻量提交与互动路径，转而用更克制的留白、纸张色阶、杂志式标题和双栏封面把内容重新编排。结果不是简单换皮，而是把产品重心从“动作”拉回到“阅读感”和“留档感”。
+          </div>
+
+          <div class="highlight-list">
+            <div class="highlight-item">
+              <strong>封面式 Hero</strong>
+              用双栏开篇把产品定位和内容价值放在首屏，替代原项目更直给的社区列表感。
+            </div>
+            <div class="highlight-item">
+              <strong>投稿台</strong>
+              保留发帖、上传与压缩流程，但通过更安静的版面让输入区像一期刊物的编辑桌。
+            </div>
+            <div class="highlight-item">
+              <strong>归档目录</strong>
+              仍然是单列可读流，却被包装成更像杂志目录的阅读层，不牺牲原有互动入口。
+            </div>
+            <div class="highlight-item">
+              <strong>多端展示</strong>
+              桌面端和移动端不再作为普通截图出现，而是被包装成完整产品宣传板。
+            </div>
+          </div>
+        </article>
+
+        <aside class="panel section">
+          <p class="section-kicker">Tech Stack</p>
+          <h2 class="section-title">技术栈与交付边界</h2>
+          <div class="section-body">
+            前端用 Vue 3 + Vite + Pinia 承担界面、状态和图片压缩体验；后端用 Hono 提供轻量接口与内存态存储。这个作品集接入阶段只保留静态案例页，不在当前主域名里开放发帖、评论等写操作。
+          </div>
+          <div class="stack">
+            <span>Vue 3</span>
+            <span>TypeScript</span>
+            <span>Vite</span>
+            <span>Pinia</span>
+            <span>Hono</span>
+            <span>Vitest</span>
+            <span>Responsive UI</span>
+            <span>Image Compression</span>
+          </div>
+          <div class="note-card">
+            当前站点展示为静态作品页，完整源码、可写交互和本地运行流程继续维护在 GitHub 仓库中。
+          </div>
+        </aside>
+      </section>
+
+      <section class="panel screens">
+        <p class="section-kicker">Screens</p>
+        <h2 class="section-title">桌面与移动端宣传级预览</h2>
+        <p class="screen-intro">
+          这里不再把截图塞进普通网页卡片，而是用设备外壳、错位层次、浮层标签和宽幅渐变背景，把项目包装成可直接放进 README、作品集首屏和社交媒体的宣传素材。
+        </p>
+
+        <article class="promo-board showcase">
+          <div class="showcase-heading">
+            <h3>Desktop Showcase</h3>
+            <p>桌面端只展示应用本体，不暴露本地地址栏、收藏栏或浏览器侧边栏。</p>
+          </div>
+          <div class="laptop-frame">
+            <!-- Reusable laptop SVG frame from project-promo-materials, with the product screenshot composited into its screen slot. -->
+            <svg class="laptop-device-svg" viewBox="35 140 530 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Paper Tide desktop product surface inside a laptop frame">
+              <defs>
+                <filter id="floorShadow--paper-tide-desktop" x="-10%" y="-50%" width="120%" height="220%">
+                  <feGaussianBlur in="SourceAlpha" stdDeviation="7" result="blur" />
+                  <feOffset in="blur" dx="0" dy="8" result="offset" />
+                  <feFlood flood-color="#000000" flood-opacity="0.18" result="color" />
+                  <feComposite in="color" in2="offset" operator="in" />
+                </filter>
+
+                <linearGradient id="baseUnderside--paper-tide-desktop" gradientUnits="userSpaceOnUse" x1="300" y1="443.5131" x2="300" y2="450.6771">
+                  <stop offset="0.3564" stop-color="#808185" />
+                  <stop offset="0.5045" stop-color="#78797D" />
+                  <stop offset="0.5443" stop-color="#7A7B7F" />
+                  <stop offset="1" stop-color="#0D0C11" />
+                </linearGradient>
+
+                <linearGradient id="lidOuter--paper-tide-desktop" gradientUnits="userSpaceOnUse" x1="300" y1="149.5" x2="300" y2="439.701">
+                  <stop offset="0.0002" stop-color="#363636" />
+                  <stop offset="0.0092" stop-color="#3A3A3A" />
+                  <stop offset="0.0982" stop-color="#404040" />
+                  <stop offset="0.1199" stop-color="#7D7D7D" />
+                  <stop offset="0.1519" stop-color="#404040" />
+                  <stop offset="0.2384" stop-color="#383838" />
+                  <stop offset="0.4063" stop-color="#404040" />
+                  <stop offset="0.4336" stop-color="#797979" />
+                  <stop offset="0.4621" stop-color="#404040" />
+                  <stop offset="0.5727" stop-color="#404040" />
+                  <stop offset="0.5998" stop-color="#626262" />
+                  <stop offset="0.6294" stop-color="#404040" />
+                  <stop offset="0.6916" stop-color="#404040" />
+                  <stop offset="0.7905" stop-color="#3D3D3D" />
+                  <stop offset="0.9015" stop-color="#404040" />
+                  <stop offset="0.9334" stop-color="#7E7E7E" />
+                  <stop offset="0.9577" stop-color="#474747" />
+                </linearGradient>
+
+                <linearGradient id="baseTop--paper-tide-desktop" gradientUnits="userSpaceOnUse" x1="40" y1="438.5" x2="560" y2="438.5">
+                  <stop offset="0" stop-color="#49484D" />
+                  <stop offset="0.0121" stop-color="#D3D4D9" />
+                  <stop offset="0.0282" stop-color="#D0D1D6" />
+                  <stop offset="0.0804" stop-color="#8C8D92" />
+                  <stop offset="0.0918" stop-color="#85868B" />
+                  <stop offset="0.5113" stop-color="#CBCCD2" />
+                  <stop offset="0.9264" stop-color="#85868B" />
+                  <stop offset="0.937" stop-color="#8B8C91" />
+                  <stop offset="0.979" stop-color="#D0D1D6" />
+                  <stop offset="0.994" stop-color="#D3D4D9" />
+                  <stop offset="1" stop-color="#454449" />
+                </linearGradient>
+
+                <linearGradient id="thumbGroove--paper-tide-desktop" gradientUnits="userSpaceOnUse" x1="258" y1="437" x2="342" y2="437">
+                  <stop offset="0" stop-color="#161617" />
+                  <stop offset="0.0581" stop-color="#84848A" />
+                  <stop offset="0.3011" stop-color="#8F8F96" />
+                  <stop offset="0.524" stop-color="#ADADB5" />
+                  <stop offset="0.7161" stop-color="#8A8B91" />
+                  <stop offset="0.9495" stop-color="#7B7C81" />
+                  <stop offset="1" stop-color="#0D0C11" />
+                </linearGradient>
+
+                <linearGradient id="leftBezelGlare--paper-tide-desktop" gradientUnits="userSpaceOnUse" x1="83.5892" y1="157.5892" x2="174.6575" y2="248.6575">
+                  <stop offset="0.0005" stop-color="#9E9E9E" />
+                  <stop offset="1" stop-color="#1D1D1B" />
+                </linearGradient>
+
+                <linearGradient id="screenGlare--paper-tide-desktop" x1="0" y1="0" x2="0.7" y2="0.8">
+                  <stop offset="0" stop-color="#ffffff" stop-opacity="0.16" />
+                  <stop offset="0.28" stop-color="#ffffff" stop-opacity="0" />
+                  <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+                </linearGradient>
+
+                <clipPath id="screenClip--paper-tide-desktop">
+                  <rect id="screen--paper-tide-desktop" x="101" y="169.5" width="398" height="248" rx="0" />
+                </clipPath>
+              </defs>
+
+              <ellipse cx="300" cy="450" rx="250" ry="8" fill="#000000" opacity="0.2" filter="url(#floorShadow--paper-tide-desktop)" />
+              <path fill="url(#baseUnderside--paper-tide-desktop)" d="M560,443.5c0,0-16,7-40,7s-416,0-440,0s-40-7-40-7l260-2L560,443.5z" />
+              <path fill="url(#lidOuter--paper-tide-desktop)" d="M511,433.5H89v-274c0-5.523,4.477-10,10-10h402c5.523,0,10,4.477,10,10V433.5z" />
+              <path fill="#000000" d="M90.5,433.5v-274c0-4.687,3.813-8.5,8.5-8.5h402c4.687,0,8.5,3.813,8.5,8.5v274H90.5z" />
+              <path fill="url(#leftBezelGlare--paper-tide-desktop)" d="M274,152.5l-182,209v-202c0-3.86,3.14-7,7-7H274z" opacity="0.72" />
+              <rect x="101" y="169.5" width="398" height="248" fill="#f8f2e8" />
+              <image href="./img/desktop-product.png" x="101" y="169.5" width="398" height="248" preserveAspectRatio="xMidYMid slice" clip-path="url(#screenClip--paper-tide-desktop)" />
+              <rect x="101" y="169.5" width="398" height="248" fill="url(#screenGlare--paper-tide-desktop)" />
+              <rect x="101" y="169.5" width="398" height="248" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="0.5" />
+              <circle fill="#232323" cx="300" cy="160.5" r="3" />
+              <circle fill="#0a0b12" cx="300" cy="160.5" r="1.2" opacity="0.65" />
+              <line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="509.5" y1="424.5" x2="90.5" y2="424.5" />
+              <rect x="40" y="433.5" fill="url(#baseTop--paper-tide-desktop)" width="520" height="10" />
+              <path fill="url(#thumbGroove--paper-tide-desktop)" d="M335,440.5h-70c-3.866,0-7-3.134-7-7h84C342,437.366,338.866,440.5,335,440.5z" />
+            </svg>
+          </div>
+          <span class="floating-badge desktop-badge-a">
+            <span class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1" /><path d="M5 8v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8" /><path d="M10 12h4" /></svg>
+            </span>
+            Archive Flow
+          </span>
+          <span class="floating-badge desktop-badge-b">
+            <span class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h5l4 7 4-7h5l-9 16Z" /></svg>
+            </span>
+            Vue 3 + Pinia
+          </span>
+        </article>
+
+        <article class="promo-board showcase">
+          <div class="showcase-heading">
+            <h3>Mobile Launch Board</h3>
+            <p>移动端用三台手机分别展示首屏、投稿台和归档流，强调它是移动设备上的产品界面，而不是网页窗口截图。</p>
+          </div>
+          <div class="phone-cluster">
+            <svg class="phone-trio-svg" viewBox="0 0 1200 820" role="img" aria-label="Paper Tide mobile home, submit desk and archive screens">
+              <defs>
+                <filter id="pt-trio-shadow" x="-12%" y="-10%" width="124%" height="130%">
+                  <feDropShadow dx="0" dy="28" stdDeviation="22" flood-color="#2b2118" flood-opacity="0.22" />
+                  <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.18" />
+                </filter>
+                <linearGradient id="pt-phone-body" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#6e6a64" />
+                  <stop offset="0.1" stop-color="#171513" />
+                  <stop offset="0.5" stop-color="#060504" />
+                  <stop offset="0.88" stop-color="#25211d" />
+                  <stop offset="1" stop-color="#7b7168" />
+                </linearGradient>
+                <linearGradient id="pt-side-button" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#3d3834" />
+                  <stop offset="0.5" stop-color="#100f0e" />
+                  <stop offset="1" stop-color="#4d463f" />
+                </linearGradient>
+                <linearGradient id="pt-screen-glass" x1="0" y1="0" x2="0.9" y2="0.85">
+                  <stop offset="0" stop-color="#ffffff" stop-opacity="0.22" />
+                  <stop offset="0.2" stop-color="#ffffff" stop-opacity="0" />
+                  <stop offset="0.72" stop-color="#ffffff" stop-opacity="0" />
+                  <stop offset="1" stop-color="#ffffff" stop-opacity="0.08" />
+                </linearGradient>
+                <clipPath id="pt-screen-left">
+                  <rect x="112" y="113" width="280" height="606" rx="42" />
+                </clipPath>
+                <clipPath id="pt-screen-center">
+                  <rect x="442" y="113" width="280" height="606" rx="42" />
+                </clipPath>
+                <clipPath id="pt-screen-right">
+                  <rect x="772" y="113" width="280" height="606" rx="42" />
+                </clipPath>
+              </defs>
+              <ellipse cx="600" cy="758" rx="520" ry="34" fill="#000000" opacity="0.16" />
+              <g transform="translate(102 96)" filter="url(#pt-trio-shadow)">
+                <rect x="-3" y="160" width="3" height="46" rx="1.5" fill="url(#pt-side-button)" />
+                <rect x="-3" y="222" width="3" height="74" rx="1.5" fill="url(#pt-side-button)" />
+                <rect x="302" y="250" width="3" height="88" rx="1.5" fill="url(#pt-side-button)" />
+                <rect width="300" height="640" rx="52" fill="url(#pt-phone-body)" />
+                <rect x="5" y="5" width="290" height="630" rx="48" fill="#000000" />
+                <rect x="10" y="17" width="280" height="606" rx="42" fill="#fbf4e8" />
+              </g>
+              <image href="./img/mobile-home.png" x="112" y="113" width="280" height="606" preserveAspectRatio="xMidYMid slice" clip-path="url(#pt-screen-left)" />
+              <rect x="112" y="113" width="280" height="606" rx="42" fill="url(#pt-screen-glass)" />
+              <rect x="112" y="113" width="280" height="606" rx="42" fill="none" stroke="#ffffff" stroke-opacity="0.13" />
+              <rect x="210" y="119" width="84" height="26" rx="13" fill="#000000" />
+
+              <g transform="translate(762 96)" filter="url(#pt-trio-shadow)">
+                <rect x="-3" y="160" width="3" height="46" rx="1.5" fill="url(#pt-side-button)" />
+                <rect x="-3" y="222" width="3" height="74" rx="1.5" fill="url(#pt-side-button)" />
+                <rect x="302" y="250" width="3" height="88" rx="1.5" fill="url(#pt-side-button)" />
+                <rect width="300" height="640" rx="52" fill="url(#pt-phone-body)" />
+                <rect x="5" y="5" width="290" height="630" rx="48" fill="#000000" />
+                <rect x="10" y="17" width="280" height="606" rx="42" fill="#fbf4e8" />
+              </g>
+              <image href="./img/mobile-archive.png" x="772" y="113" width="280" height="606" preserveAspectRatio="xMidYMid slice" clip-path="url(#pt-screen-right)" />
+              <rect x="772" y="113" width="280" height="606" rx="42" fill="url(#pt-screen-glass)" />
+              <rect x="772" y="113" width="280" height="606" rx="42" fill="none" stroke="#ffffff" stroke-opacity="0.13" />
+              <rect x="870" y="119" width="84" height="26" rx="13" fill="#000000" />
+
+              <g transform="translate(432 96)" filter="url(#pt-trio-shadow)">
+                <rect x="-3" y="160" width="3" height="46" rx="1.5" fill="url(#pt-side-button)" />
+                <rect x="-3" y="222" width="3" height="74" rx="1.5" fill="url(#pt-side-button)" />
+                <rect x="302" y="250" width="3" height="88" rx="1.5" fill="url(#pt-side-button)" />
+                <rect width="300" height="640" rx="52" fill="url(#pt-phone-body)" />
+                <rect x="5" y="5" width="290" height="630" rx="48" fill="#000000" />
+                <rect x="10" y="17" width="280" height="606" rx="42" fill="#fbf4e8" />
+              </g>
+              <image href="./img/mobile-submit.png" x="442" y="113" width="280" height="606" preserveAspectRatio="xMidYMid slice" clip-path="url(#pt-screen-center)" />
+              <rect x="442" y="113" width="280" height="606" rx="42" fill="url(#pt-screen-glass)" />
+              <rect x="442" y="113" width="280" height="606" rx="42" fill="none" stroke="#ffffff" stroke-opacity="0.13" />
+              <rect x="540" y="119" width="84" height="26" rx="13" fill="#000000" />
+            </svg>
+          </div>
+          <span class="floating-badge mobile-badge-a">
+            <span class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h4" /></svg>
+            </span>
+            Issue Cover
+          </span>
+          <span class="floating-badge mobile-badge-b">
+            <span class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h10a1 1 0 0 1 1 1v15l-6-4-6 4V5a1 1 0 0 1 1-1Z" /></svg>
+            </span>
+            Saved Archive
+          </span>
+          <span class="floating-badge mobile-badge-c">
+            <span class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            </span>
+            Submit Desk
+          </span>
+        </article>
+
+        <img src="./img/mobile-preview.png" alt="Paper Tide mobile responsive preview source" hidden />
+      </section>
+
+      <footer class="panel footer">
+        <p>
+          作品集入口位于 <code>/portfolio</code>，本页是挂在 <code>/project/paper-tide/index.html</code> 下的站内静态案例。完整源码与本地可运行 demo 继续维护在 GitHub 仓库中。
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://github.com/zhangjian94cn/paper-tide" target="_blank" rel="noreferrer">
+            Open Source
+          </a>
+          <a class="button button-secondary" href="/portfolio.html">
+            Back to Portfolio
+          </a>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>

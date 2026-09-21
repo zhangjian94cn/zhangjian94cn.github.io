@@ -1,0 +1,40 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第14课｜案例：研发的代码交付 Agent · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" aria-current="page"><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson14" aria-labelledby="lesson14-title"><header class="article-header"><div class="eyebrow">模块 04 / 案例分享与结课项目</div><h1 id="lesson14-title">第14课｜案例：研发的代码交付 Agent</h1><div class="meta">建议学习 30 分钟（含练习） · 本课产出：可评审代码任务</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">14 / 16</span></div></header><article class="article"><h2 id="lesson14-1">用户故事：让一个 Issue 走到可评审的变更</h2>
+<p>作为研发工程师，我希望 Agent 根据一条明确 Issue 修改代码，运行相关验证，给出可审阅的差异与局限，以便我把时间放在设计和评审。交付物是可评审变更；是否合并由项目已有规则决定。</p>
+<p>本课将公开的长期运行工程经验改编成一个教学仓库任务，未声称已经替任何真实项目创建 PR。</p>
+<h2 id="lesson14-2">教学任务：给工单列表增加分类筛选</h2>
+<p>Spec 先写清：默认显示全部；可选择账号、设备两类；无匹配时显示空状态；刷新后是否保留选择要明确；筛选不能改变服务端权限。验收不应只有“增加筛选功能”，还应包含键盘操作、移动端布局和空结果。</p>
+<p>一条典型执行路线是：读 Issue 与项目约定→定位代码→提出最小修改方案→修改→运行与变更相关的验证→检查差异→提交评审摘要。具体工具依项目而定，不必为每个动作都创建一个 Agent。</p>
+<h2 id="lesson14-3">为什么工作目录与任务记录重要</h2>
+<p>代码 Agent 可以修改环境，环境也会反过来影响后续判断。若下一轮不知道上轮改过什么、测试是否真跑过，就容易重复修改或误报完成。</p>
+<p>Anthropic 的长期任务文章展示了功能清单、进度文件、Git 历史和环境检查在跨会话交接中的作用。课程把这一思路改编为“每次交付一个可验收的增量”。<a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">长期任务公开实践</a>。</p>
+<p>课程建议的交接记录如下：</p>
+<div class="code-wrap"><pre><code class="language-text">任务：工单列表增加分类筛选
+已完成：筛选控件与空状态
+变更：列表组件、筛选条件逻辑
+已验证：全部/账号/设备/无匹配四个场景
+未验证：真实服务端权限集成
+当前阻塞：测试环境没有服务端凭证
+下一步：由具备环境权限的人员执行集成验收
+</code></pre></div>
+<p>这是执行摘要，不能替代真实命令输出、差异和测试记录。不要让 Agent 仅通过修改“通过”字段完成验收。</p>
+<h2 id="lesson14-4">哪些工作适合并行</h2>
+<p>可以让一个执行单元查相关实现，另一个查既有测试约定，最后由同一负责人合并理解。两个 Agent 同时修改同一组件，容易出现覆盖、冲突和风格漂移；即使使用不同分支或 worktree，也仍需集成评审。</p>
+<p>如果任务必须先确定数据结构才能改界面，就有真实依赖，不宜为了并行而同时开工。给子任务的边界应写成“分析并返回建议”或“只修改指定测试文件”，而不是“尽力帮忙”。</p>
+<h2 id="lesson14-5">代码权限与完成证据</h2>
+<p>可读文件范围、可写目录、可执行命令、网络访问与凭证注入，应由运行环境和仓库权限共同限制。提示词中的“不要动其他目录”是行为要求，不是安全隔离。地市人员可以在哪些目录工作，与后台 Agent 实际使用哪个凭证是两个需要分别验证的问题。</p>
+<p>评审者应能看到：为什么改、改了什么、行为如何变化、运行了哪些验证、还有哪些未覆盖情况。截图能证明一个画面，不能证明所有业务路径。测试全部通过也要确认是否覆盖了本次验收，不能拿无关测试充数。</p>
+<h2 id="lesson14-6">失败复盘：它说修好了，却没有保存文件</h2>
+<p>如果 Agent 在答案里贴出了正确代码，但工作区文件没改，任务仍未完成；如果文件已改，但没有启动真实页面，界面问题仍可能存在；如果测试失败被略过，评审者必须知道。完成状态应绑定可检查的交付物与验证结果。</p>
+<p>工具错误时也不能无限重试。依赖安装受阻、缺少环境或无权限时，留下可复现的信息和下一步。绕过项目约定只为得到“绿色通过”，会破坏验收意义。</p>
+<h2 id="lesson14-7">练习：改写一个含糊 Issue（20 分钟）</h2>
+<p>原 Issue：“工单页面不好用，帮忙优化。”请改为一个一天内可验收的小任务，补上范围、非目标、三项验收和一项失败出口。</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>示例：增加账号/设备分类筛选，使用现有数据字段；不修改服务端接口、不重做整页设计。验收：默认全部；选择后结果正确且显示数量；无结果时可清除筛选返回全部。失败出口：发现现有数据没有稳定分类字段时，停止实现并提交字段缺口与建议，由需求负责人决策。加上权限与浏览器环境要求会使任务更完整。</p>
+
+</div></details>
+
+
+<h2 id="lesson14-8">研发的进阶路线</h2>
+<p>先读懂最小工具循环与轨迹；再写稳定的工具契约和失败测试；随后掌握上下文、检查点、幂等和隔离环境；最后才扩大到跨仓库、跨团队任务。能解释一次失败发生在哪一层，是比“能让 Agent 写代码”更有价值的能力。</p>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson13.html"><small>上一课</small>产品经理的证据型调研</a><a class="next" href="lesson15.html"><small>下一课</small>省市协作的工单平台</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

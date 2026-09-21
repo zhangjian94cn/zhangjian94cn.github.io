@@ -1,0 +1,74 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数据库变更与回滚边界 · DevOps 实战手册</title><meta name="description" content="应用镜像通常可以换回旧版本，数据库却持续接收用户写入。把程序回退到昨天，不会让今天创建的工单自动回到昨天的状态。发布涉及 schema 或数据变化时，恢复计划必须同时考虑新旧程序和已有数据。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-19"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" open><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link active" aria-current="page"><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>第一次交付与恢复</span><span>/</span><span>第 19 章</span></div><div class="chapter-eyebrow">CHAPTER 19 <span>·</span> 第 5 篇<span class="version-label">v0.3 阅读版</span></div><h1>数据库变更与回滚边界</h1><div class="chapter-outcome"><strong>学习目标</strong><span>加字段后让新旧应用短时共存；制造迁移失败；选择安全的恢复动作，说明哪些数据变化不能自动撤销</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 迁移是有顺序的状态变化</a><a class="toc-level-2" href="#section-2">2. 为什么增加字段也要考虑兼容</a><a class="toc-level-2" href="#section-3">3. 做一个可控的迁移失败实验</a><a class="toc-level-2" href="#section-4">4. 三种恢复动作分别回答什么</a><a class="toc-level-2" href="#section-5">5. 备份必须通过恢复验证</a><a class="toc-level-2" href="#section-6">6. 本章验收</a></details><div class="prose"><p>应用镜像通常可以换回旧版本，数据库却持续接收用户写入。把程序回退到昨天，不会让今天创建的工单自动回到昨天的状态。发布涉及 schema 或数据变化时，恢复计划必须同时考虑新旧程序和已有数据。</p>
+<p>本章只在本地实验数据库执行。项目已包含建表和增加优先级两次迁移；下载后首次运行会应用它们。因此“增加 priority”用于分析现有设计，不应再次创建同名列或声称刚完成了一次从旧系统升级的实验。</p>
+<h2 id="section-1">1. 迁移是有顺序的状态变化<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<p><code>app/migrate.py</code> 读取排序后的 SQL 文件，在 <code>schema_migrations</code> 中记录文件名与校验和。已经应用的文件内容变化时，脚本拒绝继续；修复通过新增迁移表达，而不是偷偷改写历史。</p>
+<p>项目在事务中取得 PostgreSQL advisory lock，避免这个迁移入口并发执行同一批迁移。锁有超时，SQL 也有执行时间限制。它保护的是遵循相同约定的迁移任务，不会阻止所有其他客户端进行任意数据库操作。</p>
+<pre><code class="language-bash">docker compose exec -T db psql -U ticketdesk -d ticketdesk -c &#39;SELECT name FROM schema_migrations ORDER BY name;&#39;
+docker compose run --rm --no-deps migrate
+</code></pre>
+<p>第二次执行应识别已应用文件，不重复建表。记录实际退出码和迁移表。幂等的迁移入口仍不意味着任何 SQL 都天然可以重复执行。</p>
+<h2 id="section-2">2. 为什么增加字段也要考虑兼容<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>本例新增 <code>priority</code>，提供默认值 <code>normal</code>，并约束允许的取值。旧客户端不发送该字段时，当前 API 仍能创建工单；接口测试已经覆盖这一点。</p>
+<p>这只验证“旧请求形状与新 API”的兼容，不等于已经验证“旧应用二进制与新数据库”的兼容。后者需要真正保留一个旧应用快照，在新 schema 上运行并检查读写。本阅读版没有提供独立旧版快照，不把这个场景标为已通过。</p>
+<p>常见的 expand/contract 思路是先增加可兼容的结构，让新旧版本都能工作，再逐步迁移数据和读写路径，确认旧版本不再依赖旧结构后，最后删除旧字段或旧行为。收缩步骤通常会改变回退边界，应单独安排。</p>
+<p>直接把正在被使用的列重命名或删除，可能在新旧实例短暂共存时使旧程序立即失败。默认值、约束验证、索引构建和大表更新也有锁与执行时间成本，不能只在空表上试过就推断线上影响。</p>
+<p>参考：<a href="https://www.postgresql.org/docs/current/ddl-alter.html">PostgreSQL 修改表结构</a>。</p>
+<h2 id="section-3">3. 做一个可控的迁移失败实验<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<p>先完成备份，确认只有本地实验数据。在练习分支新建 <code>migrations/003-demo-failure.sql</code>：</p>
+<pre><code class="language-sql">CREATE TABLE migration_failure_probe (id integer);
+SELECT 1 / 0;
+</code></pre>
+<p>这个例子故意在事务中失败，用来观察前面的建表是否一并撤销。构建独立候选，避免覆盖正在运行的应用标签：</p>
+<pre><code class="language-bash">APP_IMAGE=ticketdesk:migration-failure docker compose build app
+APP_IMAGE=ticketdesk:migration-failure docker compose run --rm --no-deps migrate
+</code></pre>
+<p>预期迁移命令非零退出。确认临时表和迁移记录都没有留下：</p>
+<pre><code class="language-bash">docker compose exec -T db psql -U ticketdesk -d ticketdesk -c &quot;SELECT to_regclass(&#39;public.migration_failure_probe&#39;);&quot;
+docker compose exec -T db psql -U ticketdesk -d ticketdesk -c &#39;SELECT name FROM schema_migrations ORDER BY name;&#39;
+python3 scripts/lab.py check --ticket-id 1
+</code></pre>
+<p>把 1 换成自己的旧工单 ID。实验后删除尚未应用的 <code>003-demo-failure.sql</code>，保留失败日志，不将这个故意失败的文件合并到主分支。没有执行过或执行结果不同，就如实记录；不要预填“回滚成功”。</p>
+<h2 id="section-4">4. 三种恢复动作分别回答什么<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>动作</th>
+<th>修改对象</th>
+<th>适用例子</th>
+<th>必须先确认</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>应用回退</td>
+<td>运行镜像</td>
+<td>新版代码错误</td>
+<td>旧版兼容当前 schema 与数据</td>
+</tr>
+<tr>
+<td>配置回退或修复</td>
+<td>环境配置</td>
+<td>数据库主机名写错</td>
+<td>目标配置正确，秘密版本仍有效</td>
+</tr>
+<tr>
+<td>数据库恢复</td>
+<td>持久数据</td>
+<td>数据损坏或误删除</td>
+<td>可用恢复点、可接受数据损失、切换方案</td>
+</tr>
+</tbody></table></div>
+<p>本项目 <code>lab.py recover</code> 重新部署最后通过业务验证的镜像，并修复实验数据库主机名。它不执行逆向 SQL，不恢复备份，也不撤销已经成功写入的工单。</p>
+<p>备份恢复可能丢失备份时间之后的写入。RPO 描述可接受的数据损失范围，RTO 描述恢复时间目标；它们需要业务约定与演练测量，不能由脚本名字自动保证。</p>
+<h2 id="section-5">5. 备份必须通过恢复验证<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>在应用无其他写入的实验窗口运行：</p>
+<pre><code class="language-bash">python3 scripts/lab.py backup
+python3 scripts/verify-backup.py
+</code></pre>
+<p>备份使用 PostgreSQL 自定义格式逻辑转储。验证脚本把最新备份恢复到一个新建的临时数据库，对比工单行的完整业务内容，最后删除这个临时数据库。它不会覆盖原库。</p>
+<p>比较要求源库从备份起不再发生业务写入，否则备份和当前源库不同可能是正常的时间差。执行验证前不要再运行会创建工单的 <code>lab.py check</code>；也不要打开页面继续提交数据。</p>
+<p>手动练习可以把具体备份路径交给 <code>lab.py restore --file</code>。该命令恢复到新的数据库，保留供检查，只输出行数并提示继续核对。行数相同不是字段正确的充分证据；需要检查指定工单、状态、标题、时间等。</p>
+<p>这个练习不覆盖角色、完整权限、外部对象、超大数据库性能或持续归档恢复。生产恢复方案将在后续可靠性卷扩展。参考：<a href="https://www.postgresql.org/docs/current/backup-dump.html">PostgreSQL 逻辑备份</a>。</p>
+<h2 id="section-6">6. 本章验收<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p>提交迁移清单、失败事务证据、旧请求兼容的测试结果、备份文件记录与实际恢复对比。明确标注尚未执行的旧二进制共存、锁竞争、大表和真实恢复时间测试。</p>
+<p>最后写一个判断题的解释：新应用成功写入一种旧程序无法理解的状态后，仅换回旧镜像是否足够？答案取决于数据兼容性；即使表结构没变，业务语义也可能已经越过安全回退边界。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-18.html"><small>← 上一篇</small><strong>部署配置、环境差异与发布验证</strong></a><a href="chapter-20.html"><small>下一章 →</small><strong>把发布、观察、故障和恢复串起来</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 迁移是有顺序的状态变化</a><a class="toc-level-2" href="#section-2">2. 为什么增加字段也要考虑兼容</a><a class="toc-level-2" href="#section-3">3. 做一个可控的迁移失败实验</a><a class="toc-level-2" href="#section-4">4. 三种恢复动作分别回答什么</a><a class="toc-level-2" href="#section-5">5. 备份必须通过恢复验证</a><a class="toc-level-2" href="#section-6">6. 本章验收</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

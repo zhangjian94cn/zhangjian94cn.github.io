@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 2,
+  "profile": "ink-elegant",
+  "aesthetic": {
+    "name": "ink-elegant",
+    "principles": {
+      "composition": "weighted-visual-center-with-independent-view-offset",
+      "color": "source-led-smoke-rose-and-indigo-ink",
+      "motion": "coherent-upper-right-wind",
+      "dissolve": "luminous-narrow-edge-short-tail-clean-paper",
+      "interaction": "surface-bound-moonlit-water-ripple"
+    },
+    "quality": {
+      "strategy": "adaptive-record-density",
+      "mobileMediaQuery": "(max-width: 760px)",
+      "touchAsMobile": true,
+      "touchPointsThreshold": 1,
+      "recordDensity": {
+        "desktop": 0.16,
+        "mobile": 0.032
+      },
+      "particleRange": {
+        "desktop": [
+          12000,
+          40000
+        ],
+        "mobile": [
+          3000,
+          8000
+        ]
+      },
+      "hardwareScale": {
+        "referenceMemoryGb": 8,
+        "referenceLogicalCores": 8,
+        "minimum": 0.55,
+        "maximum": 1
+      },
+      "pixelRatioCap": {
+        "desktop": 2,
+        "mobile": 1.35
+      },
+      "streakAspectCap": {
+        "desktop": 3.6,
+        "mobile": 2.2
+      },
+      "sampling": {
+        "minAlpha": 8,
+        "coordinateAbsMax": 10,
+        "areaWeightRange": [
+          1e-06,
+          0.02
+        ],
+        "stratifiedJitter": 0.72
+      }
+    },
+    "validation": {
+      "targetErrorToRadiusMax": 0.001,
+      "emptyHoldSeconds": 3,
+      "nearWhiteHighlightMaxRatio": 0.005
+    }
+  },
+  "title": "水墨莲花",
+  "subtitle": "Ink Lotus",
+  "assets": {
+    "splat": "https://assets.zhangjian94cn.top/demos/ink-splat-lotus/image22-official-s42.splat",
+    "ply": "https://assets.zhangjian94cn.top/demos/ink-splat-lotus/image22-official-s42.ply",
+    "preview": "https://assets.zhangjian94cn.top/demos/ink-splat-lotus/preview.mp4"
+  },
+  "camera": {
+    "fov": 42,
+    "position": [
+      -0.24,
+      0.2,
+      1.9
+    ],
+    "target": [
+      -0.24,
+      0,
+      0
+    ],
+    "near": 0.001,
+    "far": 100
+  },
+  "model": {
+    "rootRotation": [
+      3.141592653589793,
+      0,
+      0
+    ],
+    "splatRotation": [
+      0,
+      1.5707963267948966,
+      0
+    ],
+    "position": [
+      0,
+      -0.04,
+      0
+    ],
+    "scale": 1
+  },
+  "effects": {
+    "mode": "calm",
+    "autoRotateSpeed": 0.45,
+    "dampingFactor": 0.075,
+    "distanceRange": [
+      0.35,
+      9
+    ],
+    "polarRange": [
+      0.25,
+      0.75
+    ],
+    "hoverPauseStrength": 0.04,
+    "body": {
+      "breatheFrequency": 0.72,
+      "breatheAmplitude": 0.006,
+      "opacityDamping": 8.5,
+      "hoverTintGreen": 0.018,
+      "hoverTintBlue": 0.025,
+      "recolorLerp": 0.035,
+      "reformGlowScale": 0.7
+    }
+  },
+  "composition": {
+    "desktopViewOffsetX": -0.16,
+    "mobileViewOffsetX": 0,
+    "mobileCameraPosition": [
+      0,
+      0.48,
+      2.58
+    ],
+    "mobileInitialTarget": [
+      0,
+      0.28,
+      0
+    ],
+    "framing": {
+      "minimumRadius": 0.6,
+      "distanceScale": {
+        "desktop": 2.75,
+        "mobile": 3.3
+      },
+      "verticalOffsetRatio": 0.28,
+      "nearRadiusDivisor": 1000,
+      "nearFloor": 0.001,
+      "farRadiusMultiplier": 100,
+      "farFloor": 10
+    }
+  },
+  "roles": {
+    "classifier": {
+      "type": "warm-gold-neutral-v1",
+      "warm": {
+        "redMin": 116,
+        "redVsGreen": 1.06,
+        "redVsBlue": 0.92
+      },
+      "gold": {
+        "brightnessMin": 120,
+        "redMin": 96,
+        "greenMin": 78,
+        "blueMax": 120,
+        "chromaMin": 18
+      }
+    },
+    "flow": {
+      "warm": [
+        0.46,
+        0.72,
+        0.12
+      ],
+      "gold": [
+        0.3,
+        0.9,
+        0.08
+      ],
+      "neutral": [
+        0.52,
+        0.55,
+        0.1
+      ]
+    },
+    "flowVariation": {
+      "warmRadialX": 0.18,
+      "warmDepth": 0.08,
+      "goldDepth": 0.05,
+      "neutralVertical": 0.08,
+      "neutralDepth": 0.05
+    }
+  },
+  "palette": {
+    "smokeRose": "#a76073",
+    "petalPink": "#d6a6b2",
+    "indigoInk": "#42525b",
+    "celadon": "#75857e",
+    "moonWhite": "#e8e3d9",
+    "mutedGold": "#b39a63",
+    "minMix": 0.1,
+    "maxMix": 0.25
+  },
+  "grade": {
+    "enabled": true,
+    "inkDepth": 0.12,
+    "inkLow": 0.18,
+    "inkHigh": 0.55,
+    "roseSaturation": 1.18,
+    "goldSaturation": 1.12,
+    "vibrance": 0.11,
+    "contrast": 1.06,
+    "contrastPivot": 0.62,
+    "highlightShoulder": 0.94
+  },
+  "particleVfx": {
+    "baseSize": 2.6,
+    "calmOpacityMin": 0.03,
+    "calmOpacityMax": 0.08,
+    "pointStyle": {
+      "sizeRange": [
+        0.68,
+        1.4
+      ],
+      "goldSizeBoost": 0.12,
+      "trailAspectRange": [
+        0.8,
+        1.25
+      ]
+    }
+  },
+  "dissolve": {
+    "duration": 8.0,
+    "reformDuration": 5.2,
+    "bodyFadeStart": 0.9,
+    "bodyFadeEnd": 0.98,
+    "terminalThreshold": 0.995,
+    "flow": {
+      "frequency": 3.2,
+      "curlStrength": 0.28,
+      "maxDistance": 0.48,
+      "streakAspect": 3.6,
+      "bandCount": 5
+    },
+    "ordering": {
+      "xWeight": 0.62,
+      "inverseYWeight": 0.2,
+      "waveWeight": 0.12,
+      "waveFrequency": [
+        7.2,
+        4.6
+      ],
+      "goldPhaseOffset": 0.02,
+      "bandXWeight": 0.62,
+      "bandInverseYWeight": 0.55,
+      "bandJitter": 0.16
+    },
+    "band": {
+      "phaseMin": 0.06,
+      "phaseMax": 0.82,
+      "bodyErase": 0.045,
+      "edgeGlowWidth": 0.05,
+      "tailWindow": 0.16,
+      "emitAlpha": 0.8,
+      "swell": 1.15
+    }
+  },
+  "entrance": {
+    "enabled": true,
+    "duration": 4.2,
+    "delay": 0.35
+  },
+  "sparkle": {
+    "peak": 1.0,
+    "attack": 0.5,
+    "decay": 1.6
+  },
+  "interaction": {
+    "hoverRadius": 0.32,
+    "push": 0.075,
+    "swirl": 0.028,
+    "lift": 0.022,
+    "recovery": 1.2,
+    "passiveStrength": 0.62,
+    "sculptStrength": 1,
+    "raycastIntervalMs": 34,
+    "rippleFrequency": 46.0,
+    "rippleSpeed": 5.4,
+    "pointerVelocityInfluence": 0.18,
+    "pointerVelocityLimit": 0.35,
+    "response": {
+      "hoverPointLerp": 0.42,
+      "sculptDragStrength": 0.84,
+      "forceInitialStrength": 0.68,
+      "moveInitialStrength": 0.52,
+      "activationThreshold": 0.02,
+      "velocityIdleSeconds": 0.22,
+      "velocityDecay": 9,
+      "velocityDampingActive": 7,
+      "velocityDampingIdle": 3.4,
+      "pointerSpeedDamping": 6
+    }
+  },
+  "postprocessing": {
+    "exposure": 1.0,
+    "bloomBaseStrength": 0.06,
+    "bloomActiveStrength": 0.3,
+    "bloomRadius": 0.34,
+    "bloomThreshold": 0.82,
+    "vignette": 0.08,
+    "filmGrain": 0.003,
+    "radialGlow": 0.012,
+    "chromatic": 0.00012,
+    "activityWeights": {
+      "transition": 0.82,
+      "hover": 0.7,
+      "sparkle": 0.55
+    },
+    "style": {
+      "chromaBase": 0.35,
+      "chromaActivity": 0.65,
+      "radialRange": [
+        0.72,
+        0.08
+      ],
+      "radialColor": "#b5c2b5",
+      "radialBase": 0.16,
+      "radialActivity": 0.08,
+      "vignetteRange": [
+        0.24,
+        0.92
+      ],
+      "grainFramesPerSecond": 12,
+      "bloomAlphaCoverage": 0.6
+    }
+  },
+  "runtime": {
+    "sparkFocalAdjustment": 1.8,
+    "minRaycastOpacity": 0.08,
+    "maxFrameDeltaSeconds": 0.05,
+    "loading": {
+      "frameDelayMs": 180,
+      "fallbackFrameDelayMs": 7800,
+      "particleTimeoutMs": 12000,
+      "statusTimeoutMs": 8500
+    }
+  },
+  "source": {
+    "image": "image22.png",
+    "pipeline": "VAST-AI official TripoSplatPipeline",
+    "renderer": "Spark.js SplatMesh + Three.js GPU Points"
+  }
+}

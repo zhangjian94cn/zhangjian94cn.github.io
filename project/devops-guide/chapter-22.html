@@ -1,0 +1,92 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>使用 OpenTofu 声明基础设施 · DevOps 实战手册</title><meta name="description" content="手工点击创建网络很快，第二个人却难以知道参数、依赖和历史。基础设施即代码把期望状态保存为可评审的声明，再由工具比较现实与期望。本章先管理本机 Docker 资源，避免把学习 IaC 与付费云操作绑在一起。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-22"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" open><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link active" aria-current="page"><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>云与基础设施即代码</span><span>/</span><span>第 22 章</span></div><div class="chapter-eyebrow">CHAPTER 22 <span>·</span> 第 6 篇<span class="version-label">v0.3 阅读版</span></div><h1>使用 OpenTofu 声明基础设施</h1><div class="chapter-outcome"><strong>学习目标</strong><span>默认用锁定的本地 Docker provider 创建实验资源；可选 AWS 实现；计划可读，创建后能验证，销毁对象明确</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 声明对象与执行命令的区别</a><a class="toc-level-2" href="#section-2">2. 阅读配套 HCL</a><a class="toc-level-2" href="#section-3">3. 初始化、格式和静态验证</a><a class="toc-level-2" href="#section-4">4. 计划是需要阅读的变更说明</a><a class="toc-level-2" href="#section-5">5. 用平台事实确认结果</a><a class="toc-level-2" href="#section-6">6. 清理也需要审阅</a><a class="toc-level-2" href="#section-7">7. 练习与验收</a></details><div class="prose"><p>手工点击创建网络很快，第二个人却难以知道参数、依赖和历史。基础设施即代码把期望状态保存为可评审的声明，再由工具比较现实与期望。本章先管理本机 Docker 资源，避免把学习 IaC 与付费云操作绑在一起。</p>
+<p>前置是第 21 章和可用 Docker daemon。实验目录是 <code>ticketdesk/infra/tofu/</code>，只创建一个独立网络和一个空卷，不接管已有 Compose 数据。OpenTofu 与 provider 的实际运行验证状态见版本页。</p>
+<h2 id="section-1">1. 声明对象与执行命令的区别<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<p>脚本通常说明按什么顺序做事；声明式配置先说明希望存在什么。OpenTofu 通过 provider 与具体平台通信，通过资源地址识别配置中的对象，并利用状态文件关联现实资源。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>HCL 元素</th>
+<th>职责</th>
+<th>本例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>provider</td>
+<td>连接某类基础设施 API</td>
+<td>Docker daemon</td>
+</tr>
+<tr>
+<td>resource</td>
+<td>由当前配置管理的对象</td>
+<td>网络与卷</td>
+</tr>
+<tr>
+<td>data</td>
+<td>读取已有对象的信息</td>
+<td>后续可读取已有资源，读取不等于接管</td>
+</tr>
+<tr>
+<td>variable</td>
+<td>配置输入与约束</td>
+<td>实验名称、Docker 地址</td>
+</tr>
+<tr>
+<td>output</td>
+<td>向操作者或下一流程输出信息</td>
+<td>实际网络名与卷名</td>
+</tr>
+<tr>
+<td>module</td>
+<td>组合一组有边界的配置</td>
+<td>可在复用需求稳定后提取</td>
+</tr>
+</tbody></table></div>
+<p>把所有内容拆成模块不是入门目标。先让一个小配置可以创建、验证、识别漂移和清理，再根据重复使用的边界组织模块。</p>
+<h2 id="section-2">2. 阅读配套 HCL<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p><code>main.tf</code> 固定 Docker provider 到 3.6.2，并声明网络和卷。网络使用 <code>internal = true</code>，便于观察“资源已创建”和“可以访问互联网”是两个不同条件。</p>
+<pre><code class="language-hcl">resource &quot;docker_network&quot; &quot;lab&quot; {
+  name     = var.lab_name
+  internal = true
+}
+
+resource &quot;docker_volume&quot; &quot;lab&quot; {
+  name = &quot;${var.lab_name}-data&quot;
+}
+</code></pre>
+<p>这是正文精简片段，完整文件包含标签和输入校验。<code>docker_network.lab</code> 是配置地址，不是 Docker 中的实际名称；修改资源地址可能需要迁移状态关联，不能仅当作变量重命名。</p>
+<p>这里的网络和卷没有挂到应用，因此创建成功只验证资源管理流程。它不证明 TicketDesk 可用，更不证明云 IAM 或 VPC 已经验证。</p>
+<h2 id="section-3">3. 初始化、格式和静态验证<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">tofu version
+tofu init
+tofu fmt -check
+tofu validate
+</code></pre>
+<p><code>init</code> 准备后端与 provider 等依赖；<code>fmt</code> 检查格式；<code>validate</code> 检查配置内部是否合法。它们各自承担一部分责任，不能替代连接真实平台后的计划与执行。</p>
+<p>初始化产生的 <code>.terraform.lock.hcl</code> 应进入版本控制，用于记录 provider 选择与校验信息；<code>.terraform/</code> 下载目录、state 和计划文件不进入源码。本版不伪造尚未下载的 provider 校验和，读者初始化后需保存自己的实际锁文件。</p>
+<p>Docker Desktop 的 socket 可能不是 <code>/var/run/docker.sock</code>。查看自己的 Docker context，再通过 <code>TF_VAR_docker_host</code> 指定对应地址。不要为了解决本地连接问题把 Docker API 无认证地暴露到网络。</p>
+<h2 id="section-4">4. 计划是需要阅读的变更说明<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">tofu plan -out=lab.tfplan
+tofu show lab.tfplan
+tofu apply lab.tfplan
+tofu output
+</code></pre>
+<p>首次计划应只涉及本章的两个实验资源。阅读动作类型、资源地址和关键属性，确认没有意外删除或替换。已保存的计划用于执行被审阅的那次计划；环境或输入变化后，应重新生成并重新判断，不能把旧批准无限复用。</p>
+<p>保存计划可能包含敏感值或状态信息，不应当作公开附件。机器输出中某个字段被标为 sensitive，也不自动意味着所有状态与计划存储都经过加密。语义参考 <a href="https://opentofu.org/docs/cli/commands/plan/">OpenTofu plan</a>。</p>
+<h2 id="section-5">5. 用平台事实确认结果<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">docker network inspect ticketdesk-iac
+docker volume inspect ticketdesk-iac-data
+tofu plan -detailed-exitcode
+</code></pre>
+<p>正常无变更的详细退出码为 0，有待应用变更为 2，执行错误为 1。CI 需要区分三者，不能把所有非零值都当成工具故障，也不能把有变更当成可以自动应用。</p>
+<p>验收时记录网络的内部属性、标签、卷名称和计划结果。不要只保留终端最后一行的成功字样。第二次计划不应无原因地重复创建同一对象。</p>
+<h2 id="section-6">6. 清理也需要审阅<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p>先确认本章创建的卷始终为空，或其中数据已经不再需要，再读取销毁计划：</p>
+<pre><code class="language-bash">tofu plan -destroy
+tofu destroy
+</code></pre>
+<p>交互确认前核对资源地址。已有容器正在使用网络或卷时，平台可能拒绝删除；这不是应该绕过的障碍，而是需要确认依赖关系的信号。不要使用全局 Docker 清理代替当前状态对应的销毁。</p>
+<p>IaC 只能知道当前状态和配置管理的范围。它不会自动发现并清理账户中所有手工资源，也不会保证删除资源后业务数据仍能恢复。</p>
+<h2 id="section-7">7. 练习与验收<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p>将名称改为另一个符合校验的实验名，仅生成计划，判断哪些对象可能替换，暂不执行。再恢复配置，比较计划。提交 HCL、锁文件、创建与销毁计划、实际资源检查，以及关于“基础设施代码与应用配置分别管理什么”的解释。</p>
+<p>本地 provider 帮助理解通用流程；云 provider 还需增加身份、区域、网络、费用和团队状态管理。下一章专门处理 state 与协作，避免把它视为可以随手删除的缓存。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-21.html"><small>← 上一篇</small><strong>云平台、身份、网络和费用</strong></a><a href="chapter-23.html"><small>下一章 →</small><strong>状态、漂移、导入与团队协作</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 声明对象与执行命令的区别</a><a class="toc-level-2" href="#section-2">2. 阅读配套 HCL</a><a class="toc-level-2" href="#section-3">3. 初始化、格式和静态验证</a><a class="toc-level-2" href="#section-4">4. 计划是需要阅读的变更说明</a><a class="toc-level-2" href="#section-5">5. 用平台事实确认结果</a><a class="toc-level-2" href="#section-6">6. 清理也需要审阅</a><a class="toc-level-2" href="#section-7">7. 练习与验收</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

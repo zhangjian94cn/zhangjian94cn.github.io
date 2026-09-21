@@ -1,0 +1,81 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第12课｜动手构建：运行一个能停下来、能解释结果的 Agent 骨架 · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" aria-current="page"><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson12" aria-labelledby="lesson12-title"><header class="article-header"><div class="eyebrow">模块 03 / 演化、能力、构建与工作流程</div><h1 id="lesson12-title">第12课｜动手构建：运行一个能停下来、能解释结果的 Agent 骨架</h1><div class="meta">建议学习 60 分钟（含练习） · 本课产出：离线实验与失败样本</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">12 / 16</span></div></header><article class="article"><div class="notice"><strong>实验文件：</strong> <a href="downloads/agent-lab.zip" download>下载离线实验包</a> · <a href="downloads/model-adapter-guide.md" download>真实模型适配指南</a></div><h2 id="lesson12-1">你将交付什么</h2>
+<p>本课用 Python 标准库运行一个离线 IT 工单实验。你能看见模型决策、工具、校验和终止之间的边界，并主动制造失败。</p>
+<p><strong>实验使用 ScriptedPlanner 模拟模型决策，不调用真实大模型，也不操作真实账户。</strong> 它让每个读者得到可复现轨迹。它证明的是程序控制逻辑，不证明任何模型的理解能力或抵御提示注入能力。</p>
+<p>前置条件：安装 Python 3.10 或更新版本；能在终端切换目录。非研发读者可先使用网页中的事件演示，再按轨迹完成同样的分析。修改工具、政策校验与测试属于研发进阶练习，需要基本 Python、JSON 和单元测试知识；练习时间按已有基础估算。非研发读者可提交字段设计、预期状态及“给定—当—那么”验收案例，标注为静态设计。</p>
+<figure class="figure"><a href="assets/build-eval.svg" aria-label="打开原尺寸结构图"><img class="diagram" src="assets/build-eval.svg" alt="从 Spec 和样本开始，用失败记录决定下一次改动。" loading="lazy"></a><figcaption>从 Spec 和样本开始，用失败记录决定下一次改动。 点击图可查看原尺寸。</figcaption></figure><h2 id="lesson12-2">第一步：跑通成功轨迹（5 分钟）</h2>
+<p>下载配套实验包，解压并进入实验目录：</p>
+<div class="code-wrap"><pre><code class="language-bash">python3 agent_lab.py --scenario success
+python3 agent_lab.py --scenario success &gt; success-report.json
+</code></pre></div>
+<p>关注四类事实：工具读到了什么；草案引用哪条政策；哪些事情还没完成；为什么停在待人工处理。成功交付的对象是“合格的处理草案”，而不是“员工账户已经恢复”。</p>
+<p>第一条命令在终端显示 JSON，第二条将相同结果保存到 <code>success-report.json</code>。找到 <code>trace</code>、<code>draft</code> 与 <code>acceptance_report</code>。顶层 <code>status: completed</code> 表示草案准备完成；草案自身的 <code>status: draft_requires_human_review</code> 表示仍需人工审核。两个状态描述不同对象，不矛盾。不要仅检查退出码或一句“成功”。</p>
+<h2 id="lesson12-3">第二步：画出程序骨架</h2>
+<p>把源代码中的角色对齐到这段概念伪代码。它展示控制关系，不是另一个可直接运行的实现。</p>
+<div class="code-wrap"><pre><code class="language-python">while within_budget(state):
+    action = planner.next_action(state)
+    if action.is_final:
+        return validate_and_finish(action, state)
+    validate_tool_name_and_arguments(action)
+    enforce_read_only_permission(action)
+    observation = execute_tool(action)
+    append_trace(action, observation)
+    update_state(observation)
+return handoff_with_reason(&quot;budget_exhausted&quot;, state)
+</code></pre></div>
+<p>在真实系统中，模型负责建议下一步；程序负责决定这一步是否允许执行。本实验用规则模拟前者，并且只有读取工单、检索政策两步是工具调用；生成、校验、结束是本地动作。一次成功需要 5 个循环预算单位，这不是 Token 或货币。工具返回的文本进入观察记录，不应成为执行器的新指令。生产实现还需要真正的调用超时、并发控制、持久化、服务端身份与权限校验。</p>
+<h2 id="lesson12-4">第三步：故意让它失败（15 分钟）</h2>
+<div class="code-wrap"><pre><code class="language-bash">python3 agent_lab.py --scenario tool-error
+python3 agent_lab.py --scenario injection
+python3 agent_lab.py --scenario budget
+python3 agent_lab.py --scenario denied-tool
+python3 -m unittest -v
+</code></pre></div>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>你应检查的行为</th>
+<th>不能误读成什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tool-error</td>
+<td>检索失败被记录，不能生成冒充有依据的草案</td>
+<td>失败后输出一句道歉就足够</td>
+</tr>
+<tr>
+<td>injection</td>
+<td>工单中的恶意指令保持为数据，没有账户变更</td>
+<td>真实模型已通过全面抗注入测试</td>
+</tr>
+<tr>
+<td>budget</td>
+<td>到达步数或实验预算上限后停止并说明原因</td>
+<td>任务一定失败，或者可以无限重试</td>
+</tr>
+<tr>
+<td>denied-tool</td>
+<td>未注册或不允许的工具被拒绝</td>
+<td>模型从此永远不会提出越权请求</td>
+</tr>
+</tbody></table></div>
+<p>每次实验写一句“观察到了什么证据”，不要只写“测试通过”。</p>
+<h2 id="lesson12-5">第四步：从离线骨架接到真实模型</h2>
+<p>保留工具注册、参数检查、权限与终止逻辑，先替换规划器适配层。配套 <code>model-adapter-guide.md</code> 给出了接口与回传序列。实验中的草案仍由固定模板生成；仅替换 Planner 不会让模型自动撰写草案，增加生成能力还需单独实现并重新设计内容验收。该层负责把状态和工具 Schema 发给选定模型，把工具调用或最终结果转换成统一 Action；不应把任意模型输出当作 Python 代码执行。</p>
+<p>可参照所选平台的工具调用文档实现模型适配器。使用环境变量管理密钥，在服务端调用；浏览器页面不放密钥。对真实调用增加请求超时、限流重试、输入输出长度限制、用量记录和测试集重复运行。本课程未执行真实模型 API，因此不把离线测试结果外推为模型性能。</p>
+<p>建议先接三个只读任务，手工查看十条完整轨迹，再考虑批量评估。不要在适配模型的同一轮同时开放账户写权限，这会让失败原因难以定位。</p>
+<h2 id="lesson12-6">第五步：用评估驱动改进</h2>
+<p>准备一份冻结的数据集：正常工单、信息缺失、过期政策、检索失败、恶意内容、越权要求。把规则检查、结果检查和人工抽检组合起来；“另一个模型觉得很好”只能作为一类评分信号。<a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Agent 评估方法</a>。</p>
+<p>示例教学目标：20 个草案任务中至少 18 个满足业务验收，所有越权测试均被拦截，失败任务都有明确原因。这个数值是课堂目标，不是生产建议或行业基准。报告需要保留分母、样本组成、重复次数与模型/提示词/工具版本。</p>
+<h2 id="lesson12-7">研发进阶练习：加一个有价值的失败样本（约 25 分钟）</h2>
+<p>扩展实验：返回一份已过期的政策，但正文看起来完全正确。让系统输出“需要重新确认有效政策”，并验证它不能以该政策生成可交付草案。先写验收，再修改程序。</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>验收至少包含：政策带有效期或版本状态；执行器可读取该结构化信息；过期证据不能通过完成校验；输出明确缺口和下一责任人；轨迹仍能定位原返回结果。若只是把系统提示词改成“请注意过期政策”，还没有形成确定性的完成门槛。真实业务还需明确日期来源与时区。</p>
+
+</div></details>
+
+
+<h2 id="lesson12-8">作业提交清单</h2>
+<p>提交一份 Agent Spec、一条成功轨迹、一条新增失败轨迹、一份测试结果和一段局限说明。能复现、能解释、能指出边界，比截图展示长答案更有说服力。</p>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson11.html"><small>上一课</small>MCP、A2A 与 Skills</a><a class="next" href="lesson13.html"><small>下一课</small>产品经理的证据型调研</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

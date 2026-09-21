@@ -1,0 +1,80 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第 1 课：先判断问题，再决定要不要 Agent · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" aria-current="page"><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson01" aria-labelledby="lesson01-title"><header class="article-header"><div class="eyebrow">模块 01 / 智能体的概念与结构</div><h1 id="lesson01-title">第 1 课：先判断问题，再决定要不要 Agent</h1><div class="meta">建议学习 20 分钟（含练习） · 本课产出：方案选择卡</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">1 / 16</span></div></header><article class="article"><h2 id="lesson01-1">一个看起来很简单的 IT 工单</h2>
+<p>周一上午，企业 IT 服务台收到虚构工单 <strong>IT-2048</strong>：</p>
+<blockquote>
+<p>我是林明，换手机后收不到多因素认证验证码，今天要参加线上评审，请尽快帮我恢复登录。旧手机已经无法使用。</p>
+</blockquote>
+<p>你可能立即想到：“让 AI 看完工单，直接帮他重置不就好了？”但先停一下：工单中的身份陈述可信吗？恢复登录有几种办法？哪些办法需要身份核验？机器人究竟有权做到哪一步？</p>
+<p>本教程的所有工单、人员和政策均为虚构。我们的第一版助手只读取授权范围内的工单、检索内部政策、生成带证据的处理草案。涉及账户变更时，由正式流程完成身份核验与审批。</p>
+<p><strong>本课产出：一张方案选择卡，说明哪些步骤用检索，哪些用固定流程，哪些需要智能体判断。</strong></p>
+<h2 id="lesson01-2">四种方案分别解决什么问题</h2>
+<p>**聊天机器人（Chatbot）**首先解决“通过自然语言交流”的问题。它可以解释多因素认证，也可以帮人改写回复。聊天界面本身不代表它知道公司政策，更不代表它能操作账户。</p>
+<p>**检索增强生成（Retrieval-Augmented Generation，RAG）**解决“回答依据从哪里来”的问题。系统先找到相关资料，再让模型参考资料作答。例如检索公司的 MFA 恢复政策，生成附有政策链接的说明。RAG 是一种提供上下文的方法，可以用于聊天机器人、固定工作流，也可以用于 Agent。</p>
+<p>**固定工作流（Workflow）**解决“已知步骤如何稳定重复”的问题。例如：读取工单 → 按规则识别类别 → 查询规定的知识库 → 填写回复模板 → 交给人工确认。路径可以分支，但分支及可执行步骤由开发者预先确定。</p>
+<p>广义的智能体是感知环境并采取行动以实现目标的系统，这个概念早于大语言模型，也包括规则系统、强化学习控制与机器人。本教程聚焦大语言模型驱动的软件智能体。</p>
+<p>**本课所说的智能体（AI Agent）**在给定目标、权限和环境中，根据当前观察选择下一步行动，并利用行动结果继续决策。例如，它先判断信息是否齐全；发现“旧手机无法使用”后，检索相应恢复路径；发现缺少核验结果，便生成待核验草案，而不是继续执行账户变更。</p>
+<p>核心区别不在于提示词长短，而在于：<strong>下一步行动及结束条件，有多少由运行时的模型判断决定。</strong></p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>当前需求</th>
+<th>优先方案</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>解释什么是 MFA</td>
+<td>聊天机器人或固定内容页</td>
+<td>不需要访问内部系统</td>
+</tr>
+<tr>
+<td>回答本公司的 MFA 恢复要求</td>
+<td>RAG</td>
+<td>关键是找到有效政策</td>
+</tr>
+<tr>
+<td>根据确定规则生成固定格式草案</td>
+<td>固定工作流 + RAG</td>
+<td>路径明确，容易检查</td>
+</tr>
+<tr>
+<td>根据工单信息选择检索、追问或升级</td>
+<td>有限权限的 Agent + RAG</td>
+<td>下一步取决于运行中获得的信息</td>
+</tr>
+</tbody></table></div>
+<p>这些并不是四个互斥产品。实际系统经常由聊天界面承载交互，用 RAG 提供依据，用固定流程约束高风险步骤，只在必要的位置引入 Agent。</p>
+<h2 id="lesson01-3">什么情况下值得引入智能体</h2>
+<p>可以问三个问题：</p>
+<ol>
+<li><strong>输入是否经常不完整？</strong> 用户可能没有说明设备、错误信息或已尝试步骤。</li>
+<li><strong>合理路径是否随观察变化？</strong> 同样是无法登录，有时需要查设备政策，有时需要查账号状态。</li>
+<li><strong>这些判断能否被观察和验收？</strong> 我们能否检查它为什么检索、为什么追问、何时停止？</li>
+</ol>
+<p>前两项说明 Agent 可能有价值；第三项决定是否具备落地条件。如果只是在四个固定步骤外包了一层“你是一位智能专家”的提示词，维护成本可能增加，业务效果未必改善。</p>
+<p>对 IT-2048，适合让模型判断“还缺什么信息”“哪份政策相关”“草案是否覆盖下一步”。身份是否核验通过、是否允许重置账户，则应由可信系统和明确规则提供结果。</p>
+<h2 id="lesson01-4">给方案划一条清楚的边界</h2>
+<p>第一版助手的用户故事可以写成：</p>
+<blockquote>
+<p>作为服务台处理人员，我希望助手读取一张指定工单，找到当前有效的处理政策，并生成可审阅的回复草案，以便减少重复查资料的时间，同时保留对敏感账户操作的控制。</p>
+</blockquote>
+<p>这个版本的结束点是“草案可审阅”，不是“用户已经恢复登录”。草案应包含问题摘要、政策依据、缺失信息、建议步骤和是否需要审批。它可以帮助推进工单，但不能把“建议重置”写成“已经重置”。</p>
+<p>即使只生成草案，也要区分事实和推测。“用户称旧手机不可用”是来自工单的陈述；“身份已核验”必须有可信核验记录。模型不能把语气肯定当成证据充分。</p>
+<h2 id="lesson01-5">练习：给三个需求选择最小方案</h2>
+<p>请分别写出首选方案及结束条件：</p>
+<ol>
+<li>每天统计各类 IT 工单数量，并按固定格式生成周报。</li>
+<li>员工询问某型号电脑是否支持公司 VPN，需要引用有效内部文档。</li>
+<li>工单描述含糊，系统需要判断先查知识库、向处理人员补充提问，还是交给专家。</li>
+</ol>
+<p>再回答：第二个需求增加一个聊天窗口后，是否就成了 Agent？</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<ol>
+<li>固定工作流优先。查询、聚合、填模板的步骤明确；结束条件是统计范围及数值正确、报告生成成功。摘要表达可以由模型辅助。</li>
+<li>RAG 优先。结束条件是回答有相应设备及版本的有效文档支持；找不到依据时明确说明未找到。是否需要模型自主选择更多步骤，要看额外需求。</li>
+<li>有限权限的 Agent 更有价值。结束条件可以是形成带证据的草案，或给出清楚的补充信息请求、升级原因。
+聊天窗口属于交互方式，不会自动赋予系统自主决策和行动循环。判断方案应看执行机制，而不是界面名称。</li>
+</ol>
+
+</div></details>
+</article><nav class="pager" aria-label="前后课程"><span></span><a class="next" href="lesson02.html"><small>下一课</small>拆开智能体的核心结构</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

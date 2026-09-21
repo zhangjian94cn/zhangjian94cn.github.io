@@ -1,0 +1,69 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第13课｜案例：产品经理的证据型调研助手 · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" aria-current="page"><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson13" aria-labelledby="lesson13-title"><header class="article-header"><div class="eyebrow">模块 04 / 案例分享与结课项目</div><h1 id="lesson13-title">第13课｜案例：产品经理的证据型调研助手</h1><div class="meta">建议学习 30 分钟（含练习） · 本课产出：一页决策简报</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">13 / 16</span></div></header><article class="article"><h2 id="lesson13-1">用户故事：明天要做决策，今天不能只收集链接</h2>
+<p>作为产品经理，我希望在两小时内拿到三种工单助手方案的对比，知道每条结论来自哪里、哪些条件尚未核实，以便决定下周验证什么。交付物是一份决策简报，而不是越长越好的研究报告。</p>
+<p>本课包含一个公开实践和一份原创教学改编。公开实践来自 Anthropic 2025 年的多 Agent 调研系统文章；以下工单产品选型情境、分工和验收表均是课程设计，不是该公司的客户案例或实际效果数据。</p>
+<h2 id="lesson13-2">公开实践给了什么启发</h2>
+<p>Anthropic 描述了由主 Agent 协调、子 Agent 并行研究、汇总证据的系统。他们同时强调提示词、工具设计、评估和成本取舍。适合借鉴的不是照搬角色数量，而是把相互独立的探索分开，再要求产物带证据返回。<a href="https://www.anthropic.com/engineering/multi-agent-research-system">公开实践：多 Agent 调研系统</a>。</p>
+<p>不要直接引用某个厂商的内部提升比例来承诺自己的业务收益。任务、模型、基线和成本口径不同，数字无法直接迁移。</p>
+<h2 id="lesson13-3">教学改编：三份证据卡，比三篇长文更有用</h2>
+<p>把任务限定为：“比较固定工作流、单 Agent、多 Agent 三种方案，判断第一期内部 IT 草案助手应该采用哪一种。”</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>执行单元</th>
+<th>只回答什么</th>
+<th>返回什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>业务研究</td>
+<td>服务台最频繁且可验收的任务是什么</td>
+<td>需求证据、用户故事、未证实假设</td>
+</tr>
+<tr>
+<td>工程研究</td>
+<td>哪些数据和工具已经可用</td>
+<td>接入边界、权限、运维负担</td>
+</tr>
+<tr>
+<td>评估研究</td>
+<td>如何证明草案值得用</td>
+<td>样本类型、评分规则、失败门槛</td>
+</tr>
+<tr>
+<td>主负责人</td>
+<td>当前应验证哪个最小方案</td>
+<td>选型建议、证据冲突、下一步实验</td>
+</tr>
+</tbody></table></div>
+<p>这里的三项可以由人完成，也可以交给受限的 Agent。若资料只有三页，单 Agent 读完后按三栏整理可能更省事。多 Agent 的收益要由对照实验确认。</p>
+<h2 id="lesson13-4">证据卡的字段</h2>
+<p>每条卡至少记录：结论、原始来源、来源日期、核查时间、适用范围、直接事实还是推断、反例或缺口。网页上的产品功能不等于你所在部署环境已经开放；没有找到某能力的说明，不等于该产品没有该能力。</p>
+<p>教学示例：</p>
+<div class="code-wrap"><pre><code class="language-json">{
+  &quot;claim&quot;: &quot;第一版无需自动修改账户&quot;,
+  &quot;kind&quot;: &quot;design_decision&quot;,
+  &quot;evidence&quot;: [&quot;访谈样本：处理人员主要耗时在查政策和写草案&quot;],
+  &quot;scope&quot;: &quot;课程虚构的服务台场景&quot;,
+  &quot;unknown&quot;: &quot;真实组织是否存在相同耗时分布&quot;,
+  &quot;next_check&quot;: &quot;抽样20张已脱敏工单，记录各环节耗时&quot;
+}
+</code></pre></div>
+<p>这条结论属于设计判断，不能伪装成行业统计。它的价值在于指出下一步怎么验证。</p>
+<h2 id="lesson13-5">主 Agent 不是把三份材料拼起来</h2>
+<p>主负责人应做四件事：去掉重复结论；显式保留矛盾；检查重要结论能否回到原文；把建议转成可执行验证任务。若业务研究说希望全自动，工程研究说只有只读工具可用，应给出“先验证草案模式”的方案及理由，不能在总结里把冲突抹平。</p>
+<p>最终简报可控制在一页：目标与边界、三方案对比、当前建议、三个最大未知、下周验证计划。附件保留完整证据卡，不把全部检索过程塞进正文。</p>
+<h2 id="lesson13-6">验收与失败信号</h2>
+<p>验收关注关键主张是否有支持、来源是否适用、矛盾是否呈现、建议是否落到行动。失败信号包括引用链接存在但不支持句子；把多个转载当成多个独立来源；把发布时间当成核查时间；为了形成明确建议而隐去缺失条件。</p>
+<p>评估时随机抽取关键主张逐条打开来源，而不是只让另一个模型打一个总分。报告还需写出总检索次数、耗时和人工复核时间；如果人花了两小时纠正引用，“十分钟生成报告”并不代表节省时间。</p>
+<h2 id="lesson13-7">练习：给不确定性一个位置（20 分钟）</h2>
+<p>给学员三张材料卡：A 表明服务台查资料耗时长；B 表明工单字段不统一；C 表明敏感操作只能由授权人员完成。请给出第一期目标、两项明确不做的事，以及两个必须验证的未知。</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>第一期可做“把一张工单整理为带政策引用、缺失信息和下一步的处理草案”。不自动执行敏感账户变更，不追求一次覆盖全部工单类别。未知可以是检索结果是否足够准确、草案能否实际减少人工处理时间。验证应使用固定抽样与人工基线，而不是只演示最容易的一张工单。</p>
+
+</div></details>
+
+
+<h2 id="lesson13-8">产品经理的进阶路线</h2>
+<p>先能把需求写成用户故事和验收；再能分辨证据、推断和未知；随后设计小型评估集；最后再管理跨角色协作与迭代。掌握这些后，选择 Agent 框架才有明确依据。</p>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson12.html"><small>上一课</small>动手构建 Agent 骨架</a><a class="next" href="lesson14.html"><small>下一课</small>研发的代码交付 Agent</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

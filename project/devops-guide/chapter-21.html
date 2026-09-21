@@ -1,0 +1,132 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>云平台、身份、网络和费用 · DevOps 实战手册</title><meta name="description" content="本机恢复演练通过以后，团队希望其他人也能访问 TicketDesk。此时新增的问题不是“选一台更大的机器”，而是谁能创建资源、哪些请求能进入、数据落在哪里、资源关闭后是否继续收费，以及故障由谁处理。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-21"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" open><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link active" aria-current="page"><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>云与基础设施即代码</span><span>/</span><span>第 21 章</span></div><div class="chapter-eyebrow">CHAPTER 21 <span>·</span> 第 6 篇<span class="version-label">v0.3 阅读版</span></div><h1>云平台、身份、网络和费用</h1><div class="chapter-outcome"><strong>学习目标</strong><span>必做能力映射和成本估算；可选建立最小云环境，验证访问边界并列出清理后的剩余资源</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 先分配责任，再选择产品</a><a class="toc-level-2" href="#section-2">2. 认识区域、可用区和依赖范围</a><a class="toc-level-2" href="#section-3">3. IAM 先回答“谁能做什么”</a><a class="toc-level-2" href="#section-4">4. 把网络画成允许的路径</a><a class="toc-level-2" href="#section-5">5. 成本模型至少算到清理结束</a><a class="toc-level-2" href="#section-6">6. 最小云实验与清理</a><a class="toc-level-2" href="#section-7">7. 本章验收</a></details><div class="prose"><p>本机恢复演练通过以后，团队希望其他人也能访问 TicketDesk。此时新增的问题不是“选一台更大的机器”，而是谁能创建资源、哪些请求能进入、数据落在哪里、资源关闭后是否继续收费，以及故障由谁处理。</p>
+<p>前置是第 20 章的交付闭环。本章必做内容是能力映射与环境设计，不要求开通付费账户。可选实操仅在自己的隔离实验账户进行；本教程没有替你创建任何云资源。</p>
+<h2 id="section-1">1. 先分配责任，再选择产品<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<p>托管服务把某些运行职责交给平台，并不会把所有责任转移出去。使用托管数据库之后，平台可能维护宿主机与数据库基础软件，你仍需处理账号权限、schema、查询、数据保留与业务恢复。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>能力</th>
+<th>VM 方案中的承担者</th>
+<th>托管方案中仍由你承担的部分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作系统补丁</td>
+<td>自己维护</td>
+<td>应用依赖与运行配置</td>
+</tr>
+<tr>
+<td>数据库运行</td>
+<td>自己安装、升级与监控</td>
+<td>schema、访问、备份策略与恢复验收</td>
+</tr>
+<tr>
+<td>流量入口</td>
+<td>自己维护代理</td>
+<td>证书、路由、访问范围与超时策略</td>
+</tr>
+<tr>
+<td>数据持久化</td>
+<td>自己管理磁盘</td>
+<td>保留策略、加密授权与数据完整性</td>
+</tr>
+<tr>
+<td>事件处理</td>
+<td>自己发现并恢复</td>
+<td>用户影响判断、沟通和业务验收</td>
+</tr>
+</tbody></table></div>
+<p>先写清责任，再比较产品能减少哪些工作。架构讨论可以借助 <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html">AWS Well-Architected</a> 的维度，但本项目的取舍依据是规模、预算和团队能力。</p>
+<h2 id="section-2">2. 认识区域、可用区和依赖范围<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>区域通常对应一个地理范围；可用区用于在区域内分隔部分故障风险。两个实例位于不同可用区，可以降低单个可用区故障的共同影响，但如果仍依赖一份单点数据库，业务仍可能整体不可用。</p>
+<p>对象存储、负载均衡、数据库和密钥服务各有自己的可用性与故障域。不要仅在图上画两个方框，就把整个系统标成“高可用”。还要检查入口、数据库、身份、DNS、恢复材料和操作通道的依赖。</p>
+<p>实验设计应写出三种故障：一台应用主机消失、数据库不可用、整个实验环境被误删。分别需要应用副本、数据库恢复能力，以及独立保存的代码和恢复资料。</p>
+<h2 id="section-3">3. IAM 先回答“谁能做什么”<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<p>把人的登录身份、CI 构建身份、部署身份和应用运行身份分开。构建器只需读取源码与写入指定制品仓库；应用只需访问自己的数据库与必要对象；发布器才有目标环境的变更权限。</p>
+<p>优先使用平台支持的短期身份，避免共享长期管理员密钥。权限策略要限定动作、资源与条件；允许操作一台应用机器，不应顺便允许修改整个账户的身份策略。</p>
+<p>如果选择 AWS 路线，在已配置好的自己的账户中，可先执行身份确认：</p>
+<pre><code class="language-bash">aws sts get-caller-identity
+</code></pre>
+<p>将实际账号、角色和区域与实验计划对照，再进行变更。身份确认是读取，不是创建权限的证明。预算提醒也不是权限控制，不能阻止所有超额资源被创建。</p>
+<h2 id="section-4">4. 把网络画成允许的路径<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<p>VPC 是云上的逻辑网络边界；子网划分地址与区域范围；路由决定下一跳；安全组或对应过滤机制决定哪些流量被允许。名称不同的平台需要重新核对语义，不能照搬规则格式。</p>
+<p>本项目的目标路径可以写成四条：用户经 HTTPS 到入口；入口访问应用端口；应用访问数据库端口；受控管理身份通过管理通道维护资源。数据库不需要为了“方便调试”向所有公网地址开放。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>目标</th>
+<th>必要访问</th>
+<th>验证</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>测试用户</td>
+<td>HTTPS 入口</td>
+<td>443</td>
+<td>证书验证与业务请求</td>
+</tr>
+<tr>
+<td>入口组件</td>
+<td>应用</td>
+<td>实际监听端口</td>
+<td>就绪和业务路径</td>
+</tr>
+<tr>
+<td>应用身份与网络</td>
+<td>数据库</td>
+<td>数据库端口与账号权限</td>
+<td>正确访问成功，越界访问失败</td>
+</tr>
+<tr>
+<td>运维身份</td>
+<td>管理通道</td>
+<td>明确的维护动作</td>
+<td>审计与最小权限</td>
+</tr>
+</tbody></table></div>
+<p>公网 IP、互联网路由、监听地址、过滤规则和应用身份是不同条件。只改其中一个，可能仍然访问不了；全部放开则会得到一个难以解释的边界。</p>
+<h2 id="section-5">5. 成本模型至少算到清理结束<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>成本由计算时长、磁盘、快照、数据库、负载均衡、出口流量、日志与其他托管服务共同组成。停止 VM 可能只停止计算部分，附加磁盘、IP、快照或入口仍可能计费。</p>
+<p>使用当前目标区域的官方价格填入下表，不在教程中把示例数当成报价：</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>单位</th>
+<th>数量或时长</th>
+<th>估算方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>计算</td>
+<td>每实例小时</td>
+<td>实例数 × 小时数</td>
+<td>单价 × 用量</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>每容量月</td>
+<td>容量与保留时间</td>
+<td>按平台计费规则估算</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>每传输量</td>
+<td>出口及跨边界流量</td>
+<td>单价 × 传输量</td>
+</tr>
+<tr>
+<td>观测</td>
+<td>摄入、查询与保留</td>
+<td>日志和指标规模</td>
+<td>各项分别计算</td>
+</tr>
+</tbody></table></div>
+<p>为实验资源标注项目、环境、负责人和到期时间。开通预算与异常提醒，并说明接收者；提醒触发延迟、免费额度条件和销毁后的剩余项都要核对。</p>
+<h2 id="section-6">6. 最小云实验与清理<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p>可选路线是单台实验 VM 加受控入口，数据库仍限于实验用途。先完成身份和费用记录，再创建网络与机器，部署同一候选 digest，验证访问边界和指定工单。无认证的教学应用不应直接开放给公众；使用已有的受控访问入口或保持管理通道内可达。</p>
+<p>实验结束先保存需要的恢复材料，移除应用与入口，再核对磁盘、快照、地址、密钥、日志和数据存储。使用资源清单与账单视图交叉核对，不能只看虚拟机列表为空。</p>
+<h2 id="section-7">7. 本章验收<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p>交付一页架构、责任表、身份矩阵、网络允许路径、费用估算与清理清单。没有云实操时，这些仍是可评审的设计材料，但状态应为“设计完成，运行待验证”。思考题：如果数据库改成托管服务，哪些恢复步骤仍必须由应用团队验证？答案见<a href="answers.html">练习与答案</a>。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-20.html"><small>← 上一篇</small><strong>把发布、观察、故障和恢复串起来</strong></a><a href="chapter-22.html"><small>下一章 →</small><strong>使用 OpenTofu 声明基础设施</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 先分配责任，再选择产品</a><a class="toc-level-2" href="#section-2">2. 认识区域、可用区和依赖范围</a><a class="toc-level-2" href="#section-3">3. IAM 先回答“谁能做什么”</a><a class="toc-level-2" href="#section-4">4. 把网络画成允许的路径</a><a class="toc-level-2" href="#section-5">5. 成本模型至少算到清理结束</a><a class="toc-level-2" href="#section-6">6. 最小云实验与清理</a><a class="toc-level-2" href="#section-7">7. 本章验收</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

@@ -1,0 +1,140 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>运行工单服务，读懂一个应用 · DevOps 实战手册</title><meta name="description" content="这一次先不讨论复杂架构。我们要让一条请求经过应用、写入数据库，再把结果读回来。你将获得一个能够验证的基线：后面每次修改，都可以与它比较。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-03"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" open><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link active" aria-current="page"><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>认识交付全流程</span><span>/</span><span>第 03 章</span></div><div class="chapter-eyebrow">CHAPTER 03 <span>·</span> 第 1 篇<span class="version-label">v0.3 阅读版</span></div><h1>运行工单服务，读懂一个应用</h1><div class="chapter-outcome"><strong>学习目标</strong><span>从提供的骨架启动应用，创建并查询工单，修改一个字段，提交可读的变更说明</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 启动项目</a><a class="toc-level-2" href="#section-2">2. 一个请求经过哪些地方</a><a class="toc-level-2" href="#section-3">3. 用命令验证真实业务</a><a class="toc-level-2" href="#section-4">4. 认识项目文件</a><a class="toc-level-2" href="#section-5">5. 故意提交一个无效请求</a><a class="toc-level-2" href="#section-6">6. 创建第一条 Git 记录</a><a class="toc-level-2" href="#section-7">7. 停止、重启与数据检查</a><a class="toc-level-2" href="#section-8">8. 练习与验收</a></details><div class="prose"><p>这一次先不讨论复杂架构。我们要让一条请求经过应用、写入数据库，再把结果读回来。你将获得一个能够验证的基线：后面每次修改，都可以与它比较。</p>
+<p>前置条件是第 02 章的环境准备。所有命令都在解压后的 <code>ticketdesk</code> 根目录执行，默认使用本机端口 8000。项目文件可在“配套资料”页下载。</p>
+<h2 id="section-1">1. 启动项目<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">python3 scripts/lab.py doctor
+python3 scripts/lab.py up
+</code></pre>
+<p><code>up</code> 的步骤是：准备本机配置、构建应用镜像、启动 PostgreSQL 并等待其健康、执行数据库迁移、启动应用、运行业务检查。第一次需要下载依赖，耗时与网络和缓存有关。</p>
+<p>脚本只在业务检查通过后记录最近可用镜像。终端出现错误时，它会返回失败，而不是用最后一行“完成”掩盖前面的错误。若你没有 Docker 服务，这条路径不能执行；Python 接口测试仍可单独运行，但范围不同。</p>
+<p>浏览器打开 <code>http://127.0.0.1:8000</code>。创建一条虚构工单，例如“实验环境证书更新”，观察它出现在列表中。本章对容器的使用只是操作预览，第 13—15 章会展开机制。</p>
+<h2 id="section-2">2. 一个请求经过哪些地方<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>浏览器把填写的信息编码为 JSON，通过 HTTP 发给应用。FastAPI 先校验字段，业务接口再调用仓储层。仓储层使用参数化 SQL 写入 PostgreSQL，数据库提交事务后返回结果。最后应用把工单对象编码为 JSON，浏览器显示它。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>边界</th>
+<th>传入什么</th>
+<th>谁负责什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>浏览器到 API</td>
+<td>HTTP 方法、路径、JSON 请求体</td>
+<td>网络传输和接口约定</td>
+</tr>
+<tr>
+<td>API 到输入模型</td>
+<td>标题、描述、优先级</td>
+<td>类型、长度、取值范围</td>
+</tr>
+<tr>
+<td>API 到仓储</td>
+<td>经过校验的数据</td>
+<td>业务动作和数据访问分工</td>
+</tr>
+<tr>
+<td>仓储到数据库</td>
+<td>SQL 与独立参数</td>
+<td>事务、约束、持久化</td>
+</tr>
+<tr>
+<td>API 到浏览器</td>
+<td>状态码和 JSON 响应</td>
+<td>结果表达与错误处理</td>
+</tr>
+</tbody></table></div>
+<p>后面排障时，先判断问题发生在哪个边界。例如 422 通常说明请求没有通过输入校验；503 可能意味着依赖暂不可用。HTTP 状态码是线索，仍需结合响应内容与日志判断。</p>
+<h2 id="section-3">3. 用命令验证真实业务<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">curl -i http://127.0.0.1:8000/health/live
+curl -i http://127.0.0.1:8000/health/ready
+curl -s http://127.0.0.1:8000/version
+</code></pre>
+<p><code>live</code> 证明应用进程能响应；<code>ready</code> 还访问数据库，并确认应用所需字段可以查询；<code>version</code> 返回运行版本和提交信息。开发模式可能显示 <code>dev</code> 和 <code>unrecorded</code>，不能凭空把它解释为某个 Git 提交。</p>
+<p>创建工单：</p>
+<pre><code class="language-bash">curl -i http://127.0.0.1:8000/tickets \
+  -H &#39;Content-Type: application/json&#39; \
+  -H &#39;X-Request-ID: first-ticket&#39; \
+  -d &#39;{&quot;title&quot;:&quot;实验环境证书更新&quot;,&quot;description&quot;:&quot;仅用于教学&quot;,&quot;priority&quot;:&quot;high&quot;}&#39;
+</code></pre>
+<p>预期状态码为 201，响应包含 <code>id</code>、<code>title</code>、<code>priority</code> 和 <code>status</code>。记录实际返回的 ID，不要假定它总是 1：启动检查本身也会创建验收工单。</p>
+<pre><code class="language-bash">curl -s http://127.0.0.1:8000/tickets
+curl -i http://127.0.0.1:8000/tickets/1
+</code></pre>
+<p>第二条命令演示单条查询路径；实际实验应替换成你记录的 ID。对不存在的工单应返回 404。</p>
+<h2 id="section-4">4. 认识项目文件<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+<th>你会在哪些章节修改它</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>app/main.py</code></td>
+<td>HTTP 接口、校验、日志、健康与指标</td>
+<td>测试、配置、观察</td>
+</tr>
+<tr>
+<td><code>app/store.py</code></td>
+<td>PostgreSQL 数据访问</td>
+<td>集成测试、性能与数据恢复</td>
+</tr>
+<tr>
+<td><code>app/migrate.py</code></td>
+<td>有校验和与并发锁的迁移入口</td>
+<td>数据库发布</td>
+</tr>
+<tr>
+<td><code>migrations/</code></td>
+<td>按顺序执行的数据库变化</td>
+<td>schema 兼容性</td>
+</tr>
+<tr>
+<td><code>tests/test_api.py</code></td>
+<td>使用内存仓储的 API 合约测试</td>
+<td>第 11—12 章</td>
+</tr>
+<tr>
+<td><code>scripts/lab.py</code></td>
+<td>环境操作与交付验收</td>
+<td>基础实验和恢复</td>
+</tr>
+<tr>
+<td><code>compose.yaml</code></td>
+<td>本地多服务配置</td>
+<td>容器与部署</td>
+</tr>
+<tr>
+<td><code>.github/workflows/</code></td>
+<td>GitHub 检查与候选制品发布</td>
+<td>CI/CD</td>
+</tr>
+</tbody></table></div>
+<p>边界清楚比文件数量多更重要。把 SQL 放在独立仓储层，使接口测试可以替换存储；代价是这种测试没有验证 SQL，所以我们还需要真实数据库实验。</p>
+<h2 id="section-5">5. 故意提交一个无效请求<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">curl -i http://127.0.0.1:8000/tickets \
+  -H &#39;Content-Type: application/json&#39; \
+  -d &#39;{&quot;title&quot;:&quot;x&quot;,&quot;priority&quot;:&quot;urgent&quot;}&#39;
+</code></pre>
+<p>预期为 422。当前标题要求去除首尾空白后长 3—120 字，优先级只接受 <code>low</code>、<code>normal</code>、<code>high</code>。观察校验错误是否指出具体字段，修改后重发。</p>
+<p>这就是一个最小的反向测试：我们不仅验证“正确输入成功”，也验证“错误输入没有被悄悄接受”。后面会将它放入自动测试。接口测试的技术入口见 <a href="https://fastapi.tiangolo.com/tutorial/testing/">FastAPI 官方测试教程</a>。</p>
+<h2 id="section-6">6. 创建第一条 Git 记录<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p>如果解压后的目录还没有 Git 仓库，可以执行：</p>
+<pre><code class="language-bash">git init -b main
+git status --short
+git add .
+git diff --cached --stat
+git commit -m &quot;chore: add ticketdesk teaching baseline&quot;
+</code></pre>
+<p>先确认 <code>.env</code>、备份和虚拟环境没有进入暂存区。Git 如果要求作者信息，按自己的身份设置仓库级 <code>user.name</code> 与 <code>user.email</code>；示例不提供虚构作者。已有仓库则直接复用，不要重复初始化。</p>
+<p>本章先获得一次可追溯的基线提交。Git 的模型、分支和评审在第 09 章系统讲解，官方中文参考是 <a href="https://git-scm.com/book/zh/v2">Pro Git</a>。</p>
+<h2 id="section-7">7. 停止、重启与数据检查<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">python3 scripts/lab.py down
+python3 scripts/lab.py up
+</code></pre>
+<p>重新启动后查询之前记录的工单 ID。默认停止操作会保留数据卷，因此记录应仍然存在。若你主动删除了卷，这个假设就不再成立。第 15 章会解释容器可删除而数据需要单独管理的原因。</p>
+<h2 id="section-8">8. 练习与验收<a class="heading-link" href="#section-8" aria-label="本节链接">#</a></h2>
+<p>创建一条高优先级工单，记录 ID、创建响应、运行版本和请求 ID。重启后重新读取它，再发一个无效请求。整理四项证据，说明每项覆盖了什么行为。</p>
+<p>如果只有首页能打开，却不能创建工单，本章还没有完成。下一章会把这样的判断写成明确的需求验收条件。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-02.html"><small>← 上一篇</small><strong>准备实验环境并学会自检</strong></a><a href="chapter-04.html"><small>下一章 →</small><strong>把需求写成可以验收的小变更</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 启动项目</a><a class="toc-level-2" href="#section-2">2. 一个请求经过哪些地方</a><a class="toc-level-2" href="#section-3">3. 用命令验证真实业务</a><a class="toc-level-2" href="#section-4">4. 认识项目文件</a><a class="toc-level-2" href="#section-5">5. 故意提交一个无效请求</a><a class="toc-level-2" href="#section-6">6. 创建第一条 Git 记录</a><a class="toc-level-2" href="#section-7">7. 停止、重启与数据检查</a><a class="toc-level-2" href="#section-8">8. 练习与验收</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

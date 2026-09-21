@@ -1,0 +1,64 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第15课｜案例：省市协作的工单智能体平台 · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" aria-current="page"><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson15" aria-labelledby="lesson15-title"><header class="article-header"><div class="eyebrow">模块 04 / 案例分享与结课项目</div><h1 id="lesson15-title">第15课｜案例：省市协作的工单智能体平台</h1><div class="meta">建议学习 30 分钟（含练习） · 本课产出：分层职责与授权图</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">15 / 16</span></div></header><article class="article"><h2 id="lesson15-1">用户故事：统一能力，保留各地责任</h2>
+<p>作为省级平台负责人，我希望各地市使用统一的模型接入、工具与评估方式，同时只能处理自己有权访问的数据；作为地市业务人员，我希望在浏览器提交任务、查看依据、补充判断，并能知道当前该由谁处理。</p>
+<p>这是原创参考架构，用于讲授协作边界；不是已部署产品，也不附带生产性能或成本承诺。</p>
+<h2 id="lesson15-2">从业务动作开始画系统</h2>
+<p>地市人员提交工单或指定已有工单 ID。平台根据可信登录身份确定组织与权限，不接受模型自行声明的 <code>city_id</code> 作为授权依据。任务进入受限工作区，Agent 读取允许的数据、检索政策、输出草案。人工核验和审批由业务流程承接，结果回到任务记录。</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>层次</th>
+<th>负责什么</th>
+<th>关键可观察结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>浏览器工作台</td>
+<td>提交、阅读草案、填写决策</td>
+<td>用户看见输入、依据、待办与责任人</td>
+</tr>
+<tr>
+<td>身份与任务服务</td>
+<td>组织身份、授权、调度、任务状态</td>
+<td>请求范围和状态迁移可追踪</td>
+</tr>
+<tr>
+<td>Agent 运行环境</td>
+<td>模型循环、上下文、预算、受限工具</td>
+<td>工具轨迹、结果、停止原因</td>
+</tr>
+<tr>
+<td>工具与数据服务</td>
+<td>工单、政策、资产等系统访问</td>
+<td>服务端再次校验权限并返回来源</td>
+</tr>
+<tr>
+<td>人工流程与评估</td>
+<td>核验、审批、抽检、回归测试</td>
+<td>批准方案、验收记录、失败分类</td>
+</tr>
+</tbody></table></div>
+<p>模型网关可以统一用量记录和接入配置，但数据隔离不能只靠网关。缓存键、检索过滤、对象存储路径与日志访问都必须包含正确的租户作用域。</p>
+<h2 id="lesson15-3">不同主体看到什么</h2>
+<p>地市处理人员看到本地任务和对应证据；地市负责人看到需要自己决策的事项；省级平台运维看到运行指标与脱敏错误；政策负责人维护适用范围和有效版本。是否允许省级人员查看完整工单，应由真实业务授权决定，不能因为角色叫“平台管理员”就默认可读一切。</p>
+<p>工作台上的进展摘要可以来自 Agent 日志，但关键业务状态要由可信服务写入。模型生成“执行完成”不能直接变成事实字段。</p>
+<h2 id="lesson15-4">MCP 和 A2A 放在什么位置</h2>
+<p>若多个 Agent 应用都需要接入同一政策工具，可以用 MCP 统一接入契约。若不同组织各自运行独立 Agent 服务，需要发现能力、委托任务与接收产物，可以评估 A2A。省内一个应用内的任务编排，可能只用普通服务接口就足够。<a href="https://modelcontextprotocol.io/specification/latest">MCP</a>、<a href="https://a2a-protocol.org/latest/specification/">A2A</a>。</p>
+<p>先建立身份、权限、任务与产物规则，再选择协议。协议不替代这些业务设计。</p>
+<h2 id="lesson15-5">决策入口：建议、决定、执行分开记录</h2>
+<p>例如某地市的 IT-2048 缺少独立核验。工作台应显示：当前草案、缺失条件、政策依据、处理责任人。第二 AI 可以给出备用路径建议，但建议必须标明来源与时间。人工批准需要绑定具体计划、目标与有效期；若计划变化，则重新检查授权覆盖范围。</p>
+<p>对负责人来说，“目前 80 个任务，其中 6 个等待我的决定”比一屏 Agent 对话更有用。每个待决策项应能跳转到证据和详细轨迹。摘要帮助理解，底层记录帮助核验。</p>
+<h2 id="lesson15-6">分三步实施</h2>
+<p>第一步做只读草案：限定一类工单，收集人工基线，记录接受率和修改原因。第二步做有限写入：只开放可撤销、影响可控的动作，建立审批绑定与幂等。第三步再扩展多类别、跨组织协作和更长任务。每一步以评估结果决定是否继续，而不是按框架功能清单推进。</p>
+<p>评价需要同时看业务与系统：草案合格率、人工处理时间、跨租户拒绝测试、政策引用有效性、P95 延迟、每成功任务成本、等待人工时间。等待人工和 Agent 计算耗时应分开，否则会误判性能瓶颈。</p>
+<h2 id="lesson15-7">练习：找出跨地市数据泄漏的入口（20 分钟）</h2>
+<p>系统已经在提示词中写明“只能处理本市工单”。模型调用工具时却传入另一地市工单 ID；向量检索缓存也只按问题文本命中。请指出两处实际修改点，并写一个测试。</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>修改点一：工单服务根据经过认证的调用主体与组织范围校验目标工单，而不是相信提示词或模型传来的 city_id。修改点二：检索和缓存按租户及授权范围隔离，缓存命中后仍保证结果可访问。测试：使用 A 市身份查询 B 市工单，以及提交会命中 B 市历史缓存的问题，均不得返回 B 市数据；拒绝记录应可审计但不泄露敏感内容。</p>
+
+</div></details>
+
+
+<h2 id="lesson15-8">负责人的进阶路线</h2>
+<p>从业务验收和角色责任入手，再学习权限与数据边界、评估成本、失败升级和变更管理。先让一个小流程可靠交付，比一次开放所有工具更容易判断价值。</p>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson14.html"><small>上一课</small>研发的代码交付 Agent</a><a class="next" href="lesson16.html"><small>下一课</small>结课：可验收的 Agent</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

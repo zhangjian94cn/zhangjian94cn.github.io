@@ -1,0 +1,77 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第10课｜上下文工程与 Harness：让 Agent 接得住长任务 · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" aria-current="page"><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson10" aria-labelledby="lesson10-title"><header class="article-header"><div class="eyebrow">模块 03 / 演化、能力、构建与工作流程</div><h1 id="lesson10-title">第10课｜上下文工程与 Harness：让 Agent 接得住长任务</h1><div class="meta">建议学习 30 分钟（含练习） · 本课产出：上下文包与检查点</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">10 / 16</span></div></header><article class="article"><h2 id="lesson10-1">开场：交接班时，谁还记得发生过什么？</h2>
+<p>想象两名工程师轮班处理一个故障。下一班只收到“前面做了很多，继续加油”，一定要重新排查。Agent 跨上下文窗口、跨进程恢复时也需要明确交接材料。</p>
+<p>本课产出：一个上下文包、一份检查点记录、一条恢复规则。</p>
+<figure class="figure"><a href="assets/context-pack.svg" aria-label="打开原尺寸结构图"><img class="diagram" src="assets/context-pack.svg" alt="上下文是本轮看见的信息，状态和资料可以保存在窗口之外。" loading="lazy"></a><figcaption>上下文是本轮看见的信息，状态和资料可以保存在窗口之外。 点击图可查看原尺寸。</figcaption></figure><h2 id="lesson10-2">上下文、状态、记忆分别放什么</h2>
+<p>**上下文（context）**是本次模型调用实际能看到的信息；**状态（state）**是应用记录的任务进度；**记忆（memory）**是按规则保留并在以后检索的信息。数据库里有记录，不等于它已经进入模型上下文；模型“说自己记住了”，也不等于系统真的保存了。</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>信息</th>
+<th>存在哪里</th>
+<th>进入下一次模型调用吗</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>当前目标、禁止动作</td>
+<td>指令与任务状态</td>
+<td>通常需要</td>
+</tr>
+<tr>
+<td>IT-2048 已确认事实</td>
+<td>结构化任务状态</td>
+<td>需要相关字段</td>
+</tr>
+<tr>
+<td>KB-MFA-03 原文</td>
+<td>知识库或文件</td>
+<td>只加载相关段落及来源</td>
+</tr>
+<tr>
+<td>一百次重复超时输出</td>
+<td>轨迹日志</td>
+<td>通常只保留摘要和最近错误</td>
+</tr>
+<tr>
+<td>待核验身份</td>
+<td>状态中的未完成事项</td>
+<td>必须保留</td>
+</tr>
+<tr>
+<td>用户长期偏好</td>
+<td>有来源和作用域的记忆存储</td>
+<td>按任务需要读取</td>
+</tr>
+</tbody></table></div>
+<p>上下文工程的要点是选择、组织与更新每轮模型可见的信息。它包含提示词，还包含工具结果、历史、检索资料等。<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">上下文工程原文</a>。</p>
+<h2 id="lesson10-3">一个可用的上下文包</h2>
+<p>下面是课程自定义的教学结构，不是某个框架的 API。</p>
+<div class="code-wrap"><pre><code class="language-json">{
+  &quot;goal&quot;: &quot;生成 IT-2048 处理草案，不执行账户变更&quot;,
+  &quot;facts&quot;: [{&quot;text&quot;: &quot;员工更换手机&quot;, &quot;source&quot;: &quot;ticket:IT-2048&quot;}],
+  &quot;evidence&quot;: [{&quot;id&quot;: &quot;KB-MFA-03&quot;, &quot;version&quot;: &quot;demo-v1&quot;, &quot;section&quot;: &quot;恢复前核验&quot;}],
+  &quot;unknowns&quot;: [&quot;身份尚未通过独立渠道核验&quot;],
+  &quot;completed&quot;: [&quot;读取工单&quot;, &quot;检索政策&quot;],
+  &quot;next&quot;: &quot;检查草案是否保留人工核验步骤&quot;,
+  &quot;constraints&quot;: [&quot;只读&quot;, &quot;缺失事实不得补写&quot;, &quot;达到预算立即交接&quot;]
+}
+</code></pre></div>
+<p>这里最容易被压缩丢掉的，是 <code>unknowns</code> 和 <code>constraints</code>。摘要写得流畅却把“尚未核验”压成“需要恢复账户”，会改变后续行动。压缩后应检查关键否定、权限边界、证据来源和未完成事项是否仍然存在。</p>
+<h2 id="lesson10-4">Harness 是模型外面的工作环境</h2>
+<p>Harness 可以译为 Agent 运行框架。它组织模型调用、工具执行、状态、预算、日志与恢复。并不是每个项目都要自研一套，但需要知道这些责任落在哪里。</p>
+<p>课程建议把任务进展写成：<code>待开始 → 运行中 → 待人工处理 / 成功交付 / 失败 / 达到预算</code>。暂时没有新 token，并不代表任务成功；“草案已经生成”也不代表账户已恢复。</p>
+<p>长期任务宜留下三个交接物：验收清单、可继续的工作产物、含证据的进度记录。Anthropic 的长期运行实践用初始化和后续增量工作会话来组织开发任务，并强调交接记录与验证。这是具体工程经验，不能理解成长期自主工作已经普遍解决。<a href="https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents">长期任务实践</a>。</p>
+<h2 id="lesson10-5">检查点能恢复进度，不能消除副作用</h2>
+<p>假设系统已成功发送通知，但在记录成功之前崩溃了。恢复后重跑发送节点，可能重复发信。解决方法不能只有“保存更多对话”：执行方应支持幂等键，或者先查询操作结果，并把操作 ID、状态及回执持久化。</p>
+<p>LangGraph 的官方持久化文档区分线程状态检查点和跨线程的数据存储。内存实现适合演示，进程重启后不会保留；持久化恢复需要相应存储与应用设计。<a href="https://docs.langchain.com/oss/python/langgraph/persistence">LangGraph Persistence</a>。</p>
+<p>本课程离线实验只写输出文件和轨迹，不实现生产级检查点恢复。读者可以先完成“重启后知道做到哪一步”的扩展，再考虑有副作用的动作。</p>
+<h2 id="lesson10-6">Deep Agents 应该怎么理解</h2>
+<p>Deep Agents 是 LangChain 生态提供的 Agent 运行框架之一，围绕文件系统、子代理及上下文管理等能力组织复杂任务，底层使用 LangGraph。它并不是一种比普通 Agent 必然更聪明的新模型。截至核查日，官方文档说明 v0.7 起任务规划默认不启用；需要规划清单时，应显式加入 <code>TodoListMiddleware</code>。复制旧教程之前，应先核对自己安装的版本和启用项。<a href="https://docs.langchain.com/oss/python/deepagents/overview">Deep Agents 官方文档</a>。</p>
+<p>选型先问：我需要的是少量工具的简单循环，还是长任务的隔离环境、状态恢复和上下文卸载？框架功能越多，越需要明确谁负责存储、授权与执行成本。</p>
+<h2 id="lesson10-7">练习：压缩一份交接记录（15 分钟）</h2>
+<p>原记录包含：50 次重复工具日志、已读工单、已读政策、身份未核验、一个草案、一次检索超时、不得变更账户、剩余两步预算。请压成六项，说明哪些内容不能删。</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>可写为：目标与只读边界；已确认工单事实及来源；政策 ID/版本/相关条款；身份未核验；草案路径与尚未通过的检查；最近错误、剩余预算及下一步。重复日志可以保留索引而不全文加载。不能删掉“未核验”“不得变更”“剩余预算”，也不能把模型猜测升级为事实。</p>
+
+</div></details>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson09.html"><small>上一课</small>从回答问题到交付结果</a><a class="next" href="lesson11.html"><small>下一课</small>MCP、A2A 与 Skills</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

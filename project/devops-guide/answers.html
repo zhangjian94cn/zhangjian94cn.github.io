@@ -1,0 +1,346 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>练习答案与验收提示 · DevOps 实战手册</title><meta name="description" content="先完成自己的记录，再打开本页。这里给出推理方向、关键结果和判定标准；涉及本机、云、集群或团队的数据，必须使用你实际执行的证据。命令返回成功、指标变绿和业务满足要求是不同层次。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="answers"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link active" href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>练习答案与验收提示</span></div><div class="chapter-eyebrow">DEVOPS HANDBOOK<span class="version-label">v0.3 阅读版</span></div><h1>练习答案与验收提示</h1><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">01—04：认识交付全流程</a><a class="toc-level-2" href="#section-2">05—08：系统、网络与自动化</a><a class="toc-level-2" href="#section-3">09—12：Git、测试与 CI</a><a class="toc-level-2" href="#section-4">13—16：容器与制品</a><a class="toc-level-2" href="#section-5">17—20：第一次交付与恢复</a><a class="toc-level-2" href="#section-6">21—24：云与基础设施</a><a class="toc-level-2" href="#section-7">25—28：Kubernetes 应用运行</a><a class="toc-level-2" href="#section-8">29—32：集群交付</a><a class="toc-level-2" href="#section-9">33—36：观测与诊断</a><a class="toc-level-2" href="#section-10">37—40：可靠性</a><a class="toc-level-2" href="#section-11">41—44：安全交付</a><a class="toc-level-2" href="#section-12">45—48：团队与综合项目</a><a class="toc-level-2" href="#section-13">49—56：场景选修</a><a class="toc-level-2" href="#section-14">综合验收怎样判定</a></details><div class="prose"><p>先完成自己的记录，再打开本页。这里给出推理方向、关键结果和判定标准；涉及本机、云、集群或团队的数据，必须使用你实际执行的证据。命令返回成功、指标变绿和业务满足要求是不同层次。</p>
+<h2 id="section-1">01—04：认识交付全流程<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-01.html">01 交付全流程</a></td>
+<td>责任表应覆盖需求、代码、测试、制品、部署、运行反馈，并把负责人和证据放在同一行。等待点改善要有前后窗口和可观察结果；增加一个工具不自动说明等待减少。</td>
+</tr>
+<tr>
+<td><a href="chapter-02.html">02 环境</a></td>
+<td>CLI 成功、daemon 失败先检查服务与连接权限；单元测试成功、镜像拉取超时检查 DNS、代理、registry 与网络；启动正常却访问错误端口先比对监听和端口映射。三者都不足以推出业务逻辑错误。</td>
+</tr>
+<tr>
+<td><a href="chapter-03.html">03 运行项目</a></td>
+<td>保存创建响应、ID、版本和 request ID；重启后读取同一记录证明持久性的一部分；非法输入被拒绝证明边界检查。必须说明真实数据库是否参与，不能拿替身测试证明持久化。</td>
+</tr>
+<tr>
+<td><a href="chapter-04.html">04 需求</a></td>
+<td>状态过滤 Issue 要列合法/非法状态、空列表、无参数行为、排序和兼容性。分页可明确排除在首版之外，但应说明当前数据规模与未来触发条件；ADR 记录依据和后果，不只是选项名称。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-2">05—08：系统、网络与自动化<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-05.html">05 权限</a></td>
+<td>读取文件需要对父目录路径具有搜索权限。文件 644 不能绕过父目录 700；先确认实际 UID/GID、路径与挂载，按所需访问授予最小权限，不能用 777 掩盖身份或目录设计错误。</td>
+</tr>
+<tr>
+<td><a href="chapter-06.html">06 进程</a></td>
+<td>单元启动只说明管理器状态；监听说明对应进程绑定端口；创建成功还涉及路由、输入、依赖和数据。分别查 unit/journal、监听与进程、请求和数据库证据。重启风暴应追查退出原因。</td>
+</tr>
+<tr>
+<td><a href="chapter-07.html">07 网络</a></td>
+<td>直接请求应用成功、代理请求失败，把范围缩到代理入口、上游地址或代理到应用路径。用配置与连接证据确认错误端口；浏览器一句“失败”不能排除 DNS、TLS、HTTP 或业务错误。</td>
+</tr>
+<tr>
+<td><a href="chapter-08.html">08 脚本</a></td>
+<td>健康等待要有截止时间、每次请求超时、有限重试和非零失败退出；业务创建可能有副作用，不应无幂等键自动无限重试。候选失败时不更新成功记录，否则恢复会再次选中坏版本。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-3">09—12：Git、测试与 CI<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-09.html">09 协作</a></td>
+<td>共享分支撤销一般新增可审查的反向提交，保留历史；解决冲突后必须重新测试语义。Git 撤销不改变已运行进程，更不会自动恢复数据库。PR 的测试和评审要对应最终提交。</td>
+</tr>
+<tr>
+<td><a href="chapter-10.html">10 依赖</a></td>
+<td>新虚拟环境重建需要记录解释器、完整依赖和 <code>pip check</code>；锁定包版本仍不能锁定 OS、基础镜像和远端服务。相同依赖却结果不同，应继续比较运行时、平台与配置。</td>
+</tr>
+<tr>
+<td><a href="chapter-11.html">11 测试</a></td>
+<td>正例证明目标行为，负例证明错误被拒绝，兼容例证明旧调用仍有效。内存替身不能发现 SQL 语法、真实约束、事务锁和连接失败；这些要放进数据库集成测试。故意改错后测试必须失败才有证据。</td>
+</tr>
+<tr>
+<td><a href="chapter-12.html">12 流水线</a></td>
+<td>将本地同一检查交给 CI，明确触发、依赖和权限；失败阻止候选晋级，但诊断与临时资源清理尽力执行。仓库合并规则也要绑定正确检查，单有 YAML 不保证失败 PR 不能合并。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-4">13—16：容器与制品<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-13.html">13 容器</a></td>
+<td><code>exec</code> 成功仅说明能在容器内执行进程；代码未重建镜像时仍可能运行旧内容；自动重启不会修正错误数据库地址。把应用程序、运行进程、配置与外部数据分别检查。</td>
+</tr>
+<tr>
+<td><a href="chapter-14.html">14 镜像</a></td>
+<td>多阶段构建减少运行阶段内容，但必须验证运行依赖完整、用户权限正确和写目录可用。构建成功不代表容器能够启动。不要把 Secret 写进构建参数或层，再以删除文件代替消除历史泄漏。</td>
+</tr>
+<tr>
+<td><a href="chapter-15.html">15 Compose</a></td>
+<td>启动顺序、依赖就绪与迁移完成是不同条件。应用用服务名找数据库；容器内 localhost 指自己。重建应用后查询旧工单，才能检查卷与数据路径；删除卷会改变实验前提。</td>
+</tr>
+<tr>
+<td><a href="chapter-16.html">16 digest</a></td>
+<td>可变 tag 可以指向新内容，固定 digest 仍标识原对象。可识别不代表可获取，回退还需要 registry 保留、目标平台支持、配置及数据兼容。本地 image ID 与 registry manifest digest 不应混用。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-5">17—20：第一次交付与恢复<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-17.html">17 候选发布</a></td>
+<td>失败测试后不能推送“已通过”的候选。验证、发布和记录应关联同一次构建；查看失败路径与清理路径。并发取消策略应实测，不能假设运行中的生产部署总可安全取消。</td>
+</tr>
+<tr>
+<td><a href="chapter-18.html">18 部署</a></td>
+<td>成功发布需要环境、镜像与配置身份，加上就绪和业务检查。旧镜像回退与配置修复应分别验证。若新镜像根本未通过检查，最近成功记录应保持不变，并保留失败候选诊断。</td>
+</tr>
+<tr>
+<td><a href="chapter-19.html">19 数据</a></td>
+<td>数据模型兼容包含 schema 与值语义。旧程序无法理解新状态时，切回旧镜像也可能失败。恢复应到新库，暂停写入后按明确口径比较；仅有备份文件不能证明可恢复。</td>
+</tr>
+<tr>
+<td><a href="chapter-20.html">20 运行验收</a></td>
+<td>配置故障与坏应用版本是两种恢复案例，需独立时间线。验证已有工单和新写入；区分命令完成、探针通过与用户路径恢复。短时请求数或均值不能证明长期可靠性。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-6">21—24：云与基础设施<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-21.html">21 云边界</a></td>
+<td>托管数据库仍需应用团队验证连接权限、schema、备份策略、恢复后的数据与业务路径；供应商管理机器并不意味着满足你的 RPO/RTO。规划图需要责任、预算和资源清理条件。</td>
+</tr>
+<tr>
+<td><a href="chapter-22.html">22 IaC</a></td>
+<td>名称改变是否替换资源由 provider 属性语义与 plan 决定。不要凭 HCL 文本猜测后直接 apply；恢复原配置再比较计划。销毁应只涉及本练习资源，并确认空卷没有需要保留的数据。</td>
+</tr>
+<tr>
+<td><a href="chapter-23.html">23 state</a></td>
+<td>两个状态文件管理同一数据库会造成所有权冲突，单个后端锁不能跨不同状态解决它。应统一资源所有权并安全迁移关联。state 不是可以随便删除的缓存；导入只建立关联，不自动生成正确设计。</td>
+</tr>
+<tr>
+<td><a href="chapter-24.html">24 Ansible</a></td>
+<td>第二次运行无业务变化是幂等证据之一，还需检查服务与文件状态。check/diff 不是全部模块的真实执行。Secret 预先配置、运行用户受限、handler 必要时触发；远端实验才能证明 SSH、systemd 与重启行为。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-7">25—28：Kubernetes 应用运行<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-25.html">25 控制器</a></td>
+<td>Deployment 通过 ReplicaSet 维持 Pod，删除一个 Pod 不等于删除声明的工作负载。启动、存活、就绪探针分别回答不同问题。业务写入与持久数据验证不能由 Running 状态替代。</td>
+</tr>
+<tr>
+<td><a href="chapter-26.html">26 网络</a></td>
+<td>错误 Service selector 导致端点选择问题；错误 HTTPRoute backend 是引用解析问题。按主机名、Gateway、Route 条件、Service、EndpointSlice、Pod 排查；port-forward 成功不证明入口流量路径正常。</td>
+</tr>
+<tr>
+<td><a href="chapter-27.html">27 状态</a></td>
+<td>环境变量形式的 ConfigMap/Secret 更新通常需要替换 Pod 才被新进程读取。旧数据库卷初始化过的密码不会因更改初始化变量自动更新；轮换要协调数据库凭据与客户端，并验证恢复。</td>
+</tr>
+<tr>
+<td><a href="chapter-28.html">28 边界</a></td>
+<td>HPA 需要资源指标与合理 request；RBAC 控制 API 操作，NetworkPolicy 控制适用网络路径，PSA 限制 Pod 配置。网络负例只有在 CNI 确实执行策略且正例可达时才有解释力；不互信租户还需要更多隔离。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-8">29—32：集群交付<a class="heading-link" href="#section-8" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-29.html">29 配置组织</a></td>
+<td>对比渲染后的对象，确认只有预期副本和环境值改变；输入 values 正确不保证模板正确。缺少 existingSecret 应失败；渲染通过仍不能证明 Secret 实际存在或镜像可拉取。</td>
+</tr>
+<tr>
+<td><a href="chapter-30.html">30 GitOps</a></td>
+<td>Git 不可达通常阻止新的期望状态获取/同步，已运行工作负载不因此立即停止；实际行为还依赖控制器配置。GitOps 下恢复应修正 Git 期望状态，否则手工回退可能被再次协调覆盖。</td>
+</tr>
+<tr>
+<td><a href="chapter-31.html">31 灰度</a></td>
+<td>90/10 是路由权重，有限请求不保证恰好 90 与 10。记录候选和稳定版本、足够样本、粘性/连接影响、错误与延迟。先移走候选流量再删候选，数据库共享意味着两版必须兼容。</td>
+</tr>
+<tr>
+<td><a href="chapter-32.html">32 维护</a></td>
+<td>PDB 约束支持的自愿驱逐，不防止所有节点故障；没有剩余容量、卷无法移动或副本不足时仍会阻塞。etcd 状态、持久卷数据和外部依赖应分别备份恢复，不能互相替代。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-9">33—36：观测与诊断<a class="heading-link" href="#section-9" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-33.html">33 信号</a></td>
+<td>创建失败看状态与依赖错误；列表变慢看尾延迟、数据库耗时和饱和；新版本无流量看版本、入口路由与标签。每个问题都要有数据源，不凭一张 CPU 图断言业务原因。</td>
+</tr>
+<tr>
+<td><a href="chapter-34.html">34 指标</a></td>
+<td>counter 计算 rate 时处理重启；p95 用合适直方图计算近似分位，不从总耗时/总请求数求得。没有请求时比例可能无数据，不能一概补零宣称健康。跨副本聚合需保持桶边界和标签口径。</td>
+</tr>
+<tr>
+<td><a href="chapter-35.html">35 追踪</a></td>
+<td>检查是否生成 span、是否采样、是否导出、Collector 是否接收，再查后端与关联字段。没有真实 trace 上下文时不伪造 trace ID；数据库 span 不等于已经采集全部内部 SQL 行为。</td>
+</tr>
+<tr>
+<td><a href="chapter-36.html">36 告警</a></td>
+<td>持续阈值与 <code>for</code> 可减少短抖动，但也增加检测延迟。规则触发、Alertmanager 接收与人员收到通知是三个验收点。本例空接收器不能证明送达；Runbook 必须有具体恢复验证。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-10">37—40：可靠性<a class="heading-link" href="#section-10" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-37.html">37 SLO</a></td>
+<td>一百万有效请求、目标 99.9%，预算为 1000 次坏请求；已经 800 次则消耗 80%，剩余 200。改变有效请求分母会改变结果，必须预先定义排除项。预算小于零应如实报告超额。</td>
+</tr>
+<tr>
+<td><a href="chapter-38.html">38 容量</a></td>
+<td>固定资源、版本、数据、负载模型和窗口再比较；首个瓶颈需多信号支持。闭环负载在变慢时自然减小请求速率，不能当恒定到达率模型。连接池与重试都应受数据库容量和总超时约束。</td>
+</tr>
+<tr>
+<td><a href="chapter-39.html">39 灾难准备</a></td>
+<td>RPO 看可恢复数据点，RTO 看服务恢复到业务可用所用时间；两者不是同一数。恢复依赖还包括密钥、DNS、镜像与权限。PITR 需要基础备份及连续日志链，普通 dump 不能任意时间点恢复。</td>
+</tr>
+<tr>
+<td><a href="chapter-40.html">40 事件</a></td>
+<td>先确认影响并缓解，记录事实与当时假设，避免用事后知识指责操作者。时间线标明 UTC、动作和证据。改进项应有负责人、期限和完成判据；“以后更小心”无法验收。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-11">41—44：安全交付<a class="heading-link" href="#section-11" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-41.html">41 身份</a></td>
+<td>CI、部署器、应用和人员使用不同身份。OIDC 能减少长期密钥，但信任条件过宽仍可能越权；绑定仓库、分支/环境及 audience，并做拒绝测试。轮换完成要检查新凭据有效、旧凭据失效和服务恢复。</td>
+</tr>
+<tr>
+<td><a href="chapter-42.html">42 扫描</a></td>
+<td>高危发现不是孤立分数，应关联目标 digest、包、可利用条件与数据库时间。例外须限定发现、包和制品，有负责人及到期日；过期必须重新阻止。模拟发现只能证明门禁逻辑，不能证明真实镜像无漏洞。</td>
+</tr>
+<tr>
+<td><a href="chapter-43.html">43 证明</a></td>
+<td>digest 校验内容标识，签名验证身份与完整性，provenance 描述构建来源，SBOM 描述组件。验证必须限定预期签发者与构建身份，并确认 subject 对应制品；“有一份签名”不等于可信或达到某个 SLSA 等级。</td>
+</tr>
+<tr>
+<td><a href="chapter-44.html">44 策略</a></td>
+<td>离线 YAML 检查可以在 CI 提前拒绝，但绕过 CI 的写入仍需准入与授权防护。正例只证明所列规则；不检查真实镜像存在性、签名或运行漏洞。策略变更也要测试，例外必须可追踪并到期。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-12">45—48：团队与综合项目<a class="heading-link" href="#section-12" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>章节</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="chapter-45.html">45 指标</a></td>
+<td>一次失败引发两次热修复，失败部署分子为 1，事故触发的返工部署分子为 2，分母按同一窗口的全部生产部署。低频服务需要更长观察窗口并报告样本，不把无样本恢复时间记为 0，更不用团队指标给个人排名。</td>
+</tr>
+<tr>
+<td><a href="chapter-46.html">46 平台</a></td>
+<td>生成器不能在用户未知时自动迁移数据库。模板提供计划与检查，业务所有者评审兼容性，部署身份执行并留证据。异步服务另需幂等、确认/重试、积压和死信验收；同一 HTTP 探针不能覆盖全部。</td>
+</tr>
+<tr>
+<td><a href="chapter-47.html">47 成本</a></td>
+<td>两个服务、少量维护者且允许一小时恢复，VM 或 Compose 都可能合理，需证明恢复能满足目标。明确单机故障域、维护成本和重新评估信号，例如恢复目标缩短或服务与团队增多。工具复杂度不是评分标准。</td>
+</tr>
+<tr>
+<td><a href="chapter-48.html">48 综合项目</a></td>
+<td>过滤实现应验证三类输入与真实 SQL，保留旧调用。证据链应贯穿需求、最终提交、被验证制品、环境配置、业务结果与故障恢复。缺少的真实环境验证照实标记；没有逐章快照时保存自己的开始与结束提交。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-13">49—56：场景选修<a class="heading-link" href="#section-13" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>专题</th>
+<th>参考答案与检查重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="elective-49.html">49 CI 迁移</a></td>
+<td>校验身份无需发布权限；由目标平台分支/环境规则、Runner 隔离和令牌作用域共同保证。缓存、artifact、审批和取消语义不可仅按字段名等价替换。要求可信和不可信来源各有一次权限验证。</td>
+</tr>
+<tr>
+<td><a href="elective-50.html">50 内网</a></td>
+<td>文件哈希正确但签名失败可能是关联签名未导入、目标 manifest 改变、身份/信任根不符、时钟或离线验证材料缺失。逐层检查，不能关闭校验。还要证明干净环境不偷偷访问公网依赖。</td>
+</tr>
+<tr>
+<td><a href="elective-51.html">51 云迁移</a></td>
+<td>20×10=200，超过 120 连接预算；应降低最大实例、每实例池大小或调整数据库能力并留维护余量。不能只把数值改到恰好 120，还需计入迁移、运维、峰值和连接释放行为，以负载验证。</td>
+</tr>
+<tr>
+<td><a href="elective-52.html">52 网格</a></td>
+<td>mTLS 确认身份与加密，授权限制哪个身份能访问什么。账单服务限制仍需要 AuthorizationPolicy 或业务授权，并验证合法身份成功、不允许身份失败、明文失败三类结果。</td>
+</tr>
+<tr>
+<td><a href="elective-53.html">53 传统应用</a></td>
+<td>先解决共享目录单写者假设、启动和就绪行为、兼容性及回退。不能直接把副本数改为 2 宣称滚动发布；若只能单实例，应评估停机窗口或改造状态依赖，再选择发布策略。</td>
+</tr>
+<tr>
+<td><a href="elective-54.html">54 异步</a></td>
+<td>效果已提交而去重表未提交时崩溃，重投会再次产生效果。将去重与同库效果纳入同一事务可覆盖本例边界；外部邮件或支付不在同一事务，需要幂等接口与不确定状态处理。</td>
+</tr>
+<tr>
+<td><a href="elective-55.html">55 AI 辅助</a></td>
+<td>先检查 hostname、证书链、有效期、时钟和 CA 配置，修复信任路径。关闭验证削弱身份保证，不应为让任务变绿而默认接受。要求 AI 提供最小证据与 diff，并在隔离环境复验。</td>
+</tr>
+<tr>
+<td><a href="elective-56.html">56 AI 应用</a></td>
+<td>schema 只检查结构与值域，不证明语义正确。增加独立退款案例、类别混淆统计及业务损失阈值，保留未参与调优的评测集；真实模型要重复评估。回退整个模型/Prompt/代码组合才能解释结果。</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-14">综合验收怎样判定<a class="heading-link" href="#section-14" aria-label="本节链接">#</a></h2>
+<p>评审先检查“证据是否真实、范围是否匹配”，再检查功能是否满足目标。任何未执行项不能用预期输出代替；模拟数据与真实数据分开。若无法证明同一制品、数据恢复或负例拒绝，先补这些关键缺口，再优化页面截图和报告排版。</p>
+<p>建议把每次失败也纳入学习记录：观察到了什么、排除了什么、最小修复是什么、怎样确认恢复。这样你的成果能成为下一位读者可复现的操作材料，而不仅是一次个人成功经历。</p>
+</div><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">01—04：认识交付全流程</a><a class="toc-level-2" href="#section-2">05—08：系统、网络与自动化</a><a class="toc-level-2" href="#section-3">09—12：Git、测试与 CI</a><a class="toc-level-2" href="#section-4">13—16：容器与制品</a><a class="toc-level-2" href="#section-5">17—20：第一次交付与恢复</a><a class="toc-level-2" href="#section-6">21—24：云与基础设施</a><a class="toc-level-2" href="#section-7">25—28：Kubernetes 应用运行</a><a class="toc-level-2" href="#section-8">29—32：集群交付</a><a class="toc-level-2" href="#section-9">33—36：观测与诊断</a><a class="toc-level-2" href="#section-10">37—40：可靠性</a><a class="toc-level-2" href="#section-11">41—44：安全交付</a><a class="toc-level-2" href="#section-12">45—48：团队与综合项目</a><a class="toc-level-2" href="#section-13">49—56：场景选修</a><a class="toc-level-2" href="#section-14">综合验收怎样判定</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

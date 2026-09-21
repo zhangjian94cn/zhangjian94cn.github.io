@@ -1,0 +1,87 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第 7 课：真正难的是协作协议，不是给角色起名字 · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" aria-current="page"><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" ><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson07" aria-labelledby="lesson07-title"><header class="article-header"><div class="eyebrow">模块 02 / 多智能体系统的概念与结构</div><h1 id="lesson07-title">第 7 课：真正难的是协作协议，不是给角色起名字</h1><div class="meta">建议学习 30 分钟（含练习） · 本课产出：最小协作协议</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">7 / 16</span></div></header><article class="article"><h2 id="lesson07-1">场景：两个专家都说自己完成了，工单却错了</h2>
+<p>政策专家发现 IT-2048 缺少独立身份核验，写入“等待补充”。与此同时，设备专家认为旧认证器已不可用，把状态改成“可以重置”。主管最后读到了后者，于是草案错误地声称恢复条件已经满足。</p>
+<p>这不是提示词不够长，而是多个执行者没有遵守同一份协作协议。可靠的多 Agent 系统首先也是一个软件系统：它需要明确状态、消息、版本、错误和责任。</p>
+<h2 id="lesson07-2">共享事实，分开意见</h2>
+<p>共享状态应保存任务目标、已验证事实、证据引用、子任务状态、当前负责人和审批记录。每个 Agent 可以有自己的临时分析上下文，但不应直接覆盖其他角色负责的事实。</p>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>内容示例</th>
+<th>主要写入方</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ticket_id</code></td>
+<td>IT-2048</td>
+<td>工单系统</td>
+</tr>
+<tr>
+<td><code>user_claims</code></td>
+<td>用户称更换了手机</td>
+<td>事实整理步骤</td>
+</tr>
+<tr>
+<td><code>verified_facts</code></td>
+<td>工单渠道身份已识别；恢复操作的独立核验尚未完成</td>
+<td>核验服务或获授权人员</td>
+</tr>
+<tr>
+<td><code>policy_ref</code></td>
+<td>KB-MFA-03，教学版本 v1</td>
+<td>政策检索步骤</td>
+</tr>
+<tr>
+<td><code>proposals</code></td>
+<td>各专家建议及依据</td>
+<td>各专家追加写入</td>
+</tr>
+<tr>
+<td><code>approval_status</code></td>
+<td>等待人工审批</td>
+<td>审批服务</td>
+</tr>
+<tr>
+<td><code>owner</code></td>
+<td>身份服务流程</td>
+<td>调度系统</td>
+</tr>
+</tbody></table></div>
+<p>“登录了工单系统”与“满足敏感账户恢复的身份核验条件”是两个不同事实。不要用一个模糊的 <code>verified: true</code> 混在一起。Agent 的建议也不能通过写共享状态，直接变成已经验证的事实。</p>
+<h2 id="lesson07-3">给每次协作一份消息契约</h2>
+<p>下面是一条简化的专家结果消息。版本号、任务标识和证据范围，比长篇角色设定更能帮助系统稳定交接。</p>
+<div class="code-wrap"><pre><code class="language-json">{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;ticket_id&quot;: &quot;IT-2048&quot;,
+  &quot;run_id&quot;: &quot;run-017&quot;,
+  &quot;task_id&quot;: &quot;policy-check-01&quot;,
+  &quot;attempt_id&quot;: &quot;attempt-02&quot;,
+  &quot;message_id&quot;: &quot;msg-109&quot;,
+  &quot;in_reply_to&quot;: &quot;msg-102&quot;,
+  &quot;based_on_state_version&quot;: 7,
+  &quot;status&quot;: &quot;needs_input&quot;,
+  &quot;result&quot;: {
+    &quot;claim&quot;: &quot;现有材料不足以支持敏感账户变更&quot;,
+    &quot;evidence_refs&quot;: [&quot;KB-MFA-03@v1#recovery&quot;],
+    &quot;missing_inputs&quot;: [&quot;独立身份核验结果&quot;]
+  }
+}
+</code></pre></div>
+<p><code>ticket_id</code> 表示业务对象，<code>run_id</code> 表示这一轮处理，<code>task_id</code> 表示逻辑子任务。重试时保留 <code>task_id</code>，生成新的 <code>attempt_id</code>。<code>message_id</code> 用于识别重复投递，<code>based_on_state_version</code> 让接收方知道建议基于哪个状态快照。</p>
+<p>收到消息后，程序先检查字段、枚举值、发送者身份和证据引用格式，再决定是否接收。字段合法只能证明消息符合格式，不能证明结论为真；证据与权限仍需独立校验。</p>
+<h2 id="lesson07-4">重试、冲突和终止要写成规则</h2>
+<p><strong>重试与幂等。</strong> 网络超时不代表远端操作失败。未来接入执行工具时，同一业务动作的多次尝试必须复用稳定的幂等键，例如 <code>IT-2048:mfa-recovery:approved-plan-v3</code>。计划改变则产生新键，且需重新检查审批是否仍覆盖该计划。服务端必须实际实现去重与结果复用；只把键写进提示词没有保护作用。</p>
+<p><strong>并发冲突。</strong> 专家基于状态版本 7 生成建议，而系统已经进入版本 9 时，接收方检查相关输入是否变化。身份状态或政策版本变化会使旧建议失效，应重新计算。不能简单采用“最后写入者获胜”。各专家尽量追加结果，由唯一状态管理器处理状态迁移。</p>
+<p><strong>终止规则。</strong> 每个任务应设置最大尝试次数、截止时间和 Token 或费用预算。满足验收条件就完成，缺证据就等待，遇到不可恢复错误就失败，用户取消则停止。达到预算不应被标记为成功。</p>
+<p><strong>责任规则。</strong> 每个活动任务有一个当前负责人。交接需要接收确认；超时未确认时原负责人或调度系统仍须处理。父任务结束后，取消不再需要的子任务，避免后台继续工作并回写过期结果。</p>
+<h2 id="lesson07-5">本课产出：最小协作协议</h2>
+<p>团队至少应交付：共享状态字段表、消息 Schema、状态迁移表、重试与去重规则、冲突处理规则、预算及责任归属。建立这些约定后，再决定要创建几个 Agent。</p>
+<h2 id="lesson07-6">练习：重复消息应该怎么办？</h2>
+<p>政策专家的同一条消息被送达两次；第二次送达时，工单已经使用了新版政策。你应该重复应用、直接丢弃，还是重做所有任务？</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>先按 <code>message_id</code> 识别完全相同的重复消息，不重复应用已经处理过的结果。再确认当前任务是否仍引用旧政策：如果政策变化影响恢复条件，就将相关旧结论标记为过期，并只重新运行受影响的政策核对与下游草案检查。无需重做与政策变化无关的事实读取。</p>
+<p>消息去重处理的是重复投递，版本检查处理的是过时结果，两者不能互相代替。如果远端操作是否成功未知，应查询操作记录或人工核对，不能贸然重发敏感动作。</p>
+
+</div></details>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson06.html"><small>上一课</small>五种协作结构怎么选</a><a class="next" href="lesson08.html"><small>下一课</small>故障演练与人工决策</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

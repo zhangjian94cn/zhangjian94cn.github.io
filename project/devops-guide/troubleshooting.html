@@ -1,0 +1,369 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>故障速查 · DevOps 实战手册</title><meta name="description" content="先确定影响与发生层次，再选择最小的检查动作。保存时间、命令、退出码和脱敏日志。不要把删除环境、放宽权限或关闭验证当成默认第一步。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="troubleshooting"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link active" href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>故障速查</span></div><div class="chapter-eyebrow">DEVOPS HANDBOOK<span class="version-label">v0.3 阅读版</span></div><h1>故障速查</h1><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">环境、进程与权限</a><a class="toc-level-2" href="#section-2">网络与 HTTP</a><a class="toc-level-2" href="#section-3">健康、数据库与数据</a><a class="toc-level-2" href="#section-4">Git、镜像与流水线</a><a class="toc-level-2" href="#section-5">IaC、集群与 GitOps</a><a class="toc-level-2" href="#section-6">观测、门禁与异步任务</a><a class="toc-level-2" href="#section-7">一条足够好的求助记录</a></details><div class="prose"><p>先确定影响与发生层次，再选择最小的检查动作。保存时间、命令、退出码和脱敏日志。不要把删除环境、放宽权限或关闭验证当成默认第一步。</p>
+<p>本页命令默认位于自己的 <code>ticketdesk/</code> 本地实验目录，工单 ID 和端口按实际配置替换。真正需要删除数据的动作不放在快速修复命令里。</p>
+<h2 id="section-1">环境、进程与权限<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>先检查</th>
+<th>判断与下一步</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docker</code> 不存在</td>
+<td><code>python3 scripts/lab.py doctor</code></td>
+<td>安装适合操作系统的 Docker；只有 CLI 还不够，需要 daemon 可用</td>
+</tr>
+<tr>
+<td>CLI 存在但连接不上 daemon</td>
+<td><code>docker info</code></td>
+<td>检查服务或桌面运行时是否启动、当前 context；不要直接扩大 socket 权限</td>
+</tr>
+<tr>
+<td><code>compose</code> 子命令不存在</td>
+<td><code>docker compose version</code></td>
+<td>安装受支持的 Compose v2；教程不使用旧的独立 <code>docker-compose</code> 路径</td>
+</tr>
+<tr>
+<td>端口已占用</td>
+<td>Linux 用 <code>ss -ltnp</code>，macOS 可用 <code>lsof -i :8000</code></td>
+<td>判断已有进程属于谁；修改本项目端口或停止自己确认的旧实例</td>
+</tr>
+<tr>
+<td>app 一启动就退出</td>
+<td><code>docker compose ps -a app</code> 与 app 日志</td>
+<td>看退出码、导入失败、启动参数、配置与权限，不先怀疑网络</td>
+</tr>
+<tr>
+<td>文件 Permission denied</td>
+<td><code>id</code>、目标文件与父目录权限</td>
+<td>同时检查运行身份、目录遍历权限、挂载是否只读</td>
+</tr>
+<tr>
+<td>本地依赖导入失败</td>
+<td><code>.venv/bin/python -m pip --version</code></td>
+<td>确认安装和执行使用同一个解释器，避免把包装进另一个 Python</td>
+</tr>
+<tr>
+<td>进程响应慢或被终止</td>
+<td><code>docker stats --no-stream</code>、宿主机资源与日志</td>
+<td>区分 CPU、内存、磁盘、句柄与依赖等待；不能仅靠增加重启次数</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-2">网络与 HTTP<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>先检查</th>
+<th>判断与下一步</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>域名不能解析</td>
+<td>检查当前环境中的 DNS 结果</td>
+<td>本机与容器解析视角不同，Compose 内使用服务名</td>
+</tr>
+<tr>
+<td>Connection refused</td>
+<td>服务是否监听、端口映射与进程状态</td>
+<td>通常没有可接受连接的监听端点，或收到主动拒绝；先查服务</td>
+</tr>
+<tr>
+<td>请求超时</td>
+<td>连接是否建立、目标地址、网络策略、依赖耗时</td>
+<td>超时是等待超过限制，不是单一根因</td>
+</tr>
+<tr>
+<td>证书错误</td>
+<td>域名、有效期、信任链与系统时间</td>
+<td>修复具体原因；不要将 <code>curl -k</code> 写入常规验证</td>
+</tr>
+<tr>
+<td>代理返回 502</td>
+<td>直连 app 与代理日志</td>
+<td>检查上游地址、端口、协议和连接状态</td>
+</tr>
+<tr>
+<td>代理返回 504</td>
+<td>后端耗时与代理超时</td>
+<td>找出等待在哪一层，不仅是提高代理超时</td>
+</tr>
+<tr>
+<td>HTTP 422</td>
+<td>请求 JSON 与字段约束</td>
+<td>TicketDesk 标题去空白后至少 3 字，priority 是 low/normal/high</td>
+</tr>
+<tr>
+<td>HTTP 404</td>
+<td>实际工单 ID 与路由</td>
+<td>创建验收工单会消耗 ID，不要假定第一条永远是 1</td>
+</tr>
+</tbody></table></div>
+<p>对比直连与代理：</p>
+<pre><code class="language-bash">curl -i http://127.0.0.1:8000/health/ready
+curl -i http://127.0.0.1:8080/health/ready
+docker compose logs --tail 50 app
+docker compose --profile proxy logs --tail 50 proxy
+</code></pre>
+<p>只有已启动 proxy profile 时才检查 8080。两个入口都失败，先检查共同依赖；直连成功而代理失败，再集中排查代理路径。这个顺序可以减少无目的地修改配置。</p>
+<h2 id="section-3">健康、数据库与数据<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>先检查</th>
+<th>判断与下一步</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>live 200、ready 503</td>
+<td>app 日志、db 状态、最近配置与迁移</td>
+<td>进程仍在，依赖或 schema 不满足条件；查连接、身份、表与字段</td>
+</tr>
+<tr>
+<td>工单接口 503</td>
+<td>请求 ID 对应日志与数据库状态</td>
+<td>本例把存储错误转成通用 503；不能仅凭状态码区分所有根因</td>
+</tr>
+<tr>
+<td>数据库密码修改后失败</td>
+<td>是否更改 <code>.env</code>，是否沿用既有卷</td>
+<td>初始化配置与已有数据库身份不同步时，需要按数据库账号流程修复；删除卷不是默认答案</td>
+</tr>
+<tr>
+<td>缺表或缺字段</td>
+<td><code>schema_migrations</code> 与迁移日志</td>
+<td>确认迁移先于应用启动，且迁移使用预期候选镜像</td>
+</tr>
+<tr>
+<td>migration checksum mismatch</td>
+<td>已应用 SQL 文件是否被修改</td>
+<td>恢复历史迁移内容，用新文件表达新变化，不直接篡改记录表</td>
+</tr>
+<tr>
+<td>迁移锁超时</td>
+<td>是否有并发迁移或长事务</td>
+<td>找到锁持有者与执行上下文，避免多个自动重试任务继续竞争</td>
+</tr>
+<tr>
+<td>重建后“数据没了”</td>
+<td>Compose 项目名、实际卷、数据库名</td>
+<td>先判断是否连到了新卷或新库；不要继续清理可能含原数据的资源</td>
+</tr>
+<tr>
+<td>备份有文件但恢复失败</td>
+<td>文件非空、格式、版本、恢复日志</td>
+<td>在新数据库验证，保留原库；单看文件大小不证明备份有效</td>
+</tr>
+<tr>
+<td>恢复对比不一致</td>
+<td>备份后源库是否继续写入</td>
+<td>先区分时间差与恢复错误，再核对具体业务字段</td>
+</tr>
+</tbody></table></div>
+<p>人为注入的错误数据库主机名，使用项目恢复入口修复：</p>
+<pre><code class="language-bash">python3 scripts/lab.py recover
+python3 scripts/lab.py check --ticket-id 1
+</code></pre>
+<p>这只适用于本教程已记录健康镜像的实验。它不撤销迁移，也不从备份恢复数据。如果错误来源不同，应先判断该动作是否适用。</p>
+<h2 id="section-4">Git、镜像与流水线<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>先检查</th>
+<th>判断与下一步</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>修改代码但容器行为没变</td>
+<td>当前运行镜像与构建时间</td>
+<td>源码没有自动进入既有镜像，按流程重建并替换</td>
+</tr>
+<tr>
+<td>同名标签行为不同</td>
+<td>各环境实际 digest 与平台</td>
+<td>tag 可能移动；记录并部署明确的制品身份</td>
+</tr>
+<tr>
+<td>PR 页面没有 Actions 检查</td>
+<td>工作流是否在仓库根 <code>.github/workflows</code>，事件条件是否匹配</td>
+<td>下载项目应成为独立仓库根，不是只把它放进子目录</td>
+</tr>
+<tr>
+<td>GHCR 推送被拒绝</td>
+<td>失败步骤、包权限、组织策略与镜像名称</td>
+<td>限定到所需仓库和包权限，不默认申请管理员权限</td>
+</tr>
+<tr>
+<td>CI 通过但本机失败</td>
+<td>解释器、架构、依赖、配置、端口与已有数据</td>
+<td>临时空库与长期保留库可能走不同路径</td>
+</tr>
+<tr>
+<td>workflow 一直等待或被替换</td>
+<td>concurrency group 与触发条件</td>
+<td>互斥控制不是任意数量的严格发布队列</td>
+</tr>
+<tr>
+<td>回退后仍然错误</td>
+<td>旧镜像是否真的可获取、配置与数据库是否兼容</td>
+<td>应用、配置与数据需要分别检查</td>
+</tr>
+<tr>
+<td>Git 出现秘密文件</td>
+<td>先停止继续传播，按凭据所有者流程撤销或轮换</td>
+<td>仅从当前版本删除不能消除历史中的凭据</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-5">IaC、集群与 GitOps<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>集群检查先确认 context 与命名空间。以下对象名来自实验配置，实际名称和权限按自己的环境核对；只读取故障状态，不默认删除资源。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>先检查</th>
+<th>判断与下一步</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IaC plan 想替换意外资源</td>
+<td>资源地址、变量、state 所有权与 provider 版本</td>
+<td>暂停 apply，区分合法迁移与错误关联；不先删 state</td>
+</tr>
+<tr>
+<td>state 锁未释放</td>
+<td>锁的任务 ID、所有者、运行状态</td>
+<td>确认没有活跃写入再按后端规程恢复，避免并发损坏</td>
+</tr>
+<tr>
+<td>Ansible 第二次仍大量变更</td>
+<td>具体 changed 任务、模板内容和模块行为</td>
+<td>区分必要变更与不稳定输入；check 模式不能代替两次真实运行</td>
+</tr>
+<tr>
+<td>Pod Pending</td>
+<td>describe 中调度事件、request、节点和 PVC</td>
+<td>判断容量、亲和、污点或存储绑定，不先提高重试次数</td>
+</tr>
+<tr>
+<td>ImagePullBackOff</td>
+<td>镜像引用、平台、拉取身份与 registry</td>
+<td>tag/digest 存在、权限和网络分别验证</td>
+</tr>
+<tr>
+<td>CrashLoopBackOff</td>
+<td>当前及 previous 日志、退出码、配置</td>
+<td>分清程序崩溃、探针杀进程与资源终止</td>
+</tr>
+<tr>
+<td>Running 但不 Ready</td>
+<td>readiness 结果、依赖、迁移与 Secret</td>
+<td>容器启动成功不等于可接收业务流量</td>
+</tr>
+<tr>
+<td>Service 没有可用端点</td>
+<td>selector、Pod labels、EndpointSlice 和就绪</td>
+<td>对照实际标签；不要修改 Pod IP 作为永久修复</td>
+</tr>
+<tr>
+<td>Gateway 没流量</td>
+<td>Gateway/Route 条件、引用与真实入口服务</td>
+<td>ResolvedRefs 或 Accepted 失败可能发生在应用之前</td>
+</tr>
+<tr>
+<td>NetworkPolicy 没有效果</td>
+<td>CNI 是否执行、选择器、请求实际路径</td>
+<td>用普通 Pod 请求做正反例；port-forward 不证明策略隔离</td>
+</tr>
+<tr>
+<td>HPA 显示 unknown</td>
+<td>指标 API、Pod 指标、资源 request</td>
+<td>先恢复测量基础，不能仅增加最大副本</td>
+</tr>
+<tr>
+<td>drain 等待不结束</td>
+<td>PDB、可用副本、容量、卷约束</td>
+<td>找到被保护的业务条件，不默认强行驱逐</td>
+</tr>
+<tr>
+<td>GitOps 不同步</td>
+<td>repo 权限、路径、revision、AppProject 和差异</td>
+<td>区分获取、渲染、授权与应用失败</td>
+</tr>
+<tr>
+<td>手工回退后又变回新版本</td>
+<td>Git 期望状态、self-heal 和同步策略</td>
+<td>通过受审查提交修正期望状态，保留事件记录</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-6">观测、门禁与异步任务<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>症状</th>
+<th>先检查</th>
+<th>判断与下一步</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Prometheus 目标 down</td>
+<td>targets 状态、容器 DNS、端口与 metrics 路径</td>
+<td>抓取失败不同于业务错误；分别观察</td>
+</tr>
+<tr>
+<td>面板没有数据</td>
+<td>时间范围、标签、查询窗口及是否有请求</td>
+<td>无数据不应自动解释为零错误</td>
+</tr>
+<tr>
+<td>p95 不合理</td>
+<td>histogram 桶、rate 窗口、样本与分组</td>
+<td>不用均值代替 p95，不聚合不兼容的桶</td>
+</tr>
+<tr>
+<td>trace 看不到</td>
+<td>插桩是否启用、采样、导出地址、Collector pipeline</td>
+<td>按生成到接收的顺序排查；不伪造 trace ID</td>
+</tr>
+<tr>
+<td>告警触发但无人收到</td>
+<td>pending/firing、路由、抑制/静默、接收器和投递结果</td>
+<td>本例没有外部接收者，必须另做端到端通知验证</td>
+</tr>
+<tr>
+<td>扫描报告“空”</td>
+<td>扫描退出码、目标、Results、数据库时间</td>
+<td>扫描失败不能当无漏洞；缺失结果应阻断</td>
+</tr>
+<tr>
+<td>签名可验证但身份不对</td>
+<td>issuer、identity、subject digest 与策略</td>
+<td>密码学验证成功不等于符合你的发布授权</td>
+</tr>
+<tr>
+<td>规则 YAML 可解析但部署仍被拒</td>
+<td>API 版本、准入策略、RBAC 与实际对象</td>
+<td>解析不验证集群语义，按拒绝原因分层修复</td>
+</tr>
+<tr>
+<td>事件重复计数</td>
+<td>稳定 event ID、去重记录与事务边界</td>
+<td>标记和同库效果需一起提交；外部副作用另处理</td>
+</tr>
+<tr>
+<td>AI 评测组合不符</td>
+<td>bundle 的数据集摘要与模型/Prompt 版本</td>
+<td>修正受评审的发布组合，不绕过摘要检查</td>
+</tr>
+<tr>
+<td>AI 输出结构正确但业务错误</td>
+<td>独立案例与类别混淆、语义评价</td>
+<td>schema 校验只管结构；补真实质量门禁和降级</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-7">一条足够好的求助记录<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p>使用这样的结构，能帮助别人快速复现：章节与小节；操作系统、架构和工具版本；命令执行目录；脱敏后的命令；退出码；实际与预期行为；最近一次成功状态；已经尝试的动作；数据是否需要保留。</p>
+<p>不要上传 <code>.env</code>、完整连接串、token、私钥或真实业务数据。对错误只截最后一行常常缺少上下文，可以提供明确时间窗口内的脱敏日志，并保留 request ID、步骤名和版本身份。</p>
+</div><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">环境、进程与权限</a><a class="toc-level-2" href="#section-2">网络与 HTTP</a><a class="toc-level-2" href="#section-3">健康、数据库与数据</a><a class="toc-level-2" href="#section-4">Git、镜像与流水线</a><a class="toc-level-2" href="#section-5">IaC、集群与 GitOps</a><a class="toc-level-2" href="#section-6">观测、门禁与异步任务</a><a class="toc-level-2" href="#section-7">一条足够好的求助记录</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

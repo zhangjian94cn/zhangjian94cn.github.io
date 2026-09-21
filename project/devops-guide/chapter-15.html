@@ -1,0 +1,105 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>用 Compose 管理多服务环境 · DevOps 实战手册</title><meta name="description" content="TicketDesk 至少需要应用和数据库；学习反向代理时还需要 NGINX。分别手工启动、记住端口、创建网络和挂载数据目录很容易遗漏。Compose 把单机多服务的期望配置写到同一份文件中，让环境的创建和检查有共同入口。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-15"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" open><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link active" aria-current="page"><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>容器与可追溯制品</span><span>/</span><span>第 15 章</span></div><div class="chapter-eyebrow">CHAPTER 15 <span>·</span> 第 4 篇<span class="version-label">v0.3 阅读版</span></div><h1>用 Compose 管理多服务环境</h1><div class="chapter-outcome"><strong>学习目标</strong><span>启动应用、数据库和代理；验证数据库重启后的行为、卷持久性及保留数据的停止流程</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 四个服务有不同生命周期</a><a class="toc-level-2" href="#section-2">2. 服务名比临时地址稳定</a><a class="toc-level-2" href="#section-3">3. 启动、就绪与恢复是三件事</a><a class="toc-level-2" href="#section-4">4. 验证卷，而不是相信卷</a><a class="toc-level-2" href="#section-5">5. 观察数据库短暂不可用</a><a class="toc-level-2" href="#section-6">6. 可选代理与配置检查</a><a class="toc-level-2" href="#section-7">7. 本章提交物</a></details><div class="prose"><p>TicketDesk 至少需要应用和数据库；学习反向代理时还需要 NGINX。分别手工启动、记住端口、创建网络和挂载数据目录很容易遗漏。Compose 把单机多服务的期望配置写到同一份文件中，让环境的创建和检查有共同入口。</p>
+<p>本章承接第 14 章，在本机实验项目中运行。Compose 是本课程的入门部署方式；跨主机调度、高可用数据库和集群升级将在后续卷讨论。</p>
+<h2 id="section-1">1. 四个服务有不同生命周期<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>服务</th>
+<th>职责</th>
+<th>预期生命周期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>db</td>
+<td>保存工单数据</td>
+<td>持续运行，数据放在命名卷</td>
+</tr>
+<tr>
+<td>migrate</td>
+<td>执行 schema 迁移</td>
+<td>一次任务，成功后退出</td>
+</tr>
+<tr>
+<td>app</td>
+<td>接收 HTTP 请求</td>
+<td>持续运行，依赖可用数据库和正确 schema</td>
+</tr>
+<tr>
+<td>proxy</td>
+<td>反向代理</td>
+<td>选修 profile 启动后持续运行</td>
+</tr>
+</tbody></table></div>
+<p>迁移退出为 0 是任务完成；应用退出则通常意味着服务不可用。同一个“Exited”字样，对不同服务有不同含义。不要给所有任务机械地加无限重启策略，否则一次成功的迁移也可能被反复启动。</p>
+<p>项目脚本明确执行：启动并等待数据库、执行迁移、启动应用、验证业务。单独运行 <code>docker compose up app</code> 不会替你执行整个迁移流程，因此首次运行优先用脚本入口。</p>
+<h2 id="section-2">2. 服务名比临时地址稳定<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>应用在 Compose 网络中连接 <code>db:5432</code>。<code>db</code> 是服务名，5432 是容器内数据库端口。本机通过映射端口 55432 访问数据库，二者处于不同网络视角。</p>
+<pre><code class="language-bash">python3 scripts/lab.py up
+docker compose exec app python -c &#39;import socket; print(socket.getaddrinfo(&quot;db&quot;, 5432))&#39;
+docker compose ps
+</code></pre>
+<p>不要把容器 IP 抄进配置，也不要让 app 连接 <code>localhost:55432</code>。从 app 容器看，localhost 是自己；本机看到的端口映射不会自动成为容器内部访问其他服务的方式。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>请求发起位置</th>
+<th>目标</th>
+<th>使用地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本机浏览器</td>
+<td>应用</td>
+<td><code>http://127.0.0.1:8000</code></td>
+</tr>
+<tr>
+<td>app 容器</td>
+<td>数据库</td>
+<td><code>db:5432</code></td>
+</tr>
+<tr>
+<td>proxy 容器</td>
+<td>应用</td>
+<td><code>app:8000</code></td>
+</tr>
+<tr>
+<td>本机数据库客户端</td>
+<td>数据库</td>
+<td><code>127.0.0.1:55432</code></td>
+</tr>
+</tbody></table></div>
+<h2 id="section-3">3. 启动、就绪与恢复是三件事<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<p>数据库容器正在运行，可能仍处于初始化阶段。<code>pg_isready</code> 检查数据库是否接受连接，但不证明业务表已经完成迁移。应用的 <code>/health/ready</code> 会尝试访问工单表及所需字段，更接近本项目的服务条件。</p>
+<p>Compose 的 <code>depends_on</code> 配合 <code>service_healthy</code> 可以等待依赖满足启动条件。这个声明不能替应用处理运行期间的数据库中断，也不会因为某个健康状态变化就完成业务级恢复。</p>
+<p>本例的短连接配有连接超时和查询超时。当数据库重新可用，后续新请求有机会恢复。真实连接池还需处理断链、连接回收和重试边界。创建工单这类写请求也不能无条件自动重试，否则可能创建重复记录。</p>
+<p>官方说明：<a href="https://docs.docker.com/compose/how-tos/startup-order/">Compose 启动顺序与依赖就绪</a>。</p>
+<h2 id="section-4">4. 验证卷，而不是相信卷<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<p>先在页面创建一张含有独特标题的工单，记下 ID、标题和状态。下面命令用实际 ID 替换 1：</p>
+<pre><code class="language-bash">python3 scripts/lab.py check --ticket-id 1
+python3 scripts/lab.py down
+docker volume ls
+python3 scripts/lab.py up
+curl --fail-with-body http://127.0.0.1:8000/tickets/1
+</code></pre>
+<p><code>down</code> 删除本项目容器和网络，默认保留命名卷。重建后查询同一 ID，并对比业务字段。脚本的 <code>check</code> 每次还会创建一张验收工单，这个写入是有意的；不要用记录总数不变作为它的验收条件。</p>
+<p>不要在这个实验中添加 <code>--volumes</code>。只有明确放弃本地实验数据、已完成需要的备份时，才可以删除卷。CI 中的临时数据库每次新建、测试后删除，与需要保留学习数据的本机环境不同。</p>
+<h2 id="section-5">5. 观察数据库短暂不可用<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>只在本地无真实用户的实验环境执行：</p>
+<pre><code class="language-bash">docker compose stop db
+curl -i http://127.0.0.1:8000/health/live
+curl -i http://127.0.0.1:8000/health/ready
+docker compose start db
+python3 scripts/lab.py check --ticket-id 1
+</code></pre>
+<p>预期存活检查仍返回 200，就绪检查在依赖失败后返回 503。数据库恢复后，业务验证应通过。记录状态变化与耗时；如果失败，先看数据库和 app 日志，确认不是端口、密码、迁移或权限问题。</p>
+<p>不要马上删除卷“重来”。那会同时删除分析材料和数据，掩盖真正原因。优先做保留数据的恢复；只有实验计划明确要求重置时才清理持久数据。</p>
+<h2 id="section-6">6. 可选代理与配置检查<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<pre><code class="language-bash">docker compose --profile proxy up -d proxy
+curl --fail-with-body http://127.0.0.1:8080/health/ready
+docker compose --profile proxy logs --tail 30 proxy
+</code></pre>
+<p>8000 直连和 8080 代理都能访问，并不代表 TLS、域名或公网防火墙已经配置。本项目监听本机回环地址，适合实验。公开服务还需要身份认证、HTTPS、访问策略和运维责任，不能简单把监听地址改成全网后宣告生产就绪。</p>
+<p><code>docker compose config --quiet</code> 可以做基础配置校验。完整的 <code>docker compose config</code> 可能展开秘密值，不要把输出直接贴入 Issue。检查端口、镜像和挂载时优先只输出所需字段。</p>
+<h2 id="section-7">7. 本章提交物<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p>提交服务表、四种网络视角、停止与重建前后工单字段对照，以及数据库中断时 live/ready 的差异。若无法完成，提交失败步骤、退出码、经过脱敏的日志和当前数据是否仍在，而不是填入预期结果。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-14.html"><small>← 上一篇</small><strong>编写可维护的 Dockerfile</strong></a><a href="chapter-16.html"><small>下一章 →</small><strong>镜像仓库、版本和制品身份</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 四个服务有不同生命周期</a><a class="toc-level-2" href="#section-2">2. 服务名比临时地址稳定</a><a class="toc-level-2" href="#section-3">3. 启动、就绪与恢复是三件事</a><a class="toc-level-2" href="#section-4">4. 验证卷，而不是相信卷</a><a class="toc-level-2" href="#section-5">5. 观察数据库短暂不可用</a><a class="toc-level-2" href="#section-6">6. 可选代理与配置检查</a><a class="toc-level-2" href="#section-7">7. 本章提交物</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

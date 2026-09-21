@@ -1,0 +1,107 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>协作方式、价值流和交付指标 · DevOps 实战手册</title><meta name="description" content="TicketDesk 的流水线只运行十分钟，需求却常常等三天才能上线。继续优化镜像构建可能只省下一分钟。真正需要回答的是：时间花在编码、排队评审、等待测试环境，还是等待一个没有明确负责人的批准上？本章把交付看作一个共同承担结果的系统。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-45"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" open><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link active" aria-current="page"><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>团队、平台与综合验收</span><span>/</span><span>第 45 章</span></div><div class="chapter-eyebrow">CHAPTER 45 <span>·</span> 第 12 篇<span class="version-label">v0.3 阅读版</span></div><h1>协作方式、价值流和交付指标</h1><div class="chapter-outcome"><strong>学习目标</strong><span>从项目事件记录计算示例指标，找一个实际瓶颈并提出可验证改进；说明为什么不能据此给个人排名</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">前置与本章产物</a><a class="toc-level-2" href="#section-2">先找等待，再讨论工具</a><a class="toc-level-2" href="#section-3">五项交付指标怎样读</a><a class="toc-level-2" href="#section-4">用小样本练习计算</a><a class="toc-level-2" href="#section-5">加入 TicketDesk 的事件模型</a><a class="toc-level-2" href="#section-6">故意造出一个“好看的坏指标”</a><a class="toc-level-2" href="#section-7">团队责任与改进实验</a><a class="toc-level-2" href="#section-8">练习、验收与参考</a></details><div class="prose"><p>TicketDesk 的流水线只运行十分钟，需求却常常等三天才能上线。继续优化镜像构建可能只省下一分钟。真正需要回答的是：时间花在编码、排队评审、等待测试环境，还是等待一个没有明确负责人的批准上？本章把交付看作一个共同承担结果的系统。</p>
+<h2 id="section-1">前置与本章产物<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<p>先完成 <a href="chapter-09.html">CI 与协作</a> 和 <a href="chapter-40.html">事件处理</a>。本章不需要新增服务器。准备一组已脱敏的提交、部署和事件记录；没有真实记录时使用下文的教学数据，报告中明确写“模拟”。交付一张价值流表、一份指标口径和一个有复查日期的改进实验。</p>
+<h2 id="section-2">先找等待，再讨论工具<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>价值流描述从需求被接受到用户得到结果的过程。把“有人正在处理”的时间和“没有人在处理”的等待分开，才能找到约束。对同一个小改动做如下记录，时间必须来自事件，而不是凭印象填写。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>处理时间，教学样例</th>
+<th>等待时间，教学样例</th>
+<th>等待原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>澄清验收标准</td>
+<td>30 分钟</td>
+<td>4 小时</td>
+<td>业务问题只有一人能回答</td>
+</tr>
+<tr>
+<td>编码与本地测试</td>
+<td>2 小时</td>
+<td>0</td>
+<td>已包含失败测试与修正</td>
+</tr>
+<tr>
+<td>评审</td>
+<td>25 分钟</td>
+<td>18 小时</td>
+<td>评审人临时分配</td>
+</tr>
+<tr>
+<td>CI 与修复反馈</td>
+<td>15 分钟</td>
+<td>2 小时</td>
+<td>Runner 排队</td>
+</tr>
+<tr>
+<td>发布与验证</td>
+<td>20 分钟</td>
+<td>8 小时</td>
+<td>统一发布窗口</td>
+</tr>
+</tbody></table></div>
+<p>这不是公司平均值。对这一条变更，等待超过处理时间很多；先为评审安排轮值和小批量响应，比把测试缩短十秒更可能改善结果。缩短等待不能靠跳过必要检查，应明确检查要防什么风险、谁能判定以及自动化能提供什么证据。</p>
+<h2 id="section-3">五项交付指标怎样读<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<p>截至本版资料核对，DORA 的官方模型包含五项指标。它们用于观察一个应用或服务的交付能力随时间的变化，不能直接成为个人绩效分数。定义依据见 <a href="https://dora.dev/guides/dora-metrics/">DORA 指标说明</a>。</p>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>本教程采用的计算边界</th>
+<th>所需事件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>变更前置时间</td>
+<td>代码提交到该变更进入生产的时间</td>
+<td>commit、包含它的 release、生产生效时刻</td>
+</tr>
+<tr>
+<td>部署频率</td>
+<td>固定窗口内的生产部署次数及间隔</td>
+<td>环境、部署 ID、开始和完成时刻</td>
+</tr>
+<tr>
+<td>失败部署恢复时间</td>
+<td>引起立即干预的失败部署，到服务恢复</td>
+<td>失败部署、影响起点、恢复验证</td>
+</tr>
+<tr>
+<td>变更失败率</td>
+<td>需要立即修复或回退的部署 / 全部生产部署</td>
+<td>部署与事件的关联</td>
+</tr>
+<tr>
+<td>部署返工率</td>
+<td>因生产事件触发的非计划部署 / 全部生产部署</td>
+<td>部署原因与关联事件</td>
+</tr>
+</tbody></table></div>
+<p>“所有故障的平均修复时间”不能直接替代失败部署恢复时间；硬件事故和失败发布不是同一统计对象。一个失败部署可能导致两次修复部署，所以失败率与返工率也不必相等。团队应先写清回退是否算部署、重试是否合并、窗口按开始还是完成归属，再持续保持一致。</p>
+<h2 id="section-4">用小样本练习计算<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<p>设某服务在七天内有 20 次完成的生产部署，3 次需要立即干预，其中 2 次后续部署属于事故触发的非计划修复。失败部署到恢复分别为 8、20、32 分钟。已关联的五个示例变更前置时间为 2、4、5、9、30 小时。</p>
+<pre><code class="language-python">from statistics import median
+print(20 / 7)                     # 约 2.86 次 / 日，别省略窗口
+print(3 / 20)                     # 15% 变更失败率
+print(2 / 20)                     # 10% 部署返工率
+print(median([8, 20, 32]))         # 恢复时间中位数 20 分钟
+print(median([2, 4, 5, 9, 30]))    # 五个已关联变更中位数 5 小时
+</code></pre>
+<p>最后一个数只代表这五个变更；不知道覆盖率时不能说它代表全部 20 次部署。除中位数外保留分布、最大值和样本数，避免把极端等待藏起来。窗口中没有失败部署时，恢复时间应显示“无样本”，不是零分钟。</p>
+<h2 id="section-5">加入 TicketDesk 的事件模型<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>每次发布记录 <code>deployment_id、service、environment、commit、image_digest、started_at、verified_at、reason、incident_id</code>。使用 UTC 时间并保留来源。把构建完成、部署完成和用户路径验证完成分开；同一个构建可以晋级多个环境。统计生产时排除本地 kind 和预发布实验。</p>
+<p>对一次 merge 包含多个提交的情况，要决定按每个提交、PR 合并点还是可交付变更统计，并说明偏差。不能随手拿 PR 创建时间替代 commit 时间，却仍使用相同指标名。数据库仅保存必要关联 ID，避免复制评审正文和个人信息到分析系统。</p>
+<p>本版发布脚本保存本地成功版本，但尚未接入真实生产事件平台。可以从它的记录结构开始设计，不能把本地 <code>lab.py deploy</code> 次数称为团队的生产部署频率。</p>
+<h2 id="section-6">故意造出一个“好看的坏指标”<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p>把一次无业务变化的部署重复执行十次，部署频率就会提高。再把两个不同复杂度服务的记录混在一起，平均值会变化。两种操作都没有证明用户更快获得价值。验证方法是回到原始事件，检查统计对象、重复 ID、环境和变更原因。</p>
+<p>另一个常见故障是把跨午夜的部署归到两个日期，或把 UTC 当本地时间。修正去重与时区后重算历史窗口，并保留口径变更记录；不要默默覆盖让趋势看起来改善。</p>
+<h2 id="section-7">团队责任与改进实验<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p>业务团队对需求正确性、服务行为和运行反馈负责；平台团队对共用交付能力的可用性、可理解性和升级路径负责；安全团队与开发共同设计可执行的控制。关键服务必须有可联系的所有者和替补，不应把“DevOps”变成所有不明确工作的收件箱。</p>
+<p>选择一个改进假设：“为小于约定规模的 PR 设置轮值评审，两周内降低评审等待中位数，同时不增加发布失败率。”记录基线、样本量、观察窗口、负责人和撤回条件。两周后检查等待时间、错误和团队反馈，不能只宣布新流程已经上线。</p>
+<h2 id="section-8">练习、验收与参考<a class="heading-link" href="#section-8" aria-label="本节链接">#</a></h2>
+<p>练习一：同一次失败部署导致两次热修复，给出失败率与返工率的分子。练习二：为只有两周一次发布的服务设计有意义的观察窗口。参考 <a href="answers.html">练习答案</a>。</p>
+<p>验收时应能从任一汇总数字追溯到事件；明确缺失数据；找出一个等待环节；提出可被结果证伪的改善假设。下一章把可重复的步骤做成团队可使用的默认路径。继续阅读 <a href="https://dora.dev/capabilities/working-in-small-batches/">DORA 的小批量实践</a>；本章具体事件和数字均为原创教学样例。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-44.html"><small>← 上一篇</small><strong>策略执行、运行约束与漏洞响应</strong></a><a href="chapter-46.html"><small>下一章 →</small><strong>平台工程、自服务与默认交付路径</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">前置与本章产物</a><a class="toc-level-2" href="#section-2">先找等待，再讨论工具</a><a class="toc-level-2" href="#section-3">五项交付指标怎样读</a><a class="toc-level-2" href="#section-4">用小样本练习计算</a><a class="toc-level-2" href="#section-5">加入 TicketDesk 的事件模型</a><a class="toc-level-2" href="#section-6">故意造出一个“好看的坏指标”</a><a class="toc-level-2" href="#section-7">团队责任与改进实验</a><a class="toc-level-2" href="#section-8">练习、验收与参考</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

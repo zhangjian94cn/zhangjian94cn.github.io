@@ -1,0 +1,103 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>第16课｜结课项目：交付你的第一个可验收 Agent · AI Agent 实践课</title><meta name="description" content="16课中文智能体教程：核心结构、多智能体、MCP/A2A、上下文工程、可运行实验与真实工程案例。"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23155ce7'/%3E%3Ctext x='6' y='22' font-family='monospace' font-size='22' fill='white'%3Ea%3C/text%3E%3C/svg%3E"><link rel="stylesheet" href="assets/style.css"></head><body class=""><a class="skip" href="#main">跳到正文</a><header class="topbar"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">a_</span><span>AI Agent 实践课</span></a><nav class="top-links" aria-label="快捷导航"><a class="optional" href="lesson12.html">动手实验</a><a href="resources.html">学习资料</a><button class="menu-toggle" aria-controls="course-nav" aria-expanded="false">课程目录</button></nav></header><noscript><div class="noscript">正文与参考答案可以正常阅读。交互演示与移动端折叠目录需要 JavaScript；可使用页面中的课程链接。</div></noscript><div class="shell"><aside class="sidebar" id="course-nav" aria-label="课程目录"><div class="side-title">学习目录 <span class="muted">/ 16 课</span></div><a href="index.html" >课程导读与学习路线</a><div class="nav-module">01 / 概念与结构</div><a href="lesson01.html" ><span class="num">01</span><span>先判断问题，再决定要不要 Agent</span></a><a href="lesson02.html" ><span class="num">02</span><span>拆开智能体的核心结构</span></a><a href="lesson03.html" ><span class="num">03</span><span>跟踪一次工具调用闭环</span></a><a href="lesson04.html" ><span class="num">04</span><span>从用户故事写 Agent Spec</span></a><div class="nav-module">02 / 多智能体系统</div><a href="lesson05.html" ><span class="num">05</span><span>多 Agent 什么时候值得用</span></a><a href="lesson06.html" ><span class="num">06</span><span>五种协作结构怎么选</span></a><a href="lesson07.html" ><span class="num">07</span><span>状态、消息与协作协议</span></a><a href="lesson08.html" ><span class="num">08</span><span>故障演练与人工决策</span></a><div class="nav-module">03 / 技术与构建</div><a href="lesson09.html" ><span class="num">09</span><span>从回答问题到交付结果</span></a><a href="lesson10.html" ><span class="num">10</span><span>上下文工程与 Harness</span></a><a href="lesson11.html" ><span class="num">11</span><span>MCP、A2A 与 Skills</span></a><a href="lesson12.html" ><span class="num">12</span><span>动手构建 Agent 骨架</span></a><div class="nav-module">04 / 案例与实践</div><a href="lesson13.html" ><span class="num">13</span><span>产品经理的证据型调研</span></a><a href="lesson14.html" ><span class="num">14</span><span>研发的代码交付 Agent</span></a><a href="lesson15.html" ><span class="num">15</span><span>省市协作的工单平台</span></a><a href="lesson16.html" aria-current="page"><span class="num">16</span><span>结课：可验收的 Agent</span></a><div class="nav-module">配套材料</div><a href="resources.html" >资料、模板与来源</a></aside><main class="main " id="main"><section id="lesson16" aria-labelledby="lesson16-title"><header class="article-header"><div class="eyebrow">模块 04 / 案例分享与结课项目</div><h1 id="lesson16-title">第16课｜结课项目：交付你的第一个可验收 Agent</h1><div class="meta">建议学习 180 分钟（含练习） · 本课产出：六件项目交付物</div><div class="article-toolbar"><a href="index.html#curriculum">返回课程总览</a><span class="meta">16 / 16</span></div></header><article class="article"><h2 id="lesson16-1">挑战书：让别人能接手你的成果</h2>
+<p>你可以选择 IT 草案助手、产品证据调研助手或代码任务助手。课程建议首次项目沿用 IT-2048，避免同时引入未知业务和未知技术。</p>
+<p>结课目标不是展示一个漂亮聊天窗口，而是交付一份别人可以运行、审查、复现失败并继续改进的作品。建议独立完成需要 3—5 小时；团队可以分成业务、实现、评估三个角色，轮流审阅。</p>
+<h2 id="lesson16-2">第一步：冻结任务边界（30 分钟）</h2>
+<p>填写配套 Agent Spec：用户是谁、希望减少哪一步工作、输入来自哪里、可以调用哪些工具、明确不做什么、什么叫完成、什么情况下转人工、用什么样本验收。</p>
+<p>写出一个正常故事和三个异常故事。异常故事至少覆盖缺信息、工具失败和越权请求。“异常时友好提示”不够具体，应说明保留哪些已完成结果、如何标记当前状态以及交给谁。</p>
+<h2 id="lesson16-3">第二步：建立最小基线（30 分钟）</h2>
+<p>先用固定模板或人工处理十条样本，记录完成时间与结果。这样后面才知道 Agent 改善了什么。没有基线时，“一分钟生成草案”可能比原来复制模板还慢。</p>
+<p>不要边改提示词边替换不容易通过的测试样本。开发集可以用于调试，冻结验收集用于比较版本。样本少时，报告实际个数，比夸张的百分比更诚实。</p>
+<h2 id="lesson16-4">第三步：实现和观察（60—90 分钟）</h2>
+<p>从配套离线实验开始，读懂正常轨迹，再添加一个失败场景。研发读者可替换规划器接入真实模型；非研发读者可以设计完整状态与验收，让同组同学实现。</p>
+<p>每次改动只回答一个问题：检索不准，是查询、数据还是权限过滤的问题？草案无依据，是模型编造还是完成校验太弱？循环太长，是任务没收敛还是停止条件缺失？根据失败层次修改，不要把所有问题都归因于提示词。</p>
+<h2 id="lesson16-5">第四步：做一次同任务对照（30 分钟）</h2>
+<p>只有当存在可独立分工的任务时，才比较单 Agent 与多 Agent。固定输入、模型配置、工具集合与验收规则，至少保留每次运行的成本和耗时。多 Agent 版本可能更快，也可能更贵且错误更多；结论都可以成为合格项目，只要解释有证据。</p>
+<p>本课不规定最低 Agent 数量，也不把使用更多框架视为加分。</p>
+<h2 id="lesson16-6">第五步：提交六件交付物</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>交付物</th>
+<th>最低内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Spec</td>
+<td>用户故事、范围、权限、验收、失败出口</td>
+</tr>
+<tr>
+<td>系统图</td>
+<td>模型、工具、状态、人工步骤和终止分支</td>
+</tr>
+<tr>
+<td>可复现实验</td>
+<td>启动方式、输入样本、明确依赖</td>
+</tr>
+<tr>
+<td>轨迹证据</td>
+<td>一次成功、一次失败、一次拒绝或停止</td>
+</tr>
+<tr>
+<td>评估报告</td>
+<td>样本与分母、实际结果、成本/耗时口径</td>
+</tr>
+<tr>
+<td>交接说明</td>
+<td>已验证、未验证、已知问题、下一步</td>
+</tr>
+</tbody></table></div>
+<p>如果使用真实模型，补充模型标识、调用日期、提示词版本和工具版本，但不要提交密钥、真实工单或敏感轨迹。</p>
+<h2 id="lesson16-7">评分表：总分 100 分</h2>
+<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th align="right">分值</th>
+<th>达标表现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>任务与 Spec</td>
+<td align="right">20</td>
+<td>用户价值具体，范围与完成标准可检查</td>
+</tr>
+<tr>
+<td>架构与工具契约</td>
+<td align="right">20</td>
+<td>职责清楚，参数和错误路径明确</td>
+</tr>
+<tr>
+<td>边界与失败处理</td>
+<td align="right">20</td>
+<td>越权被执行层拒绝，预算与停止有效</td>
+</tr>
+<tr>
+<td>证据与评估</td>
+<td align="right">25</td>
+<td>结果可复现，有失败样本与真实分母</td>
+</tr>
+<tr>
+<td>交付与讲解</td>
+<td align="right">15</td>
+<td>别人能启动、检查、解释并继续修改</td>
+</tr>
+</tbody></table></div>
+<p><strong>必过项</strong>：不能把模拟说成真实模型；不能伪造测试通过；不能用未授权动作换取任务成功。出现上述问题时，先修正作品，再评分。该评分表是教学标准，不是生产合规认证。</p>
+<h2 id="lesson16-8">一份合格报告可以长这样</h2>
+<p>以下数字仅为报告格式示例，并非课程实际模型评测：</p>
+<blockquote>
+<p>冻结验收集共 24 条，其中业务草案任务 20 条、独立越权测试 4 条。业务验收通过 17 条；3 条未通过中，2 条漏列缺失信息，1 条引用旧政策。4 条越权测试全部正确拒绝。业务草案合格率为 17/20，越权拦截通过率为 4/4；按第4课总体场景验收口径为 21/24。安全拒绝不能计作普通草案成功。正常任务延迟与失败任务延迟分别统计。当前仅完成离线模拟，未验证真实模型与生产数据权限。</p>
+</blockquote>
+<p>“安全拒绝成功”和“业务任务完成”可以分别报告。不要把所有拒绝都纳入业务成功分子，从而让系统看起来准确率很高。</p>
+<h2 id="lesson16-9">最后的课堂练习：三分钟作品答辩</h2>
+<p>请用三分钟回答：①替谁减少了什么工作？②最容易失败在哪里？③哪个约束由程序保证？④用什么证据证明结果？⑤下一版只改一件事，会改什么？</p>
+<details class="answer"><summary>展开参考答案 · 先试着自己回答</summary><div class="answer-body">
+
+<p>好的回答具体到一类任务、一条失败轨迹和一项可检验改动。例如：“我们帮助服务台减少政策查找；过期政策是当前主要失败；执行器没有账户变更工具；报告保留 20 条固定样本与所有轨迹；下一版先加入有效期校验。”不需要承诺全自动，也不需要把未知包装成已经解决。</p>
+
+</div></details>
+
+
+<h2 id="lesson16-10">学完之后做什么</h2>
+<p>选一个工作中每周重复发生的小任务，写出 Spec，收集十条有代表性的脱敏样本，做出最小版本，用失败记录决定下一次改动。知识会在这个循环中变成可以交付的能力。</p>
+</article><nav class="pager" aria-label="前后课程"><a href="lesson15.html"><small>上一课</small>省市协作的工单平台</a><a class="next" href="resources.html"><small>继续实践</small>下载模板与实验资料</a></nav></section><footer class="page-footer">AI Agent 实践课 · 内容核查 2026-09-21 · v1.0<br>工单与政策为虚构教学材料。演示与离线实验均明确标注能力边界。</footer></main></div><script src="assets/app.js" defer></script></body></html>

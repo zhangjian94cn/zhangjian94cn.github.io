@@ -1,0 +1,126 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>版本与验证 · DevOps 实战手册</title><meta name="description" content="内容版本为 v0.3 完整阅读版，资料核对与本次检查日期为 2026-09-20。48 章主线、8 个专题及答案均已收录。本页明确区分正文、离线检查和真实环境实验。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="verification"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link active" href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>版本与验证</span></div><div class="chapter-eyebrow">DEVOPS HANDBOOK<span class="version-label">v0.3 阅读版</span></div><h1>版本与验证</h1><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">已实际执行</a><a class="toc-level-2" href="#section-2">仍需真实环境验证</a><a class="toc-level-2" href="#section-3">工具与依赖基线</a><a class="toc-level-2" href="#section-4">距离完整实验验收还有什么</a><a class="toc-level-2" href="#section-5">来源与维护</a></details><div class="prose"><p>内容版本为 <strong>v0.3 完整阅读版</strong>，资料核对与本次检查日期为 <strong>2026-09-20</strong>。48 章主线、8 个专题及答案均已收录。本页明确区分正文、离线检查和真实环境实验。</p>
+<h2 id="section-1">已实际执行<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>结果</th>
+<th>证明的范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Python 测试</td>
+<td>16 项通过，2 项上游弃用提示</td>
+<td>12 项 API/指标/环境标识测试；4 项 SQLite 幂等、事务回滚与拒绝测试</td>
+</tr>
+<tr>
+<td>离线示例检查</td>
+<td>23 项通过</td>
+<td>Python 编译、36 份 YAML 解析、策略正反例、扫描例外与缺失报告、AI 桩评测、脚手架、Helm 和 Kustomize</td>
+</tr>
+<tr>
+<td>Helm</td>
+<td>3.19.0 lint 与渲染通过；缺少 Secret 参数被拒绝</td>
+<td>Chart 模板层，未执行安装或连接集群</td>
+</tr>
+<tr>
+<td>Kustomize</td>
+<td>kubectl 1.34.0 内置渲染器生成 dev/stage 配置</td>
+<td>命名空间、副本、环境标识与 Service selector 一致，未提交 API</td>
+</tr>
+<tr>
+<td>OpenTelemetry 可选依赖</td>
+<td>在基础依赖约束下完成解析并记录确切版本</td>
+<td>依赖解析，不是镜像安装、自动插桩或真实导出验收</td>
+</tr>
+<tr>
+<td>网站</td>
+<td>构建、页面/锚点/下载检查及 JS 语法检查</td>
+<td>结构与引用；浏览器视觉和交互另行验收</td>
+</tr>
+<tr>
+<td>外部引用</td>
+<td>Actions 完整 SHA、选定组件标签及官方资料核对</td>
+<td>来源与选定版本存在性，不代表集成运行成功</td>
+</tr>
+</tbody></table></div>
+<p>离线检查使用虚构扫描发现和明确标注的假 digest，验证规则是否生效；没有把它们当作真实制品的安全证明。AI 分类使用本地规则桩，八个样例仅验证交付门禁，不代表模型质量。</p>
+<p>检查细节随源码保存在 <code>VALIDATION.md</code>、<code>validation/offline-examples.json</code> 和 <code>validation/site-check.json</code>。弃用提示来自当前 FastAPI/Starlette 测试依赖接口，升级时需要处理并重跑。</p>
+<h2 id="section-2">仍需真实环境验证<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>编写环境没有可用 Docker daemon、PostgreSQL 或实验集群，因此未执行镜像构建、Compose、真实迁移/锁/备份恢复、OpenTofu provider 初始化与 apply、Ansible SSH、Kubernetes 调度/网络/存储、Argo CD、真实指标采集、告警送达或压测。</p>
+<p>也未在你的 GitHub/GitLab、云账户、内网 registry 中执行托管 CI、推送与部署；未生成或验证真实候选制品的扫描、SBOM 和签名；未调用真实模型。对应配置和正文均保留前提、预期与验收办法。</p>
+<p>本静态项目未进行浏览器视觉和交互自动化验收。发布检查覆盖 HTML 结构、链接、附件与脚本语法；个人站接入后需验证桌面和手机的菜单、搜索、复制、打印及 SLO 计算器。</p>
+<h2 id="section-3">工具与依赖基线<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>本版设置</th>
+<th>使用状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Python</td>
+<td>实测 3.12.14，基础实验要求 3.12+</td>
+<td>其他版本待复现</td>
+</tr>
+<tr>
+<td>FastAPI / psycopg / pytest</td>
+<td>0.141.1 / 3.3.6 / 9.1.1</td>
+<td>包已安装，API 与 SQLite 测试已运行；PostgreSQL 未运行</td>
+</tr>
+<tr>
+<td>Uvicorn</td>
+<td>0.53.0</td>
+<td>已安装，容器路径待测</td>
+</tr>
+<tr>
+<td>基础镜像</td>
+<td>python:3.12-slim、postgres:17、nginx:stable-alpine</td>
+<td>教学候选标签，需真实获取后锁定 digest</td>
+</tr>
+<tr>
+<td>OpenTofu Docker provider</td>
+<td>kreuzwerker/docker 3.6.2</td>
+<td>标签核对；未生成锁文件或连接 daemon</td>
+</tr>
+<tr>
+<td>Helm / kubectl</td>
+<td>3.19.0 / 1.34.0</td>
+<td>仅本次离线渲染工具，不作为生产集群版本建议</td>
+</tr>
+<tr>
+<td>Envoy Gateway</td>
+<td>官方 quickstart 核对为 v1.9.1</td>
+<td>安装候选；需检查你的集群兼容性</td>
+</tr>
+<tr>
+<td>Prometheus / Grafana</td>
+<td>v3.5.0 / 12.2.0</td>
+<td>选定镜像候选，真实运行待测</td>
+</tr>
+<tr>
+<td>Alertmanager / OTel Collector</td>
+<td>v0.28.1 / 0.137.0</td>
+<td>本地实验配置，运行待测；无外部通知接收者</td>
+</tr>
+<tr>
+<td>OTel Python</td>
+<td>SDK 1.44.0、instrumentation 0.65b0</td>
+<td>解析后的可选依赖集，插桩运行待测</td>
+</tr>
+<tr>
+<td>Markdown</td>
+<td>marked 17.0.5</td>
+<td>确切版本用于网站生成</td>
+</tr>
+</tbody></table></div>
+<p>版本用于说明这次材料的输入，不宣称全部是最新、长期支持或推荐的生产组合。镜像、平台默认值、受支持版本和工具生命周期会变化，开始真实实验前按官方资料复核。</p>
+<h2 id="section-4">距离完整实验验收还有什么<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<p>需要在干净环境执行全部主线、由另一个独立环境复现、保留托管 CI 与实际集群证据；补逐章/阶段起终点快照、旧二进制与新数据库兼容矩阵、迁移失败与恢复时间；完成浏览器验收和读者试读。</p>
+<p>当前基线已包含 priority 功能，正文把它作为分析案例；独立实现练习为 status 查询过滤。异步和 AI 示例尚未接到 API；服务网格、Java 和跨云部分是有明确前提的扩展案例。综合项目必须保存自己的开始与结束提交，并逐项记录执行范围。</p>
+<h2 id="section-5">来源与维护<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>范围参考 <a href="https://github.com/milanm/DevOps-Roadmap">DevOps Roadmap</a>，章节就近链接官方资料，包括 Kubernetes、OpenTofu、Ansible、Prometheus、OpenTelemetry、PostgreSQL、DORA、SLSA 及相关平台文档。正文案例、计算与练习自行组织，模拟数据有明确标识。</p>
+<p>用户提供的 <a href="https://zhangjian94cn.top/project/git-guide/index.html">Git 教程参考页</a> 在最初读取时受限，未能确认其实际布局，因此当前阅读界面独立设计，不声称逐像素复刻。</p>
+<p>修订时记录受影响章节、上游依据、原因与重跑检查。已有通过记录不能自动覆盖新版本；没运行的项目继续写“待验证”。</p>
+</div><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">已实际执行</a><a class="toc-level-2" href="#section-2">仍需真实环境验证</a><a class="toc-level-2" href="#section-3">工具与依赖基线</a><a class="toc-level-2" href="#section-4">距离完整实验验收还有什么</a><a class="toc-level-2" href="#section-5">来源与维护</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

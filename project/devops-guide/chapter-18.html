@@ -1,0 +1,107 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>部署配置、环境差异与发布验证 · DevOps 实战手册</title><meta name="description" content="流水线通过说明某个候选在测试条件下工作过。部署则把这个候选带到具体环境，面对真实的配置、身份、网络和数据。部署动作结束后仍需要验证，才能判断这次变更是否完成。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="chapter-18"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" open><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link active" aria-current="page"><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link " href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>第一次交付与恢复</span><span>/</span><span>第 18 章</span></div><div class="chapter-eyebrow">CHAPTER 18 <span>·</span> 第 5 篇<span class="version-label">v0.3 阅读版</span></div><h1>部署配置、环境差异与发布验证</h1><div class="chapter-outcome"><strong>学习目标</strong><span>在声明的目标环境部署制品；运行正向和反向冒烟；拒绝缺失配置；记录本次和上次版本</span></div><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">1. 给环境明确职责</a><a class="toc-level-2" href="#section-2">2. 配置也是发布输入</a><a class="toc-level-2" href="#section-3">3. 首次部署和替换应用不同</a><a class="toc-level-2" href="#section-4">4. 验证从进程延伸到业务</a><a class="toc-level-2" href="#section-5">5. CI runner 不能凭空到达你的主机</a><a class="toc-level-2" href="#section-6">6. Linux VM 路线如何对应</a><a class="toc-level-2" href="#section-7">7. 发布单与完成条件</a></details><div class="prose"><p>流水线通过说明某个候选在测试条件下工作过。部署则把这个候选带到具体环境，面对真实的配置、身份、网络和数据。部署动作结束后仍需要验证，才能判断这次变更是否完成。</p>
+<p>本章目标环境是你自己的本机 Compose 实验环境，应用监听 <code>127.0.0.1</code>。独立 Linux VM 的 systemd 文件是延伸材料，不与 Compose 同时占用同一端口。个人网站上发布的是这套静态教程，不是公开的 TicketDesk 后端。</p>
+<h2 id="section-1">1. 给环境明确职责<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>环境</th>
+<th>主要用途</th>
+<th>数据与访问特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>开发</td>
+<td>快速修改与调试</td>
+<td>人工实验数据，可频繁重置</td>
+</tr>
+<tr>
+<td>CI 临时环境</td>
+<td>自动验证一次变更</td>
+<td>隔离、短生命周期、自动清理</td>
+</tr>
+<tr>
+<td>测试或预发布</td>
+<td>验证目标部署条件</td>
+<td>尽量接近目标配置，使用合适的测试数据</td>
+</tr>
+<tr>
+<td>生产</td>
+<td>提供真实服务</td>
+<td>有业务责任、访问控制和恢复要求</td>
+</tr>
+</tbody></table></div>
+<p>环境名字不会自动带来隔离。两个叫“test”和“prod”的进程，如果共享同一数据库账号和库，仍可能相互影响。为环境分配明确的资源、身份和数据边界，比多建几个配置文件更重要。</p>
+<h2 id="section-2">2. 配置也是发布输入<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<p>镜像固定后，数据库地址、端口、功能开关和秘密仍会改变运行行为。发布记录至少关联镜像 digest、非秘密配置修订和秘密版本标识。不能只记录“更新镜像成功”。</p>
+<p>本项目用 <code>.env</code> 提供本地实验配置，<code>lab.py init</code> 自动生成密码，已存在时不覆盖。环境变量优先于文件中的同名值，所以终端中遗留的 <code>APP_IMAGE</code> 或 <code>APP_PORT</code> 也会影响命令。出现“我明明改了文件但没有变化”时，要检查配置来源与优先级。</p>
+<pre><code class="language-bash">python3 scripts/lab.py init
+docker compose config --quiet
+</code></pre>
+<p>不要把完整展开配置贴到公开日志。数据库连接串包含密码，不应通过 <code>/version</code> 返回。服务启动时缺少关键配置，应该明确失败或拒绝就绪；使用一个看似可用的默认生产地址会把错误变成更隐蔽的数据风险。</p>
+<h2 id="section-3">3. 首次部署和替换应用不同<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<p>首次建立实验环境：</p>
+<pre><code class="language-bash">python3 scripts/lab.py up
+</code></pre>
+<p>这个入口包含构建、数据库准备、迁移和业务检查。若使用已发布制品，则按第 16 章提供真实 digest，执行 <code>up --image</code>。</p>
+<p>数据库已完成所需迁移，只替换应用版本时：</p>
+<pre><code class="language-bash">CANDIDATE_IMAGE=&#39;&lt;填写本人已验证的真实镜像引用&gt;&#39;
+python3 scripts/lab.py deploy --image &quot;$CANDIDATE_IMAGE&quot;
+python3 scripts/lab.py check --ticket-id 1
+</code></pre>
+<p>用自己的已有工单 ID 替换 1。部署脚本只在业务检查通过后更新 <code>.lab/release.json</code>；失败候选不会成为恢复目标。它不提供零停机发布，也不替你执行数据库迁移。单实例替换期间可以出现短暂中断，这应写进实验与发布说明。</p>
+<p><code>.lab/release.json</code> 是本地恢复辅助信息，记录最后通过验证的镜像与时间；它不是完整发布审计系统。源码、配置、迁移、操作者、观察窗口和前一版本还需记录在发布单中。</p>
+<h2 id="section-4">4. 验证从进程延伸到业务<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>检查</th>
+<th>TicketDesk 的方法</th>
+<th>仍不能证明什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>进程存活</td>
+<td><code>/health/live</code></td>
+<td>数据库可用</td>
+</tr>
+<tr>
+<td>依赖与 schema 可访问</td>
+<td><code>/health/ready</code></td>
+<td>所有业务操作正确</td>
+</tr>
+<tr>
+<td>版本身份</td>
+<td><code>/version</code></td>
+<td>部署平台使用的 digest 一定正确</td>
+</tr>
+<tr>
+<td>正向业务</td>
+<td>新建、读取、更新工单</td>
+<td>非法输入一定被拒绝</td>
+</tr>
+<tr>
+<td>反向业务</td>
+<td>短标题应返回 422</td>
+<td>所有攻击与边界都已覆盖</td>
+</tr>
+<tr>
+<td>既有数据</td>
+<td>查询指定旧工单</td>
+<td>全部历史数据都完整</td>
+</tr>
+</tbody></table></div>
+<p><code>scripts/smoke.py</code> 可以对显式给定的测试地址执行业务检查。它会写入验收工单，所以在任何共享环境运行前应为测试数据确定标识、清理方式和权限范围。不要把写操作伪装成无副作用的探测。</p>
+<pre><code class="language-bash">python3 scripts/smoke.py --help
+</code></pre>
+<p>通过脚本帮助确认参数，再对自己的实验地址执行。不要在尚未获得授权的公共地址上试跑创建与更新请求。</p>
+<h2 id="section-5">5. CI runner 不能凭空到达你的主机<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<p>GitHub 托管 runner 里的 <code>localhost</code> 指 runner 自己，不指你的电脑、云主机或个人网站服务器。要部署到目标环境，必须有明确的网络路径、目标身份和适合的执行方式。</p>
+<p>常见选择包括目标端主动拉取已发布制品、受控的远程部署任务、专用 runner，或者后续章节中的 GitOps。每种方式都应明确：谁能发起、凭据有效多久、能修改哪些资源、网络不可达时如何报告，以及失败后谁负责恢复。</p>
+<p>本阶段没有配置公网 SSH、长期部署密钥或自动登录你的个人服务器。先在本机完成闭环，后续再把相同的版本与验收规则迁移到真实环境。</p>
+<h2 id="section-6">6. Linux VM 路线如何对应<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<p><code>ops/ticketdesk.service</code> 展示 systemd 管理进程的方式。使用前要在 VM 创建独立服务用户、安装项目与 Python 环境、设置受保护的配置文件，并提供可访问的 PostgreSQL。文件中的路径是约定，需要按部署目录核对。</p>
+<p>VM 路线与容器路线拥有相似责任：确定制品或依赖版本、运行用户、配置来源、启动与停止、日志、健康检查和恢复。不同之处在于打包、隔离和平台操作。不要把复制一个 unit 文件描述为完整部署。</p>
+<h2 id="section-7">7. 发布单与完成条件<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<p>使用资料页的发布记录模板，填写目标环境、候选与上一健康版本、配置修订、迁移计划、维护窗口、恢复动作和验收结果。计划中的值与实际发生的结果分开写，失败时也保留记录。</p>
+<p>本章完成意味着你可以从发布单重建“部署了什么、部署到哪里、怎样判断结果”。真正的故障恢复将在第 20 章验证。没有目标环境访问条件时，保留“未执行”状态，不用预期输出填补证据。</p>
+</div><nav class="chapter-pagination" aria-label="章节翻页"><a href="chapter-17.html"><small>← 上一篇</small><strong>从 PR 检查扩展到完整流水线</strong></a><a href="chapter-19.html"><small>下一章 →</small><strong>数据库变更与回滚边界</strong></a></nav><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">1. 给环境明确职责</a><a class="toc-level-2" href="#section-2">2. 配置也是发布输入</a><a class="toc-level-2" href="#section-3">3. 首次部署和替换应用不同</a><a class="toc-level-2" href="#section-4">4. 验证从进程延伸到业务</a><a class="toc-level-2" href="#section-5">5. CI runner 不能凭空到达你的主机</a><a class="toc-level-2" href="#section-6">6. Linux VM 路线如何对应</a><a class="toc-level-2" href="#section-7">7. 发布单与完成条件</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>

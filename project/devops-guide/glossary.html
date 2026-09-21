@@ -1,0 +1,528 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>术语与概念对照 · DevOps 实战手册</title><meta name="description" content="术语用于准确讨论问题。先记住它解决什么、与相邻概念有什么区别，再记住缩写。本页的定义按本教程语境组织，不把某个具体产品等同于整个概念。"><meta name="theme-color" content="#102040"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%232454dc%22%2F%3E%3Cpath%20d%3D%22M8%209h7v6H8zm9%208h7v6h-7z%22%20fill%3D%22white%22%2F%3E%3Cpath%20d%3D%22M18%2010h5v5M9%2018v5h5%22%20fill%3D%22none%22%20stroke%3D%22%238fe3f0%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E"><link rel="stylesheet" href="assets/reader.css"><script defer src="assets/search-data.js"></script><script defer src="assets/reader.js"></script></head><body data-page="glossary"><a class="skip-link" href="#main">跳到正文</a><header class="topbar"><button class="menu-button icon-button" id="menu-toggle" aria-label="展开章节目录" aria-controls="course-nav" aria-expanded="false">☰</button><a href="index.html" class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>DevOps <b>实战手册</b></span></a><span class="edition">完整阅读版</span><button class="search-trigger" id="search-open"><span>搜索章节、命令、问题</span><kbd>⌘ / Ctrl K</kbd></button><a class="personal-link" href="https://zhangjian94cn.top/" rel="noopener">个人主页 ↗</a></header><nav class="sidebar" id="course-nav" aria-label="课程目录"><a class="home-link " href="index.html">全书导读</a><div class="nav-label">主线课程 <span>48 章正文</span></div><details class="nav-part" ><summary><span class="part-number">01</span>认识交付全流程</summary><a href="chapter-01.html" class="chapter-link " ><span>01</span>DevOps 如何让需求稳定到达用户</a><a href="chapter-02.html" class="chapter-link " ><span>02</span>准备实验环境并学会自检</a><a href="chapter-03.html" class="chapter-link " ><span>03</span>运行工单服务，读懂一个应用</a><a href="chapter-04.html" class="chapter-link " ><span>04</span>把需求写成可以验收的小变更</a></details><details class="nav-part" ><summary><span class="part-number">02</span>Linux、网络与自动化</summary><a href="chapter-05.html" class="chapter-link " ><span>05</span>文件、用户、权限与远程访问</a><a href="chapter-06.html" class="chapter-link " ><span>06</span>进程、服务、日志和资源</a><a href="chapter-07.html" class="chapter-link " ><span>07</span>沿一次请求理解网络和 TLS</a><a href="chapter-08.html" class="chapter-link " ><span>08</span>用 Bash 和 Python 编写可靠自动化</a></details><details class="nav-part" ><summary><span class="part-number">03</span>Git、测试与 CI</summary><a href="chapter-09.html" class="chapter-link " ><span>09</span>Git 协作、分支与评审</a><a href="chapter-10.html" class="chapter-link " ><span>10</span>依赖、构建、配置和版本</a><a href="chapter-11.html" class="chapter-link " ><span>11</span>测试策略与质量门禁</a><a href="chapter-12.html" class="chapter-link " ><span>12</span>第一条 CI 流水线</a></details><details class="nav-part" ><summary><span class="part-number">04</span>容器与可追溯制品</summary><a href="chapter-13.html" class="chapter-link " ><span>13</span>容器、镜像和隔离机制</a><a href="chapter-14.html" class="chapter-link " ><span>14</span>编写可维护的 Dockerfile</a><a href="chapter-15.html" class="chapter-link " ><span>15</span>用 Compose 管理多服务环境</a><a href="chapter-16.html" class="chapter-link " ><span>16</span>镜像仓库、版本和制品身份</a></details><details class="nav-part" ><summary><span class="part-number">05</span>第一次交付与恢复</summary><a href="chapter-17.html" class="chapter-link " ><span>17</span>从 PR 检查扩展到完整流水线</a><a href="chapter-18.html" class="chapter-link " ><span>18</span>部署配置、环境差异与发布验证</a><a href="chapter-19.html" class="chapter-link " ><span>19</span>数据库变更与回滚边界</a><a href="chapter-20.html" class="chapter-link " ><span>20</span>把发布、观察、故障和恢复串起来</a></details><details class="nav-part" ><summary><span class="part-number">06</span>云与基础设施即代码</summary><a href="chapter-21.html" class="chapter-link " ><span>21</span>云平台、身份、网络和费用</a><a href="chapter-22.html" class="chapter-link " ><span>22</span>使用 OpenTofu 声明基础设施</a><a href="chapter-23.html" class="chapter-link " ><span>23</span>状态、漂移、导入与团队协作</a><a href="chapter-24.html" class="chapter-link " ><span>24</span>用 Ansible 管理主机配置</a></details><details class="nav-part" ><summary><span class="part-number">07</span>Kubernetes 应用运行</summary><a href="chapter-25.html" class="chapter-link " ><span>25</span>Kubernetes 架构、工作负载和探针</a><a href="chapter-26.html" class="chapter-link " ><span>26</span>Service、DNS 与 Gateway API</a><a href="chapter-27.html" class="chapter-link " ><span>27</span>配置、密钥和持久化</a><a href="chapter-28.html" class="chapter-link " ><span>28</span>资源、权限和网络边界</a></details><details class="nav-part" ><summary><span class="part-number">08</span>GitOps 与集群交付</summary><a href="chapter-29.html" class="chapter-link " ><span>29</span>用 Kustomize 和 Helm 组织配置</a><a href="chapter-30.html" class="chapter-link " ><span>30</span>用 Argo CD 实践 GitOps</a><a href="chapter-31.html" class="chapter-link " ><span>31</span>滚动、蓝绿、金丝雀与功能开关</a><a href="chapter-32.html" class="chapter-link " ><span>32</span>集群维护、升级和交接</a></details><details class="nav-part" ><summary><span class="part-number">09</span>可观测性与诊断</summary><a href="chapter-33.html" class="chapter-link " ><span>33</span>从用户问题选择运行信号</a><a href="chapter-34.html" class="chapter-link " ><span>34</span>Prometheus、PromQL 与 Grafana</a><a href="chapter-35.html" class="chapter-link " ><span>35</span>OpenTelemetry 与关联排障</a><a href="chapter-36.html" class="chapter-link " ><span>36</span>设计可行动的告警和排障手册</a></details><details class="nav-part" ><summary><span class="part-number">10</span>SRE 与数据可靠性</summary><a href="chapter-37.html" class="chapter-link " ><span>37</span>SLI、SLO 与错误预算</a><a href="chapter-38.html" class="chapter-link " ><span>38</span>容量、性能与过载保护</a><a href="chapter-39.html" class="chapter-link " ><span>39</span>备份、恢复与灾难准备</a><a href="chapter-40.html" class="chapter-link " ><span>40</span>值班、事件处理与无责复盘</a></details><details class="nav-part" ><summary><span class="part-number">11</span>安全与软件供应链</summary><a href="chapter-41.html" class="chapter-link " ><span>41</span>威胁模型、身份和密钥生命周期</a><a href="chapter-42.html" class="chapter-link " ><span>42</span>代码、依赖、镜像与动态扫描</a><a href="chapter-43.html" class="chapter-link " ><span>43</span>SBOM、来源证明与制品签名</a><a href="chapter-44.html" class="chapter-link " ><span>44</span>策略执行、运行约束与漏洞响应</a></details><details class="nav-part" ><summary><span class="part-number">12</span>团队、平台与综合验收</summary><a href="chapter-45.html" class="chapter-link " ><span>45</span>协作方式、价值流和交付指标</a><a href="chapter-46.html" class="chapter-link " ><span>46</span>平台工程、自服务与默认交付路径</a><a href="chapter-47.html" class="chapter-link " ><span>47</span>成本、生产就绪与架构取舍</a><a href="chapter-48.html" class="chapter-link " ><span>48</span>综合项目——发布一个变更并处理一次故障</a></details><div class="nav-label">按需拓展</div><details class="nav-part" ><summary><span class="part-number">＋</span>8 个场景专题</summary><a href="elective-49.html" class="chapter-link " ><span>49</span>迁移到 GitLab CI 或 Jenkins</a><a href="elective-50.html" class="chapter-link " ><span>50</span>企业内网与自托管交付</a><a href="elective-51.html" class="chapter-link " ><span>51</span>云平台迁移与 Serverless</a><a href="elective-52.html" class="chapter-link " ><span>52</span>复杂 Kubernetes 环境与服务网格</a><a href="elective-53.html" class="chapter-link " ><span>53</span>传统应用与不同语言的交付改造</a><a href="elective-54.html" class="chapter-link " ><span>54</span>数据任务与事件驱动系统</a><a href="elective-55.html" class="chapter-link " ><span>55</span>AI 辅助 DevOps</a><a href="elective-56.html" class="chapter-link " ><span>56</span>AI/Agent 应用的交付与运行</a></details><div class="nav-label">查阅与实战</div><a class="utility-link " href="project.html">配套项目与资料</a><a class="utility-link " href="answers.html">练习答案与验收提示</a><a class="utility-link active" href="glossary.html">术语与概念对照</a><a class="utility-link " href="troubleshooting.html">故障速查</a><a class="utility-link " href="roadmap.html">完整学习路线</a><a class="utility-link " href="verification.html">版本与验证</a><a class="utility-link " href="deploy.html">放到个人网站</a><div class="sidebar-note">从基础交付到运行治理<br><a href="roadmap.html">查看完整路线与阶段验收 →</a></div></nav><button id="nav-shade" class="nav-shade" aria-label="关闭章节目录" hidden></button><div class="reading-layout"><main id="main" class="article" tabindex="-1"><div class="breadcrumb"><a href="index.html">全书导读</a><span>/</span><span>术语与概念对照</span></div><div class="chapter-eyebrow">DEVOPS HANDBOOK<span class="version-label">v0.3 阅读版</span></div><h1>术语与概念对照</h1><details class="mobile-toc"><summary>本页目录</summary><a class="toc-level-2" href="#section-1">交付与协作</a><a class="toc-level-2" href="#section-2">系统与网络</a><a class="toc-level-2" href="#section-3">容器与制品</a><a class="toc-level-2" href="#section-4">发布、数据与恢复</a><a class="toc-level-2" href="#section-5">观测与工程治理</a><a class="toc-level-2" href="#section-6">基础设施与集群</a><a class="toc-level-2" href="#section-7">可靠性、安全与扩展工作负载</a></details><div class="prose"><p>术语用于准确讨论问题。先记住它解决什么、与相邻概念有什么区别，再记住缩写。本页的定义按本教程语境组织，不把某个具体产品等同于整个概念。</p>
+<h2 id="section-1">交付与协作<a class="heading-link" href="#section-1" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文理解</th>
+<th>容易混淆的边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DevOps</td>
+<td>围绕软件交付与运行建立共同责任和反馈</td>
+<td>不是一个人的职位清单，也不只是一组工具</td>
+</tr>
+<tr>
+<td>CALMS</td>
+<td>文化、自动化、精益、度量、分享的观察维度</td>
+<td>自动化只是其中一部分</td>
+</tr>
+<tr>
+<td>Value stream</td>
+<td>从需求到用户价值的活动与等待</td>
+<td>不应只测开发者写代码的时间</td>
+</tr>
+<tr>
+<td>Lead time</td>
+<td>从定义的起点到终点的经过时间</td>
+<td>必须说明起止事件与统计范围</td>
+</tr>
+<tr>
+<td>Small batch</td>
+<td>把变更拆成可独立检查的小批次</td>
+<td>小 Commit 不一定形成可发布的小变更</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>频繁集成并自动检查变更</td>
+<td>配置了 CI 文件不等于检查真正有效</td>
+</tr>
+<tr>
+<td>Continuous delivery</td>
+<td>保持软件处于可按需发布状态</td>
+<td>仍可在生产发布前设置人工决策</td>
+</tr>
+<tr>
+<td>Continuous deployment</td>
+<td>满足条件的变更自动进入生产</td>
+<td>与手动点击发布不是同一流程</td>
+</tr>
+<tr>
+<td>Pull request</td>
+<td>把变更、讨论与自动检查放在同一审阅入口</td>
+<td>审阅通过仍需处理目标环境发布条件</td>
+</tr>
+<tr>
+<td>Definition of Done</td>
+<td>团队约定的完成条件</td>
+<td>“我写完了”不等于功能已完成</td>
+</tr>
+<tr>
+<td>ADR</td>
+<td>记录重要架构决定与理由</td>
+<td>应记录取舍和后果，不只写结论</td>
+</tr>
+<tr>
+<td>DORA</td>
+<td>软件交付与组织实践的研究及度量框架</td>
+<td>指标用于改进系统，不能简单排名个人</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-2">系统与网络<a class="heading-link" href="#section-2" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文理解</th>
+<th>容易混淆的边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process</td>
+<td>正在执行的程序实例</td>
+<td>一个服务可包含多个进程</td>
+</tr>
+<tr>
+<td>PID</td>
+<td>进程标识</td>
+<td>在不同 PID namespace 中可能不同</td>
+</tr>
+<tr>
+<td>Signal</td>
+<td>向进程发送事件或控制通知</td>
+<td>SIGTERM 允许处理，强制终止不能依赖清理逻辑</td>
+</tr>
+<tr>
+<td>File descriptor</td>
+<td>进程访问文件、socket 等资源的句柄</td>
+<td>连接问题也可能来自句柄耗尽</td>
+</tr>
+<tr>
+<td>Permission</td>
+<td>某个身份对资源的操作许可</td>
+<td>连接成功不代表有业务操作权限</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>把名称解析为地址等记录的系统</td>
+<td>解析成功不代表端口可达</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>提供可靠有序字节流的传输协议</td>
+<td>连接成功不代表 HTTP 业务成功</td>
+</tr>
+<tr>
+<td>TLS</td>
+<td>保护传输并提供证书身份验证机制</td>
+<td>禁用证书验证会破坏关键保护</td>
+</tr>
+<tr>
+<td>Reverse proxy</td>
+<td>代表后端接收请求并转发的服务</td>
+<td>代理正常不代表后端正常</td>
+</tr>
+<tr>
+<td>Timeout</td>
+<td>对一次等待设置边界</td>
+<td>超时不一定意味着服务端没有完成写入</td>
+</tr>
+<tr>
+<td>Retry</td>
+<td>对失败或不确定操作再次尝试</td>
+<td>非幂等写入重试可能产生重复数据</td>
+</tr>
+<tr>
+<td>Idempotency</td>
+<td>重复执行具有相同预期效果</td>
+<td>不等于每次响应字节都完全相同</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-3">容器与制品<a class="heading-link" href="#section-3" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文理解</th>
+<th>容易混淆的边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Image</td>
+<td>可分发的文件系统层和运行配置</td>
+<td>镜像本身不是正在运行的进程</td>
+</tr>
+<tr>
+<td>Container</td>
+<td>根据镜像启动的隔离进程环境</td>
+<td>删除容器不等于删除独立卷</td>
+</tr>
+<tr>
+<td>Namespace</td>
+<td>为进程提供部分独立系统视图</td>
+<td>隔离某个视图不等于完整安全边界</td>
+</tr>
+<tr>
+<td>cgroup</td>
+<td>对进程组进行资源统计与控制</td>
+<td>不设置限制时不会自动获得合适的限额</td>
+</tr>
+<tr>
+<td>Build context</td>
+<td>构建时允许读取的文件范围</td>
+<td>上下文中的秘密可能被意外带入构建</td>
+</tr>
+<tr>
+<td>Layer</td>
+<td>镜像文件系统变化的组成部分</td>
+<td>后续层删除文件不抹掉此前层内容</td>
+</tr>
+<tr>
+<td>Registry</td>
+<td>存储与分发镜像等制品的服务</td>
+<td>仓库登录权限与运行环境权限不同</td>
+</tr>
+<tr>
+<td>Tag</td>
+<td>指向某个制品的可读引用</td>
+<td>标签可被重新指向，除非策略另有限制</td>
+</tr>
+<tr>
+<td>Digest</td>
+<td>基于内容的对象标识</td>
+<td>要区分 index、manifest 和本地 image ID</td>
+</tr>
+<tr>
+<td>Artifact</td>
+<td>需要保存或传递的构建输出</td>
+<td>与可随时丢失的加速缓存不同</td>
+</tr>
+<tr>
+<td>Promotion</td>
+<td>让已验证制品进入下一环境</td>
+<td>环境间重新构建会产生新的待验证候选</td>
+</tr>
+<tr>
+<td>Volume</td>
+<td>独立于容器生命周期的存储挂载</td>
+<td>持久卷不是备份</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-4">发布、数据与恢复<a class="heading-link" href="#section-4" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文理解</th>
+<th>容易混淆的边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Deployment</td>
+<td>把选定制品与配置带入目标环境</td>
+<td>部署命令成功不等于业务验收通过</td>
+</tr>
+<tr>
+<td>Release</td>
+<td>把能力交付给目标用户的决定与过程</td>
+<td>可与技术部署分离，例如通过功能开关</td>
+</tr>
+<tr>
+<td>Smoke test</td>
+<td>快速验证关键路径的检查</td>
+<td>范围有限，不能替代全部测试</td>
+</tr>
+<tr>
+<td>Liveness</td>
+<td>进程是否能继续提供基本响应</td>
+<td>不应把所有依赖失败都等同于进程死亡</td>
+</tr>
+<tr>
+<td>Readiness</td>
+<td>实例是否满足接收当前流量的条件</td>
+<td>就绪通过也可能遗漏具体业务错误</td>
+</tr>
+<tr>
+<td>Schema migration</td>
+<td>数据结构或相关状态的有序变化</td>
+<td>应用回退不会自动逆转数据变化</td>
+</tr>
+<tr>
+<td>Expand/contract</td>
+<td>先扩展兼容，再迁移使用，最后收缩</td>
+<td>删除旧结构往往改变回退边界</td>
+</tr>
+<tr>
+<td>Transaction</td>
+<td>将一组操作按数据库规则作为整体处理</td>
+<td>不能自动覆盖数据库之外的全部副作用</td>
+</tr>
+<tr>
+<td>Rollback</td>
+<td>把某个变更对象退回可用状态</td>
+<td>必须说清是应用、配置还是数据库</td>
+</tr>
+<tr>
+<td>Backup</td>
+<td>为恢复保存的数据副本或恢复材料</td>
+<td>备份文件存在不等于可以恢复</td>
+</tr>
+<tr>
+<td>RPO</td>
+<td>业务可以接受的数据损失范围目标</td>
+<td>不一定等于备份任务的调度间隔</td>
+</tr>
+<tr>
+<td>RTO</td>
+<td>从约定起点到恢复条件的时间目标</td>
+<td>没演练过就不能只凭配置宣称达标</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-5">观测与工程治理<a class="heading-link" href="#section-5" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文理解</th>
+<th>对应边界与展开</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Log</td>
+<td>某个事件的记录</td>
+<td>结构化字段、上下文、脱敏与保留</td>
+</tr>
+<tr>
+<td>Metric</td>
+<td>对某类状态或事件的数值测量</td>
+<td>标签基数、聚合、直方图和告警</td>
+</tr>
+<tr>
+<td>Trace</td>
+<td>一次请求跨组件执行的关联信息</td>
+<td>传播上下文、采样与诊断</td>
+</tr>
+<tr>
+<td>SLI</td>
+<td>描述用户体验或服务行为的测量指标</td>
+<td>选择有效事件与统计窗口</td>
+</tr>
+<tr>
+<td>SLO</td>
+<td>对 SLI 设定的服务目标</td>
+<td>错误预算与工程决策</td>
+</tr>
+<tr>
+<td>SRE</td>
+<td>用工程方法管理可靠性的实践</td>
+<td>事件响应、容量、自动化与减少重复劳动</td>
+</tr>
+<tr>
+<td>IaC</td>
+<td>以可审阅代码管理基础设施期望状态</td>
+<td>状态文件、计划、漂移与销毁</td>
+</tr>
+<tr>
+<td>GitOps</td>
+<td>以声明式、版本化期望状态驱动持续协调</td>
+<td>同步、漂移、晋级与访问边界</td>
+</tr>
+<tr>
+<td>SBOM</td>
+<td>软件组成材料清单</td>
+<td>组件身份、漏洞关联与制品对应</td>
+</tr>
+<tr>
+<td>Provenance</td>
+<td>记录制品如何产生的来源信息</td>
+<td>与构建身份、输入及验证关联</td>
+</tr>
+<tr>
+<td>Platform engineering</td>
+<td>为团队提供可使用、可维护的内部能力</td>
+<td>用户需求、自助路径和平台运营</td>
+</tr>
+<tr>
+<td>FinOps</td>
+<td>围绕云使用价值与成本建立共同责任</td>
+<td>成本归属、预算、使用优化和权衡</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-6">基础设施与集群<a class="heading-link" href="#section-6" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文理解</th>
+<th>容易混淆的边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>State</td>
+<td>IaC 记录管理对象关联与属性的状态</td>
+<td>不是随时可删的缓存，可能含敏感数据</td>
+</tr>
+<tr>
+<td>Drift</td>
+<td>实际资源与所记录/声明状态之间的偏离</td>
+<td>修复前先判断变化是否有意发生</td>
+</tr>
+<tr>
+<td>Provider</td>
+<td>将资源声明映射到目标 API 的组件</td>
+<td>不同平台相似资源的语义未必相同</td>
+</tr>
+<tr>
+<td>Reconciliation</td>
+<td>控制器持续让实际状态接近期望状态</td>
+<td>不是只执行一次脚本</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Kubernetes 调度的基本工作负载单元</td>
+<td>常有多个协同容器，不等同于 VM</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>管理无状态 Pod 副本与滚动变化的对象</td>
+<td>不是所有部署行为的总称</td>
+</tr>
+<tr>
+<td>StatefulSet</td>
+<td>为有状态工作负载提供稳定身份等机制</td>
+<td>不会自动让单实例数据库高可用</td>
+</tr>
+<tr>
+<td>Service / EndpointSlice</td>
+<td>稳定服务抽象与后端端点描述</td>
+<td>资源存在不代表选到了就绪后端</td>
+</tr>
+<tr>
+<td>Gateway / HTTPRoute</td>
+<td>入口监听与 HTTP 路由的声明</td>
+<td>需要对应控制器和数据面</td>
+</tr>
+<tr>
+<td>CNI / CSI</td>
+<td>容器网络与存储接入接口/实现生态</td>
+<td>是否支持具体策略和卷能力由实现决定</td>
+</tr>
+<tr>
+<td>PV / PVC</td>
+<td>存储资源与使用存储的声明</td>
+<td>卷持久性不替代独立备份</td>
+</tr>
+<tr>
+<td>Request / Limit</td>
+<td>调度资源需求与运行资源约束</td>
+<td>语义和 CPU/内存超限结果不同</td>
+</tr>
+<tr>
+<td>HPA</td>
+<td>根据指标调整工作负载副本数</td>
+<td>依赖指标、资源设置及可用容量</td>
+</tr>
+<tr>
+<td>PDB</td>
+<td>对适用的自愿驱逐限制不可用副本</td>
+<td>不阻止所有节点故障或应用故障</td>
+</tr>
+<tr>
+<td>RBAC</td>
+<td>按角色授权 Kubernetes API 操作</td>
+<td>不等于应用用户权限或网络隔离</td>
+</tr>
+<tr>
+<td>PSA</td>
+<td>Pod 安全准入机制</td>
+<td>不是漏洞扫描或完整多租户隔离</td>
+</tr>
+<tr>
+<td>NetworkPolicy</td>
+<td>声明适用 Pod 的允许网络路径</td>
+<td>需要真正执行策略的网络实现</td>
+</tr>
+<tr>
+<td>Helm / Kustomize</td>
+<td>模板参数化与声明式配置组合</td>
+<td>渲染结果仍要做实际环境验证</td>
+</tr>
+</tbody></table></div>
+<h2 id="section-7">可靠性、安全与扩展工作负载<a class="heading-link" href="#section-7" aria-label="本节链接">#</a></h2>
+<div class="table-scroll" tabindex="0"><table>
+<thead>
+<tr>
+<th>术语</th>
+<th>中文理解</th>
+<th>容易混淆的边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RED / USE</td>
+<td>请求速率、错误、时长；利用率、饱和、错误</td>
+<td>观察方法不同，不用单张图推断所有原因</td>
+</tr>
+<tr>
+<td>Histogram</td>
+<td>用区间记录观测值分布</td>
+<td>分位数通常是估算，受桶边界影响</td>
+</tr>
+<tr>
+<td>Cardinality</td>
+<td>标签组合形成的不同时间序列数量</td>
+<td>工单 ID 等无界标签会迅速放大成本</td>
+</tr>
+<tr>
+<td>Error budget</td>
+<td>目标窗口允许的坏事件量</td>
+<td>不是可以任意消耗的停机许可</td>
+</tr>
+<tr>
+<td>Burn rate</td>
+<td>相对允许速率的预算消耗速度</td>
+<td>必须说明观察窗口与分母</td>
+</tr>
+<tr>
+<td>PITR</td>
+<td>利用适当备份及连续日志恢复到时间点</td>
+<td>普通 dump 不提供任意时间点恢复</td>
+</tr>
+<tr>
+<td>OIDC</td>
+<td>身份层与身份声明协议</td>
+<td>短期令牌仍需要限定信任条件和权限</td>
+</tr>
+<tr>
+<td>Admission</td>
+<td>API 写入接受前的准入处理</td>
+<td>离线 lint 不替代真实入口约束</td>
+</tr>
+<tr>
+<td>mTLS</td>
+<td>双方验证证书身份的 TLS</td>
+<td>加密与身份确认不自动提供业务授权</td>
+</tr>
+<tr>
+<td>Outbox</td>
+<td>与业务数据同事务写入待发事件</td>
+<td>消费者仍需处理可能重复投递</td>
+</tr>
+<tr>
+<td>Dead letter</td>
+<td>无法正常处理消息的受控失败去向</td>
+<td>需要责任、排查和重放，不能无限堆积</td>
+</tr>
+<tr>
+<td>Evaluation gate</td>
+<td>按明确样例与规则决定候选是否晋级</td>
+<td>小型教学样例不能证明真实模型整体质量</td>
+</tr>
+<tr>
+<td>Prompt injection</td>
+<td>不可信内容试图影响模型遵循的任务或权限</td>
+<td>不能只靠一句提示词替代工具权限控制</td>
+</tr>
+</tbody></table></div>
+<p>遇到缩写时，用一句话回答“它观察或控制什么”，再回到具体实验。关于工具当前版本和生命周期，以<a href="verification.html">版本与验证</a>以及章节链接的官方资料为准。</p>
+</div><footer class="article-footer"><span>DevOps 实战手册 · 48 章主线 + 8 个专题</span><a href="verification.html">版本与实验验证范围</a><button class="text-button print-button">打印本页</button></footer></main><aside class="page-toc" aria-label="本页目录"><div>本页目录</div><a class="toc-level-2" href="#section-1">交付与协作</a><a class="toc-level-2" href="#section-2">系统与网络</a><a class="toc-level-2" href="#section-3">容器与制品</a><a class="toc-level-2" href="#section-4">发布、数据与恢复</a><a class="toc-level-2" href="#section-5">观测与工程治理</a><a class="toc-level-2" href="#section-6">基础设施与集群</a><a class="toc-level-2" href="#section-7">可靠性、安全与扩展工作负载</a><a href="#main" class="back-top">回到顶部 ↑</a><div class="toc-download"><span>边读边实践</span><a href="downloads/ticketdesk.zip" download>下载工单示例 ↗</a><a href="project.html">查看使用说明</a></div></aside></div><dialog id="search-dialog" aria-labelledby="search-heading"><div class="search-head"><label id="search-heading" for="search-input">搜索教程</label><button class="icon-button" id="search-close" aria-label="关闭搜索">×</button></div><input id="search-input" type="search" placeholder="试试：回滚、Kubernetes、SLO、幂等" autocomplete="off"><p class="search-hint" id="search-status" role="status">搜索正文、专题与参考页。Esc 关闭。</p><div id="search-results"></div></dialog><div id="copy-notice" class="copy-notice" role="status" hidden></div></body></html>
